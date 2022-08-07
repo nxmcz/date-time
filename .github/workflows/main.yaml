@@ -266,7 +266,7 @@ jobs:
         run: "${{ env.composer-install }}"
 
       - name: "Tests"
-        run: "make coverage-clover"
+        run: "php vendor/bin/tester -p phpdbg -C tests/cases/"
 
       - name: "Upload test output"
         if: ${{ failure() }}
