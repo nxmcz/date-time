@@ -15,7 +15,7 @@ class Difference
 	)
 	{
 		if ($this->start->getTimestamp() > $this->end->getTimestamp()) {
-			throw new \InvalidArgumentException("Start of the interval cannot be greater than end. start: $this->start - end: $this->end");
+			throw new \InvalidArgumentException("Start of the interval cannot be greater than end.");
 		}
 	}
 

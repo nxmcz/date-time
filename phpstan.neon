@@ -1,0 +1,7 @@
+includes:
+
+parameters:
+	scanDirectories:
+		- src
+
+	level: 8
