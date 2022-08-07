@@ -4,6 +4,7 @@ namespace Noxem\DateTime;
 
 use DateTimeImmutable as NativeDateTimeImmutable;
 use DateTimeInterface;
+use Nette\Utils\Validators;
 use Noxem\DateTime\Attributes;
 use Noxem\DateTime\Exception\BadFormatException;
 
@@ -14,13 +15,17 @@ class DateTimeImmutable extends NativeDateTimeImmutable
 	use Attributes\Converts;
 	use Attributes\Overlapping;
 
-	public static function create(mixed $suspect = 'now'): self
+	public static function create(string|int $suspect = 'now'): self
 	{
-		if ((int)$suspect >= 32400) {
-			return (new self())->setTimestamp($suspect);
+		if ( Validators::isNumeric($suspect) ) {
+			return (new self())->setTimestamp((int)$suspect);
 		}
 
-		if($suspect !== 'now' && (bool)strtotime($suspect) === FALSE) {
+		$suspect = (string)$suspect;
+
+		if(
+			($suspect !== 'now' && (bool)strtotime($suspect) === FALSE)
+		) {
 			BadFormatException::create();
 		}
 

@@ -92,11 +92,7 @@ class CloverXMLGenerator extends AbstractGenerator
 			$elFile->setAttribute('name', $file);
 			$elFileMetrics = $elFile->appendChild($doc->createElement('metrics'));
 
-			try {
-				$code = $parser->parse(file_get_contents($file));
-			} catch (\ParseError $e) {
-				throw new \ParseError($e->getMessage() . ' in file ' . $file);
-			}
+			$code = $parser->parse(file_get_contents($file));
 
 			$fileMetrics = (object) [
 				'linesOfCode' => $code->linesOfCode,

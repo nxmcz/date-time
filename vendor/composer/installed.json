@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "nette/tester",
-            "version": "dev-master",
-            "version_normalized": "dev-master",
+            "version": "v2.4.2",
+            "version_normalized": "2.4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tester.git",
-                "reference": "eae0099e56da8edefe8e4925277acdc8c0dbdb52"
+                "reference": "2e788e243bb17a6889aac5411f3fabc48cc5b23a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/eae0099e56da8edefe8e4925277acdc8c0dbdb52",
-                "reference": "eae0099e56da8edefe8e4925277acdc8c0dbdb52",
+                "url": "https://api.github.com/repos/nette/tester/zipball/2e788e243bb17a6889aac5411f3fabc48cc5b23a",
+                "reference": "2e788e243bb17a6889aac5411f3fabc48cc5b23a",
                 "shasum": ""
             },
             "require": {
@@ -22,8 +22,7 @@
                 "ext-simplexml": "*",
                 "phpstan/phpstan": "^1.0"
             },
-            "time": "2022-07-21T12:47:38+00:00",
-            "default-branch": true,
+            "time": "2022-03-24T19:02:37+00:00",
             "bin": [
                 "src/tester"
             ],
@@ -75,9 +74,97 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/tester/issues",
-                "source": "https://github.com/nette/tester/tree/master"
+                "source": "https://github.com/nette/tester/tree/v2.4.2"
             },
             "install-path": "../nette/tester"
+        },
+        {
+            "name": "nette/utils",
+            "version": "v3.2.7",
+            "version_normalized": "3.2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/utils.git",
+                "reference": "0af4e3de4df9f1543534beab255ccf459e7a2c99"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/utils/zipball/0af4e3de4df9f1543534beab255ccf459e7a2c99",
+                "reference": "0af4e3de4df9f1543534beab255ccf459e7a2c99",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2 <8.2"
+            },
+            "conflict": {
+                "nette/di": "<3.0.6"
+            },
+            "require-dev": {
+                "nette/tester": "~2.0",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.3"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
+                "ext-json": "to use Nette\\Utils\\Json",
+                "ext-mbstring": "to use Strings::lower() etc...",
+                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()",
+                "ext-xml": "to use Strings::length() etc. when mbstring is not available"
+            },
+            "time": "2022-01-24T11:29:14+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "array",
+                "core",
+                "datetime",
+                "images",
+                "json",
+                "nette",
+                "paginator",
+                "password",
+                "slugify",
+                "string",
+                "unicode",
+                "utf-8",
+                "utility",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/utils/issues",
+                "source": "https://github.com/nette/utils/tree/v3.2.7"
+            },
+            "install-path": "../nette/utils"
         },
         {
             "name": "phpstan/phpstan",

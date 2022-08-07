@@ -57,7 +57,6 @@ class CliTester
 
 		if ($this->options['--info']) {
 			$job = new Job(new Test(__DIR__ . '/info.php'), $this->interpreter);
-			$job->setTempDirectory($this->options['--temp']);
 			$job->run();
 			echo $job->getTest()->stdout;
 			return null;
@@ -134,7 +133,7 @@ XX
 			'-c' => [CommandLine::Realpath => true],
 			'--watch' => [CommandLine::Repeatable => true, CommandLine::Realpath => true],
 			'--setup' => [CommandLine::Realpath => true],
-			'--temp' => [],
+			'--temp' => [CommandLine::Realpath => true],
 			'paths' => [CommandLine::Repeatable => true, CommandLine::Value => getcwd()],
 			'--debug' => [],
 			'--cider' => [],
@@ -180,10 +179,8 @@ XX
 			} elseif (($real = realpath($temp)) === false) {
 				echo "Note: System temporary directory '$temp' does not exist.\n";
 			} else {
-				$this->options['--temp'] = Helpers::prepareTempDir($real);
+				$this->options['--temp'] = rtrim($real, DIRECTORY_SEPARATOR);
 			}
-		} else {
-			$this->options['--temp'] = Helpers::prepareTempDir($this->options['--temp']);
 		}
 
 		return $cmd;
@@ -221,7 +218,10 @@ XX
 		$runner->paths = $this->options['paths'];
 		$runner->threadCount = max(1, (int) $this->options['-j']);
 		$runner->stopOnFail = $this->options['--stop-on-fail'];
-		$runner->setTempDirectory($this->options['--temp']);
+
+		if ($this->options['--temp'] !== null) {
+			$runner->setTempDirectory($this->options['--temp']);
+		}
 
 		if ($this->stdoutFormat === null) {
 			$runner->outputHandlers[] = new Output\ConsolePrinter(

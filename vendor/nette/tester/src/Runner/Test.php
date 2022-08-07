@@ -100,15 +100,6 @@ class Test
 
 
 	/**
-	 * Full output (stdout + stderr)
-	 */
-	public function getOutput(): string
-	{
-		return $this->stdout . ($this->stderr ? "\nSTDERR:\n" . $this->stderr : '');
-	}
-
-
-	/**
 	 * @return static
 	 */
 	public function withArguments(array $args): self
