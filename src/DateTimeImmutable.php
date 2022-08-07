@@ -57,7 +57,7 @@ class DateTimeImmutable extends NativeDateTimeImmutable
 		return new self($s);
 	}
 
-	public function areSame(NativeDateTimeImmutable $suspect): bool
+	public function areSame(DateTimeInterface $suspect): bool
 	{
 		return $suspect->getTimestamp() === $this->getTimestamp()
 			&& $suspect->getTimezone()->getName() === $this->getTimezone()->getName();
@@ -82,9 +82,9 @@ class DateTimeImmutable extends NativeDateTimeImmutable
 	{
 		$zone = $this->getTimezone();
 		$datetime = new self('@' . (string)$timestamp);
-		if ($zone === false) { /** @phpstan-ignore-line */
+		/*if ($zone === false) {
 			throw new \RuntimeException('This DateTime object has no timezone.');
-		}
+		}*/
 		return $datetime->setTimezone($zone);
 	}
 
