@@ -1,0 +1,19 @@
+{
+  "name": "nxmcz/date-time",
+  "description": "An DateTime class to deal with timestamp/DateTimeInterface",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "emololftw",
+      "email": "jarinklima@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"Noxem\\DateTime\\": "src/"}
+  },
+  "require": {
+    "php": ">=8.0",
+    "nette/tester": "dev-master"
+  }
+}
