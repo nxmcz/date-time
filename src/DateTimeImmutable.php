@@ -14,7 +14,7 @@ class DateTimeImmutable extends NativeDateTimeImmutable
 	use Attributes\Converts;
 	use Attributes\Overlapping;
 
-	public static function create($suspect = 'now'): self
+	public static function create(mixed $suspect = 'now'): self
 	{
 		if ((int)$suspect >= 32400) {
 			return (new self())->setTimestamp($suspect);
@@ -77,7 +77,7 @@ class DateTimeImmutable extends NativeDateTimeImmutable
 	{
 		$zone = $this->getTimezone();
 		$datetime = new self('@' . (string)$timestamp);
-		if ($zone === false) {
+		if ($zone === false) { /** @phpstan-ignore-line */
 			throw new \RuntimeException('This DateTime object has no timezone.');
 		}
 		return $datetime->setTimezone($zone);

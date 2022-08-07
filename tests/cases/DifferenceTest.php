@@ -17,7 +17,7 @@ require_once __DIR__ . '/../bootstrap.php';
 /**
  * @testCase
  */
-class TermTest extends AbstractTestCase
+class DifferenceTest extends AbstractTestCase
 {
 	public function setUp()
 	{
@@ -70,5 +70,5 @@ class TermTest extends AbstractTestCase
 	}
 }
 
-$test = new TermTest();
+$test = new DifferenceTest();
 $test->run();
