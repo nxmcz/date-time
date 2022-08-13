@@ -1,5 +1,0 @@
-Noxem\DateTime\DateTimeImmutable::__set_state(/* #97bb */ [
-	'date' => '2019-08-02 20:55:59.000000',
-	'timezone_type' => 3,
-	'timezone' => 'Europe/Prague',
-])
