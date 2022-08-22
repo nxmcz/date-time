@@ -33,4 +33,6 @@ if (!function_exists('test')) {
 	}
 }
 
+date_default_timezone_set('Europe/Prague');
+
 Environment::setup();

@@ -14,24 +14,25 @@ This library requires PHP 8.0 or later.
 Usage
 -----
 Basic initialization of 3 possible ways:
+
 ```php
-use Noxem\DateTime\DateTimeImmutable;
+use Noxem\DateTime\DT;
 
 // NOW
 
-$dt = DateTimeImmutable::create('now'); // 2022-08-07 12:00:00
+$dt = DT::create('now'); // 2022-08-07 12:00:00
 echo $dt->modify('+5 seconds'); // 2022-08-07 12:00:05
-echo (new DateTimeImmutable('now')); // 2022-08-07 12:00:00
+echo (new DT('now')); // 2022-08-07 12:00:00
 
 // TIMESTAMP
 
-$dt = DateTimeImmutable::create(1659866400); // 2022-08-07 12:00:00 initialize with timestamp
+$dt = DT::create(1659866400); // 2022-08-07 12:00:00 initialize with timestamp
 echo $dt->modify('+5 seconds'); // 2022-08-07 12:00:05
 
 // DateParts
 
-$dt = DateTimeImmutable::create('2022-08-07 12:00:00'); // 2022-08-07 12:00:00
-$dt = DateTimeImmutable::createFromParts(2022, 8, 7, 12); // 2022-08-07 12:00:00
+$dt = DT::create('2022-08-07 12:00:00'); // 2022-08-07 12:00:00
+$dt = DT::createFromParts(2022, 8, 7, 12); // 2022-08-07 12:00:00
 ```
 
 Other usefull methods are
@@ -64,8 +65,9 @@ echo $dt->msec(); // 86400000
 **Overlap**
 
 Next method is for compare two objects if overlap or not.
+
 ```php
-use Noxem\DateTime\DateTimeImmutable as DT;
+use Noxem\DateTime\DT as DT;
 
 DT::isOverlap(
     DT::create('2021-05-06 09:00:00'),
@@ -98,10 +100,11 @@ Step situations are presented in table below:
 Exception
 ---------
 Bad DateTime format throws an exception which is children of `InvalidArgumentException`
+
 ```php
-use Noxem\DateTime\DateTimeImmutable;
+use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
 
-$dt = DateTimeImmutable::create('foo'); // BadFormatException
+$dt = DT::create('foo'); // BadFormatException
 ```
 

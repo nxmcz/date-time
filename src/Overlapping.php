@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace Noxem\DateTime\Attributes;
+namespace Noxem\DateTime;
 
-use DateTimeInterface;
+use DateTimeInterface as AnyDT;
 
 
-trait Overlapping
+class Overlapping
 {
 	/**
 	 * EXAMPLE												|===========|
@@ -26,10 +26,10 @@ trait Overlapping
 	 *
 	 */
 	public static function isOverlap(
-		DateTimeInterface $suspectFrom,
-		DateTimeInterface $suspectTo,
-		DateTimeInterface $targetFrom,
-		DateTimeInterface $targetTo,
+		AnyDT $suspectFrom,
+		AnyDT $suspectTo,
+		AnyDT $targetFrom,
+		AnyDT $targetTo,
 	): bool {
 		$suspectFrom = $suspectFrom->getTimestamp();
 		$suspectTo = $suspectTo->getTimestamp();

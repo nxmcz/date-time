@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Noxem\DateTime\DateTimeImmutable as DateTime;
+use Noxem\DateTime\DT as DateTime;
 use Noxem\DateTime\Exception\BadFormatException;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
@@ -25,6 +25,7 @@ class AttributesTest extends AbstractTestCase
 
 	public function testConverts()
 	{
+		Assert::same(1654077600, DateTime::create(1654077600)->seconds());
 		Assert::same(1654077600000, DateTime::create(1654077600)->msec());
 		Assert::same(1654077600000000.0, DateTime::create(1654077600)->nano());
 	}
@@ -32,7 +33,7 @@ class AttributesTest extends AbstractTestCase
 	public function testInitializeByInput()
 	{
 		Assert::true(
-			DateTime::create('2022-05-01 00:00:00')->areSame(DateTime::createByMonth('2022-05'))
+			DateTime::create('2022-05-01 00:00:00')->areEquals(DateTime::createByMonth('2022-05'))
 		);
 
 		Assert::exception(

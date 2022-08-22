@@ -16,6 +16,7 @@
     "php": ">=8.0",
     "nette/tester": "~v2.4.2",
     "phpstan/phpstan": ">=1.8.2",
-    "nette/utils": ">=v2.5.7"
+    "nette/utils": ">=v2.5.7",
+    "ext-calendar": "*"
   }
 }
