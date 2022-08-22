@@ -1,36 +1,56 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace Noxem\DateTime\Attributes;
-
 
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\Utils;
 
-
+/**
+ * @internal
+ */
 trait Initialize
 {
-	public static function create(string|int $suspect = 'now', bool $throw = TRUE, $defaultValue = NULL): self
-	{
-		if ( Utils\Validators::isTimestamp($suspect) ) {
+	/**
+	 * Creates NOXEM DT object directly
+	 *
+	 * @param string|int|float|NULL      $suspect
+	 * @param bool                       $throw
+	 * @param string|int|float|NULL|null $defaultValue
+	 */
+	public static function create(
+		string|int|float|NULL $suspect = 'now',
+		bool $throw = TRUE,
+		string|int|float|NULL $defaultValue = NULL
+	): self {
+		if (Utils\Validators::isTimestamp($suspect)) {
 			return (new self())->setTimestamp((int)$suspect);
 		}
 
 		$suspect = (string)$suspect;
 
-		if(
-			($suspect !== 'now' && (bool)strtotime($suspect) === FALSE)
-		) {
-			if($throw === TRUE) {
+		if ( Utils\Validators::isDate($suspect) === FALSE ) {
+			if ($throw === TRUE) {
 				BadFormatException::create();
 			}
 
-			$suspect = $defaultValue;
+			$suspect = $defaultValue ?? 'now';
 		}
 
-		return new self($suspect);
+		return new self((string)$suspect);
 	}
 
+	/**
+	 * Creates NOXEM DT object from parts of date
+	 * !!!!!!! EDITED FUNCTION PART OF NETTE\UTILS\DATETIME !!!!!!!
+	 *
+	 * @param int   $year
+	 * @param int   $month
+	 * @param int   $day
+	 * @param int   $hour
+	 * @param int   $minute
+	 * @param float $second
+	 */
 	public static function createFromParts(
 		int   $year,
 		int   $month,
@@ -56,18 +76,25 @@ trait Initialize
 		return new self($s);
 	}
 
-	public static function createByMonth(string $value): self {
+	/**
+	 * @param string $value
+	 */
+	public static function createByMonth(string $value): self
+	{
 		list($year, $month) = explode("-", $value);
 		return self::createFromParts((int)$year, (int)$month);
 	}
 
-	public static function getOrCreateInstance($suspect = 'now'): self
+	/**
+	 * @param string|int|float|DT|null $suspect
+	 */
+	public static function getOrCreateInstance(string|int|float|null|DT $suspect = NULL): self
 	{
-		if($suspect instanceof DT) {
+		if ($suspect instanceof DT) {
 			return $suspect;
 		}
 
-		return self::create($suspect);
+		return self::create($suspect ?? 'now');
 	}
 
 }

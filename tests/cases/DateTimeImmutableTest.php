@@ -94,20 +94,20 @@ test('isFuture', function() {
 
 test('difference', function() {
 	Assert::same(59,
-		DT::create('2022-07-20 15:44:30')
-			->difference( DT::create('2022-07-20 15:45:29') )
+		DT::create('2022-07-20 15:45:29')
+			->difference( DT::create('2022-07-20 15:44:30') )
 			->seconds()
 	);
 
 	Assert::same(3.0,
-		DT::create('2022-07-20 15:44:30')
-			->difference( DT::create('2022-07-20 15:47:30') )
+		DT::create('2022-07-20 15:47:30')
+			->difference( DT::create('2022-07-20 15:44:30') )
 			->minutes()
 	);
 
 	Assert::true(
-		DT::create('2022-07-20 15:44:30')
-			->difference( DT::create('2022-07-20 15:47:30') )
+		DT::create('2022-07-20 15:47:30')
+			->difference( DT::create('2022-07-20 15:44:30') )
 			->isValid()
 	);
 
@@ -119,8 +119,8 @@ test('difference', function() {
 	);
 
 	Assert::exception(fn() =>
-		DT::create('2022-07-20 15:44:30')
-				->difference( DT::create('2022-07-20 15:44:29'), TRUE  )
+		DT::create('2022-07-20 15:44:29')
+				->difference( DT::create('2022-07-20 15:44:30'), TRUE  )
 				->isValid()
 		, \InvalidArgumentException::class
 	);
@@ -135,6 +135,24 @@ test('dateParts', function() {
 	Assert::same(19, $dt->hour());
 	Assert::same(29, $dt->week());
 	Assert::same("2022-7", $dt->castToMonthInput());
+});
+
+
+test('converts', function() {
+	$dt = DT::create('2022-07-20 19:00:00.677');
+	Assert::same(677000, $dt->millis());
+
+	$dt = DT::create('2022-07-20 19:00:00.0');
+	Assert::same(0, $dt->millis());
+
+	$dt = DT::create('2022-07-20 19:00:00');
+	Assert::same(0, $dt->millis());
+
+	$dt = DT::create('2022-07-20 19:00:00.123456789');
+	Assert::same(123456, $dt->millis());
+
+	$dt = DT::create('2022-07-20 19:00:00.1234569');
+	Assert::same(123456, $dt->millis());
 });
 
 test('__toString', function() {

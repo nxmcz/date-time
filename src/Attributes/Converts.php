@@ -3,6 +3,8 @@
 namespace Noxem\DateTime\Attributes;
 
 
+use Noxem\DateTime\Utils\Formatter;
+
 trait Converts
 {
 	public function seconds(): int {
@@ -13,8 +15,8 @@ trait Converts
 		return $this->getTimestamp() * 1000;
 	}
 
-	public function nano(): float {
-		return $this->getTimestamp() * 1e6;
+	public function millis(): int {
+		return (int)$this->format(Formatter::MILLIS);
 	}
 
 	public function week(): int {

@@ -27,7 +27,6 @@ class AttributesTest extends AbstractTestCase
 	{
 		Assert::same(1654077600, DateTime::create(1654077600)->seconds());
 		Assert::same(1654077600000, DateTime::create(1654077600)->msec());
-		Assert::same(1654077600000000.0, DateTime::create(1654077600)->nano());
 	}
 
 	public function testInitializeByInput()

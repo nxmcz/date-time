@@ -31,7 +31,7 @@ test('isOverlap', function() {
 
 	# AFTER
 	Assert::false(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 09:00:00'),
 			DT::create('2021-05-06 09:59:59'),
 			DT::create('2021-05-06 10:00:00'),
@@ -41,7 +41,7 @@ test('isOverlap', function() {
 
 	# START TOUCHING
 	Assert::false(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 09:00:00'),
 			DT::create('2021-05-06 10:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -51,7 +51,7 @@ test('isOverlap', function() {
 
 	# START INSIDE
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 09:00:00'),
 			DT::create('2021-05-06 12:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -61,7 +61,7 @@ test('isOverlap', function() {
 
 	# INSIDE START TOUCHING
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 10:00:00'),
 			DT::create('2021-05-06 15:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -71,7 +71,7 @@ test('isOverlap', function() {
 
 	# ENCLOSING START TOUCHING
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 10:00:00'),
 			DT::create('2021-05-06 12:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -81,7 +81,7 @@ test('isOverlap', function() {
 
 	# ENCLOSING
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 11:00:00'),
 			DT::create('2021-05-06 12:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -91,7 +91,7 @@ test('isOverlap', function() {
 
 	# ENCLOSING END TOUCHING
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 11:00:00'),
 			DT::create('2021-05-06 13:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -101,7 +101,7 @@ test('isOverlap', function() {
 
 	# EXACT MATCH
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 10:00:00'),
 			DT::create('2021-05-06 13:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -111,7 +111,7 @@ test('isOverlap', function() {
 
 	# INSIDE
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 09:00:00'),
 			DT::create('2021-05-06 14:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -121,7 +121,7 @@ test('isOverlap', function() {
 
 	# INSIDE END TOUCHING
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 09:00:00'),
 			DT::create('2021-05-06 13:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -131,7 +131,7 @@ test('isOverlap', function() {
 
 	# END INSIDE
 	Assert::true(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 11:00:00'),
 			DT::create('2021-05-06 14:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -141,7 +141,7 @@ test('isOverlap', function() {
 
 	# END TOUCHING
 	Assert::false(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 13:00:00'),
 			DT::create('2021-05-06 14:00:00'),
 			DT::create('2021-05-06 10:00:00'),
@@ -151,7 +151,7 @@ test('isOverlap', function() {
 
 	# BEFORE
 	Assert::false(
-		Overlapping::isOverlap(
+		Overlapping::withTouching(
 			DT::create('2021-05-06 13:00:01'),
 			DT::create('2021-05-06 14:00:00'),
 			DT::create('2021-05-06 10:00:00'),

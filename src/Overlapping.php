@@ -25,7 +25,7 @@ class Overlapping
 	 * BEFORE												|			|   ===========				FALSE
 	 *
 	 */
-	public static function isOverlap(
+	public static function withTouching(
 		AnyDT $suspectFrom,
 		AnyDT $suspectTo,
 		AnyDT $targetFrom,

@@ -12,11 +12,15 @@
   "autoload": {
     "psr-4": {"Noxem\\DateTime\\": "src/"}
   },
+  "scripts": {
+    "phpstan": "phpstan analyse src",
+    "tests": "tester -C --colors 1 ./tests/cases",
+    "coverage": "tester -C --colors 1 ./tests/cases -p phpdbg --coverage coverage.html --coverage-src src"
+  },
   "require": {
     "php": ">=8.0",
-    "nette/tester": "~v2.4.2",
+    "nette/tester": "^2.4.2",
     "phpstan/phpstan": ">=1.8.2",
-    "nette/utils": ">=v2.5.7",
-    "ext-calendar": "*"
+    "nette/utils": "^3.2"
   }
 }

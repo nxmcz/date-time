@@ -11,10 +11,11 @@ class Difference implements Attributes\Intervalic
 {
 	public DT $start;
 	public DT $end;
+	private bool $absoluteCalculation = FALSE;
 
 	public function __construct(
-		NativeDateTimeInterface|int $start,
-		NativeDateTimeInterface|int $end,
+		DT|int $start,
+		DT|int $end,
 		bool $throw = FALSE
 	) {
 		$this->start = DT::getOrCreateInstance($start);
@@ -23,6 +24,13 @@ class Difference implements Attributes\Intervalic
 		if ($throw === TRUE && $this->isValid() === FALSE) {
 			throw new \InvalidArgumentException("Start of the interval cannot be greater than end.");
 		}
+	}
+
+	public function withAbsolute(): self
+	{
+		$difference = clone $this;
+		$difference->absoluteCalculation = TRUE;
+		return $difference;
 	}
 
 	public function isValid(): bool
@@ -56,17 +64,17 @@ class Difference implements Attributes\Intervalic
 			&& time() < $this->getEndTimestamp();
 	}
 
-	public function intervalToNow($now = NULL): int
+	public function intervalToNow(DT|int|null $now = NULL): int
 	{
-		return ($now ?? time()) - $this->getStartTimestamp();
+		return (DT::getOrCreateInstance($now ?? 'now')->getTimestamp()) - $this->getStartTimestamp();
 	}
 
-	public function intervalToEnd($now = NULL): int
+	public function intervalToEnd(DT|int|null $now = NULL): int
 	{
-		return $this->getEndTimestamp() - ($now ?? time());
+		return $this->getEndTimestamp() - (DT::getOrCreateInstance($now ?? 'now')->getTimestamp());
 	}
 
-	public function weeks(): int
+	public function solidWeeks(): int
 	{
 		$date1 = $this->getStart()->setTime(0,0);
 		$date2 = $this->getEnd()->setTime(0,0);
@@ -74,22 +82,32 @@ class Difference implements Attributes\Intervalic
 		$week1 = idate('W', $date1->getTimestamp());
 		$week2 = idate('W', $date2->getTimestamp());
 
+		if($this->absoluteCalculation && $week1 > $week2) {
+			$_temp = $week2;
+			$week2 = $week1;
+			$week1 = $_temp;
+		}
+
+		$multiplier = ($week1 > $week2 ? (-1) : 1);
+
 		if($date2->format('Y') === $date1->format('Y')) {
-			return abs($week2 - $week1);
+			return ($week2 - $week1);
 		}
 
 		$diff = date_diff( $date2->modify("monday this week"), $date1->modify("monday this week"));
-		return (int)($diff->days / 7);
+		return (int)($diff->days / 7) * $multiplier;
 	}
 
 	public function days(): int
 	{
-		return (int)$this->interval()->format("%r%a");
+		$res = (int)$this->getInterval()->format("%r%a");
+		return $this->absoluteCalculation ? abs($res) : $res;
 	}
 
 	public function seconds(): int
 	{
-		return $this->getInterval();
+		$res = $this->getEndTimestamp() - $this->getStartTimestamp();
+		return $this->absoluteCalculation ? abs($res) : $res;
 	}
 
 	public function msec(): int
@@ -99,19 +117,15 @@ class Difference implements Attributes\Intervalic
 
 	public function minutes(): float
 	{
-		return $this->getInterval() / 60;
+		return $this->seconds() / 60;
 	}
 
 	public function hours(): float
 	{
-		return $this->getInterval() / 3600;
+		return $this->seconds() / 3600;
 	}
 
-	public function getInterval(): int {
-		return abs($this->getEndTimestamp() - $this->getStartTimestamp());
-	}
-
-	public function interval(): NativeDateInterval
+	public function getInterval(): NativeDateInterval
 	{
 		$clone = clone $this->getStart();
 		return $clone->diff($this->getEnd());
