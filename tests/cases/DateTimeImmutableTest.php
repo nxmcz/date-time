@@ -94,20 +94,20 @@ test('isFuture', function() {
 
 test('difference', function() {
 	Assert::same(59,
-		DT::create('2022-07-20 15:45:29')
-			->difference( DT::create('2022-07-20 15:44:30') )
+		DT::create('2022-07-20 15:44:30')
+			->difference( DT::create('2022-07-20 15:45:29') )
 			->seconds()
 	);
 
 	Assert::same(3.0,
-		DT::create('2022-07-20 15:47:30')
-			->difference( DT::create('2022-07-20 15:44:30') )
+		DT::create('2022-07-20 15:44:30')
+			->difference( DT::create('2022-07-20 15:47:30') )
 			->minutes()
 	);
 
 	Assert::true(
-		DT::create('2022-07-20 15:47:30')
-			->difference( DT::create('2022-07-20 15:44:30') )
+		DT::create('2022-07-20 15:44:30')
+			->difference( DT::create('2022-07-20 15:47:30') )
 			->isValid()
 	);
 
@@ -119,8 +119,8 @@ test('difference', function() {
 	);
 
 	Assert::exception(fn() =>
-		DT::create('2022-07-20 15:44:29')
-				->difference( DT::create('2022-07-20 15:44:30'), TRUE  )
+		DT::create('2022-07-20 15:44:30')
+				->difference( DT::create('2022-07-20 15:44:29'), TRUE  )
 				->isValid()
 		, \InvalidArgumentException::class
 	);

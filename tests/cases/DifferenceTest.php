@@ -71,11 +71,13 @@ class DifferenceTest extends AbstractTestCase
 	/**
 	 * @dataProvider providerWeeks
 	 */
-	public function testWeeks(int $number, string $b, string $a): void
+	public function testWeeks(int $number, string $a, string $b): void
 	{
+		$first = DT::create($a);
+
 		Assert::same(
 			$number,
-			DT::create($a)
+			$first
 				->difference(DT::create($b))
 				->solidWeeks()
 		);
@@ -138,17 +140,18 @@ class DifferenceTest extends AbstractTestCase
 	{
 		return [
 			[0, '2021/03/15', '2021/03/15'],
-			[1, '2021/03/16', '2021/03/15'],
-			[2, '2021/03/17', '2021/03/15'],
-			[3, '2021/03/18', '2021/03/15'],
-			[4, '2021/03/19', '2021/03/15'],
-			[5, '2021/03/20', '2021/03/15'],
-			[6, '2021/03/21', '2021/03/15'],
-			[10, '2021/03/25', '2021/03/15'],
-			[-4, '2021/03/15', '2021/03/19'],
-			[-1, '2021/03/15', '2021/03/16'],
-			[365, '2022/03/16', '2021/03/16'],
-			[366, '2020/03/16', '2019/03/16',], // leap year
+			[1, '2021/03/15', '2021/03/16'],
+			[2, '2021/03/15', '2021/03/17'],
+			[3, '2021/03/15', '2021/03/18'],
+			[4, '2021/03/15', '2021/03/19'],
+			[5, '2021/03/15', '2021/03/20'],
+			[6, '2021/03/15', '2021/03/21'],
+			[10, '2021/03/15', '2021/03/25'],
+			[-4, '2021/03/19', '2021/03/15'],
+			[-1, '2021/03/16', '2021/03/15'],
+			[365, '2021/03/16', '2022/03/16'],
+			[366, '2019/03/16', '2020/03/16'], // leap year
+			[-366, '2020/03/16', '2019/03/16'], // leap year
 		];
 	}
 
@@ -157,14 +160,14 @@ class DifferenceTest extends AbstractTestCase
 		$bigger = DT::create('2022-05-20 11:45:00');
 		$smaller = DT::create('2022-05-13 11:45:00');
 
-		$dt = $bigger->difference($smaller);
+		$dt = $smaller->difference($bigger);
 		Assert::same(168.0, $dt->hours());
 		Assert::same(7, $dt->days());
 		Assert::same(1, $dt->solidWeeks());
 		Assert::same(10080.0, $dt->minutes());
 		Assert::same(604800000, $dt->msec());
 
-		$dt = $smaller->difference($bigger);
+		$dt = $bigger->difference($smaller);
 		Assert::same(-168.0, $dt->hours());
 		Assert::same(-7, $dt->days());
 		Assert::same(-1, $dt->solidWeeks());
@@ -177,7 +180,7 @@ class DifferenceTest extends AbstractTestCase
 		$first = DT::create('2022-05-20 11:45:00');
 		$last = DT::create('2022-05-13 11:45:00');
 
-		$dt = $last->difference($first);
+		$dt = $first->difference($last);
 
 		Assert::same(-168.0, $dt->hours());
 		Assert::same(-7, $dt->days());

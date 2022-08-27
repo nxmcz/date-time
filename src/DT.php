@@ -26,7 +26,7 @@ class DT extends NativeDateTimeImmutable
 
 	public function difference(DT $suspect, bool $throw = FALSE): Difference
 	{
-		return new Difference($suspect, $this, $throw);
+		return new Difference($this, $suspect, $throw);
 	}
 
 	public function setTimestamp($timestamp): self

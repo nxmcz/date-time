@@ -84,21 +84,21 @@ echo $dt->isFuture(); // FALSE
 ```
 **Noxem\DateTime\Difference**
 
-Difference formula can be imagined as `x = a - b`, where `a` is object which calling child method, formula example is `x = $a->difference($b)`
+Difference formula can be imagined as `x = a - b`, where `a` is object which calling child method, formula example is `x = $b->difference($a)`
 Difference class is accessible with method: 
 `DT::create()->difference(DT $suspect)`
 ```php
 $bigger = DT::create('2022-05-20 11:45:00');
 $smaller = DT::create('2022-05-13 11:45:00');
 
-$dt = $bigger->difference($smaller);
+$dt = $smaller->difference($bigger);
 echo $dt->hours(); // 168.0
 echo $dt->days(); // 7
 echo $dt->solidWeeks(); // 1
 echo $dt->minutes(); // 1440.0
 echo $dt->msec(); // 86400000
 
-$dt = $smaller->difference($bigger);
+$dt = $bigger->difference($smaller);
 echo $dt->hours(); // -168.0
 echo $dt->days(); // -7
 echo $dt->solidWeeks(); // -1
@@ -116,9 +116,8 @@ Method `withAbsolute()` ignores negative numbers on methods, difference will be 
 ```php
 $first = DT::create('2022-05-20 11:45:00');
 $last = DT::create('2022-05-13 11:45:00');
-$dt = $first
-        ->difference($last);
-        
+
+$dt = $first->difference($last);
 echo $dt->hours(); // -168.0
 echo $dt->withAbsolute()->hours(); // +168.0
 ```
