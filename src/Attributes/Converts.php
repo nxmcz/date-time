@@ -38,8 +38,4 @@ trait Converts
 	public function year(): int {
 		return (int)$this->format('Y');
 	}
-
-	public function castToMonthInput(): string {
-		return "{$this->year()}-{$this->month()}";
-	}
 }

@@ -12,6 +12,7 @@ class DT extends NativeDateTimeImmutable
 {
 	use Attributes\Initialize;
 	use Attributes\Converts;
+	use Attributes\ParseInput;
 
 	public function areEquals(DateTimeInterface $suspect): bool
 	{

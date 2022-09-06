@@ -134,7 +134,16 @@ test('dateParts', function() {
 	Assert::same(20, $dt->day());
 	Assert::same(19, $dt->hour());
 	Assert::same(29, $dt->week());
-	Assert::same("2022-7", $dt->castToMonthInput());
+});
+
+test('parseInputs', function() {
+	$dt = DT::create('2022-07-20 19:00:00');
+
+	Assert::same("2022-07-20T19:00:00", $dt->toDateTimeInput());
+	Assert::same("2022-07-20", $dt->toDateInput());
+	Assert::same("2022-W29", $dt->toWeekInput());
+	Assert::same("2022-07", $dt->toMonthInput());
+	Assert::same("2022", $dt->toYearInput());
 });
 
 
