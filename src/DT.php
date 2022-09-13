@@ -32,12 +32,10 @@ class DT extends NativeDateTimeImmutable
 
 	public function setTimestamp($timestamp): self
 	{
-		$zone = $this->getTimezone();
+		$zone = date_default_timezone_get();
 		$datetime = new self('@' . (string)$timestamp);
-		/*if ($zone === false) {
-			throw new \RuntimeException('This DateTime object has no timezone.');
-		}*/
-		return $datetime->setTimezone($zone);
+
+		return $datetime->setTimezone(new \DateTimeZone($zone));
 	}
 
 	public function __toString(): string

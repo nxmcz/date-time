@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Nette\Utils\DateTime;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
 use Tester\Assert;
@@ -20,6 +21,11 @@ test('create', function() {
 
 	Assert::type(DT::class, DT::create());
 	Assert::exception(fn() => DT::create('foo foo Baz'), BadFormatException::class);
+
+	Assert::true(
+		DT::create("20.7.1993 00:30:00")
+			->areEquals(DT::create(743121000))
+	);
 
 	Assert::true(
 		DT::create()
@@ -58,6 +64,10 @@ test('getOrCreateInstance', function() {
 
 	Assert::type(DT::class, DT::getOrCreateInstance());
 	Assert::exception(fn() => DT::getOrCreateInstance('foo foo Baz'), BadFormatException::class);
+
+	Assert::true(DT::create()->areEquals(DT::getOrCreateInstance(new \DateTimeImmutable())));
+	Assert::true(DT::create()->areEquals(DT::getOrCreateInstance(new DateTime())));
+	Assert::false(DT::create()->areEquals(DT::getOrCreateInstance((new DateTime())->setTimezone(new \DateTimeZone('America/New_York')))));
 });
 
 test('areEquals', function() {

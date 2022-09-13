@@ -2,6 +2,7 @@
 
 namespace Noxem\DateTime\Attributes;
 
+use DateTimeInterface;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\Utils;
@@ -37,7 +38,7 @@ trait Initialize
 			$suspect = $defaultValue ?? 'now';
 		}
 
-		return new self((string)$suspect);
+		return new self((string) $suspect);
 	}
 
 	/**
@@ -86,15 +87,15 @@ trait Initialize
 	}
 
 	/**
-	 * @param string|int|float|DT|null $suspect
+	 * @param string|int|float|null|DateTimeInterface $suspect
 	 */
-	public static function getOrCreateInstance(string|int|float|null|DT $suspect = NULL): self
+	public static function getOrCreateInstance(string|int|float|null|DateTimeInterface $suspect = NULL): self
 	{
-		if ($suspect instanceof DT) {
-			return $suspect;
-		}
-
-		return self::create($suspect ?? 'now');
+		return match(TRUE) {
+			$suspect instanceof DT => $suspect,
+			$suspect instanceof DateTimeInterface => self::create($suspect->getTimestamp())->setTimezone($suspect->getTimezone()),
+			default => self::create($suspect ?? 'now')
+		};
 	}
 
 }
