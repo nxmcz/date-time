@@ -11,7 +11,7 @@ use Noxem\DateTime\Utils;
 class DT extends NativeDateTimeImmutable
 {
 	use Attributes\Initialize;
-	use Attributes\Converts;
+	use Attributes\DateConversion;
 	use Attributes\ParseInput;
 
 	public function areEquals(DateTimeInterface $suspect): bool

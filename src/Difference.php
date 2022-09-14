@@ -9,6 +9,8 @@ use Noxem\DateTime\Attributes;
 
 class Difference implements Attributes\Intervalic
 {
+	use Attributes\TimeConversion;
+
 	public DT $start;
 	public DT $end;
 	private bool $absoluteCalculation = FALSE;
@@ -104,30 +106,15 @@ class Difference implements Attributes\Intervalic
 		return $this->absoluteCalculation ? abs($res) : $res;
 	}
 
-	public function seconds(): int
-	{
-		$res = $this->getEndTimestamp() - $this->getStartTimestamp();
-		return $this->absoluteCalculation ? abs($res) : $res;
-	}
-
-	public function msec(): int
-	{
-		return $this->seconds()*1000;
-	}
-
-	public function minutes(): float
-	{
-		return $this->seconds() / 60;
-	}
-
-	public function hours(): float
-	{
-		return $this->seconds() / 3600;
-	}
-
 	public function getInterval(): NativeDateInterval
 	{
 		$clone = clone $this->getStart();
 		return $clone->diff($this->getEnd());
+	}
+
+	public function createSecondsForConversion(): int
+	{
+		$res = $this->getEndTimestamp() - $this->getStartTimestamp();
+		return $this->absoluteCalculation ? abs($res) : $res;
 	}
 }

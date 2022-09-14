@@ -5,7 +5,7 @@ namespace Noxem\DateTime\Attributes;
 
 use Noxem\DateTime\Utils\Formatter;
 
-trait Converts
+trait DateConversion
 {
 	public function seconds(): int {
 		return $this->getTimestamp();
