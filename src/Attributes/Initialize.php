@@ -54,7 +54,7 @@ trait Initialize
 	 */
 	public static function createFromParts(
 		int   $year,
-		int   $month,
+		int   $month = 1,
 		int   $day = 1,
 		int   $hour = 0,
 		int   $minute = 0,
@@ -71,7 +71,7 @@ trait Initialize
 			|| $second < 0
 			|| $second >= 60
 		) {
-			throw new BadFormatException("Invalid date '$s'");
+			throw new BadFormatException("Invalid date $s");
 		}
 
 		return new self($s);

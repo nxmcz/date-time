@@ -4,7 +4,7 @@ namespace Noxem\DateTime\Attributes;
 
 
 /** @internal */
-trait ParseInput
+trait InputParser
 {
 	public function toDateTimeInput(): string {
 		return $this->format("Y-m-d\TH:i:s");

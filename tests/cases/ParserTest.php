@@ -22,7 +22,7 @@ class ParserTest extends AbstractTestCase
 	 */
 	public function testWeek(bool $state, mixed $input): void
 	{
-		$res = Parser::toWeek($input);
+		$res = Parser::fromWeek($input);
 		if($state) {
 			Assert::type(DT::class, $res);
 		} else {
@@ -71,7 +71,7 @@ class ParserTest extends AbstractTestCase
 	 */
 	public function testMonth(bool $state, mixed $input): void
 	{
-		$res = Parser::toMonth($input);
+		$res = Parser::fromMonth($input);
 		if($state) {
 			Assert::type(DT::class, $res);
 		} else {
@@ -109,7 +109,7 @@ class ParserTest extends AbstractTestCase
 	 */
 	public function testParseDay(bool $state, mixed $input): void
 	{
-		$res = Parser::toDay($input);
+		$res = Parser::fromDay($input);
 		if($state) {
 			Assert::type(DT::class, $res);
 		} else {

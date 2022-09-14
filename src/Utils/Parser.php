@@ -9,17 +9,17 @@ use Noxem\DateTime\DT;
 
 class Parser
 {
-	public const HTML_WEEK_FORMAT = '%04d-W%02d';
-	public const HTML_MONTH_FORMAT = '%04d-%02d';
-	public const HTML_DAY_FORMAT = '%04d-%02d-%02d';
+	public const WEEK_PATTERN = '/\d{4}-W\d{2}$/';
+	public const MONTH_PATTERN = '/\d{4}-\d{2}$/';
+	public const DAY_PATTERN = '/\d{4}-\d{2}-\d{2}$/';
 
-	public static function toWeek(string|null|DateTimeInterface $value): ?DT
+	public static function fromWeek(string|null|DateTimeInterface $value): ?DT
 	{
 		if($value instanceof DateTimeInterface) {
 			return DT::getOrCreateInstance($value);
 		}
 
-		if($value !== NULL && Strings::match($value, '/\d{4}-W\d{2}$/') !== NULL) {
+		if($value !== NULL && Strings::match($value, self::WEEK_PATTERN) !== NULL) {
 
 			$year = (int)Strings::substring($value,0, 4);
 			$week = (int)Strings::substring($value,6, 2);
@@ -37,13 +37,13 @@ class Parser
 		return NULL;
 	}
 
-	public static function toMonth(string|null|DateTimeInterface $value): ?DT
+	public static function fromMonth(string|null|DateTimeInterface $value): ?DT
 	{
 		if($value instanceof DateTimeInterface) {
 			return DT::getOrCreateInstance($value);
 		}
 
-		if($value !== NULL && Strings::match($value, '/\d{4}-\d{2}$/') !== NULL) {
+		if($value !== NULL && Strings::match($value, self::MONTH_PATTERN) !== NULL) {
 
 			$year = (int)Strings::substring($value,0, 4);
 			$month = (int)Strings::substring($value,5, 2);
@@ -58,13 +58,13 @@ class Parser
 		return NULL;
 	}
 
-	public static function toDay(string|null|DateTimeInterface $value): ?DT
+	public static function fromDay(string|null|DateTimeInterface $value): ?DT
 	{
 		if($value instanceof DateTimeInterface) {
 			return DT::getOrCreateInstance($value);
 		}
 
-		if($value !== NULL && Strings::match($value, '/\d{4}-\d{2}-\d{2}$/') !== NULL) {
+		if($value !== NULL && Strings::match($value, self::DAY_PATTERN) !== NULL) {
 
 			$year = (int)Strings::substring($value,0, 4);
 			$month = (int)Strings::substring($value,5, 2);
