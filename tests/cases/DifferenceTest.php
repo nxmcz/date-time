@@ -32,17 +32,17 @@ class DifferenceTest extends AbstractTestCase
 
 		Assert::same($start, $difference->getStart());
 
-		Assert::same(1564685759000, $difference->getStart()->msec());
-		Assert::same(1564772159000, $difference->getEnd()->msec());
+		Assert::same(1564685759000, $difference->getStart()->getMillis());
+		Assert::same(1564772159000, $difference->getEnd()->getMillis());
 
 		Assert::same($end, $difference->getEnd());
 		Assert::type(\DateInterval::class, $difference->getInterval());
 		Assert::same($end, $difference->getEnd());
 
-		Assert::same(86400000, $difference->msec());
-		Assert::same(86400, $difference->seconds());
-		Assert::same(1440.0, $difference->minutes());
-		Assert::same(24.0, $difference->hours());
+		Assert::same(86400000, $difference->getMillis());
+		Assert::same(86400, $difference->getSeconds());
+		Assert::same(1440.0, $difference->getMinutes());
+		Assert::same(24.0, $difference->getHours());
 
 		Assert::false($difference->isActive());
 
@@ -161,18 +161,18 @@ class DifferenceTest extends AbstractTestCase
 		$smaller = DT::create('2022-05-13 11:45:00');
 
 		$dt = $smaller->difference($bigger);
-		Assert::same(168.0, $dt->hours());
+		Assert::same(168.0, $dt->getHours());
 		Assert::same(7, $dt->days());
 		Assert::same(1, $dt->solidWeeks());
-		Assert::same(10080.0, $dt->minutes());
-		Assert::same(604800000, $dt->msec());
+		Assert::same(10080.0, $dt->getMinutes());
+		Assert::same(604800000, $dt->getMillis());
 
 		$dt = $bigger->difference($smaller);
-		Assert::same(-168.0, $dt->hours());
+		Assert::same(-168.0, $dt->getHours());
 		Assert::same(-7, $dt->days());
 		Assert::same(-1, $dt->solidWeeks());
-		Assert::same(-10080.0, $dt->minutes());
-		Assert::same(-604800000, $dt->msec());
+		Assert::same(-10080.0, $dt->getMinutes());
+		Assert::same(-604800000, $dt->getMillis());
 	}
 
 	public function testWithAbsolute(): void
@@ -182,24 +182,24 @@ class DifferenceTest extends AbstractTestCase
 
 		$dt = $first->difference($last);
 
-		Assert::same(-168.0, $dt->hours());
+		Assert::same(-168.0, $dt->getHours());
 		Assert::same(-7, $dt->days());
 		Assert::same(-1, $dt->solidWeeks());
-		Assert::same(-10080.0, $dt->minutes());
-		Assert::same(-604800000, $dt->msec());
+		Assert::same(-10080.0, $dt->getMinutes());
+		Assert::same(-604800000, $dt->getMillis());
 
 		$abs = $dt->withAbsolute();
-		Assert::same(168.0, $abs->hours());
+		Assert::same(168.0, $abs->getHours());
 		Assert::same(7, $abs->days());
 		Assert::same(1, $abs->solidWeeks());
-		Assert::same(10080.0, $abs->minutes());
-		Assert::same(604800000, $abs->msec());
+		Assert::same(10080.0, $abs->getMinutes());
+		Assert::same(604800000, $abs->getMillis());
 
-		Assert::same(-168.0, $dt->hours());
+		Assert::same(-168.0, $dt->getHours());
 		Assert::same(-7, $dt->days());
 		Assert::same(-1, $dt->solidWeeks());
-		Assert::same(-10080.0, $dt->minutes());
-		Assert::same(-604800000, $dt->msec());
+		Assert::same(-10080.0, $dt->getMinutes());
+		Assert::same(-604800000, $dt->getMillis());
 	}
 
 }

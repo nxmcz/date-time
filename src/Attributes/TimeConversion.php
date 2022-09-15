@@ -5,25 +5,25 @@ namespace Noxem\DateTime\Attributes;
 
 trait TimeConversion
 {
-	abstract public function createSecondsForConversion(): int;
+	abstract public function createBaseForTimeConversion(): int;
 
-	public function seconds(): int
+	public function getSeconds(): int
 	{
-		return $this->createSecondsForConversion();
+		return $this->createBaseForTimeConversion();
 	}
 
-	public function msec(): int
+	public function getMillis(): int
 	{
-		return $this->seconds() * 1000;
+		return $this->getSeconds() * 1000;
 	}
 
-	public function minutes(): float
+	public function getMinutes(): float
 	{
-		return $this->seconds() / 60;
+		return $this->getSeconds() / 60;
 	}
 
-	public function hours(): float
+	public function getHours(): float
 	{
-		return $this->seconds() / 3600;
+		return $this->getSeconds() / 3600;
 	}
 }

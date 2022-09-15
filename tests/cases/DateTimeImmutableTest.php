@@ -51,6 +51,10 @@ test('create', function() {
 		DT::create()->setTime(13, 55, 27, 689)
 			->areEquals(DT::create('13:55:27.689'))
 	);
+
+	Assert::true(
+		DT::create()->areEquals(DT::now())
+	);
 });
 
 test('getOrCreateInstance', function() {
@@ -106,13 +110,13 @@ test('difference', function() {
 	Assert::same(59,
 		DT::create('2022-07-20 15:44:30')
 			->difference( DT::create('2022-07-20 15:45:29') )
-			->seconds()
+			->getSeconds()
 	);
 
 	Assert::same(3.0,
 		DT::create('2022-07-20 15:44:30')
 			->difference( DT::create('2022-07-20 15:47:30') )
-			->minutes()
+			->getMinutes()
 	);
 
 	Assert::true(
@@ -139,39 +143,39 @@ test('difference', function() {
 test('dateParts', function() {
 	$dt = DT::create('2022-07-20 19:00:00');
 
-	Assert::same(2022, $dt->year());
-	Assert::same(7, $dt->month());
-	Assert::same(20, $dt->day());
-	Assert::same(19, $dt->hour());
-	Assert::same(29, $dt->week());
+	Assert::same(2022, $dt->getYear());
+	Assert::same(7, $dt->getMonth());
+	Assert::same(20, $dt->getDay());
+	Assert::same(19, $dt->getHour());
+	Assert::same(29, $dt->getWeek());
 });
 
 test('parseInputs', function() {
 	$dt = DT::create('2022-07-20 19:00:00');
 
-	Assert::same("2022-07-20T19:00:00", $dt->toDateTimeInput());
-	Assert::same("2022-07-20", $dt->toDateInput());
-	Assert::same("2022-W29", $dt->toWeekInput());
-	Assert::same("2022-07", $dt->toMonthInput());
-	Assert::same("2022", $dt->toYearInput());
+	Assert::same("2022-07-20T19:00:00", $dt->toHtmlInput()->toDateTime());
+	Assert::same("2022-07-20", $dt->toHtmlInput()->toDate());
+	Assert::same("2022-W29", $dt->toHtmlInput()->toWeek());
+	Assert::same("2022-07", $dt->toHtmlInput()->toMonth());
+	Assert::same("2022", $dt->toHtmlInput()->toYear());
 });
 
 
 test('converts', function() {
 	$dt = DT::create('2022-07-20 19:00:00.677');
-	Assert::same(677000, $dt->millis());
+	Assert::same(677000, $dt->getMillisPart());
 
 	$dt = DT::create('2022-07-20 19:00:00.0');
-	Assert::same(0, $dt->millis());
+	Assert::same(0, $dt->getMillisPart());
 
 	$dt = DT::create('2022-07-20 19:00:00');
-	Assert::same(0, $dt->millis());
+	Assert::same(0, $dt->getMillisPart());
 
 	$dt = DT::create('2022-07-20 19:00:00.123456789');
-	Assert::same(123456, $dt->millis());
+	Assert::same(123456, $dt->getMillisPart());
 
 	$dt = DT::create('2022-07-20 19:00:00.1234569');
-	Assert::same(123456, $dt->millis());
+	Assert::same(123456, $dt->getMillisPart());
 });
 
 test('__toString', function() {

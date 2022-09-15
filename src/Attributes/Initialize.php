@@ -7,30 +7,24 @@ use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\Utils;
 
+
 /**
  * @internal
  */
 trait Initialize
 {
-	/**
-	 * Creates NOXEM DT object directly
-	 *
-	 * @param string|int|float|NULL      $suspect
-	 * @param bool                       $throw
-	 * @param string|int|float|NULL|null $defaultValue
-	 */
 	public static function create(
-		string|int|float|NULL $suspect = 'now',
+		string|int|float|null $suspect = 'now',
 		bool $throw = TRUE,
-		string|int|float|NULL $defaultValue = NULL
+		string|int|float|null $defaultValue = NULL
 	): self {
 		if (Utils\Validators::isTimestamp($suspect)) {
-			return (new self())->setTimestamp((int)$suspect);
+			return (new self())->setTimestamp((int) $suspect);
 		}
 
-		$suspect = (string)$suspect;
+		$suspect = (string) $suspect;
 
-		if ( Utils\Validators::isDate($suspect) === FALSE ) {
+		if (Utils\Validators::isDate($suspect) === FALSE) {
 			if ($throw === TRUE) {
 				BadFormatException::create();
 			}
@@ -41,26 +35,14 @@ trait Initialize
 		return new self((string) $suspect);
 	}
 
-	/**
-	 * Creates NOXEM DT object from parts of date
-	 * !!!!!!! EDITED FUNCTION PART OF NETTE\UTILS\DATETIME !!!!!!!
-	 *
-	 * @param int   $year
-	 * @param int   $month
-	 * @param int   $day
-	 * @param int   $hour
-	 * @param int   $minute
-	 * @param float $second
-	 */
 	public static function createFromParts(
-		int   $year,
-		int   $month = 1,
-		int   $day = 1,
-		int   $hour = 0,
-		int   $minute = 0,
+		int $year,
+		int $month = 1,
+		int $day = 1,
+		int $hour = 0,
+		int $minute = 0,
 		float $second = 0.0
-	): self
-	{
+	): self {
 		$s = sprintf('%04d-%02d-%02d %02d:%02d:%02.5F', $year, $month, $day, $hour, $minute, $second);
 		if (
 			!checkdate($month, $day, $year)
@@ -69,7 +51,7 @@ trait Initialize
 			|| $minute < 0
 			|| $minute > 59
 			|| $second < 0
-			|| $second >= 60
+			|| $second > 59
 		) {
 			throw new BadFormatException("Invalid date $s");
 		}
@@ -78,22 +60,23 @@ trait Initialize
 	}
 
 	/**
-	 * @param string $value
+	 * Equivalent to create without params
 	 */
-	public static function createByMonth(string $value): self
+	public static function now(): self
 	{
-		list($year, $month) = explode("-", $value);
-		return self::createFromParts((int)$year, (int)$month);
+		return self::create();
 	}
 
-	/**
-	 * @param string|int|float|null|DateTimeInterface $suspect
-	 */
+	public static function createFromInterface(DateTimeInterface $immutable): self
+	{
+		return self::create($immutable->getTimestamp())->setTimezone($immutable->getTimezone());
+	}
+
 	public static function getOrCreateInstance(string|int|float|null|DateTimeInterface $suspect = NULL): self
 	{
-		return match(TRUE) {
+		return match (TRUE) {
 			$suspect instanceof DT => $suspect,
-			$suspect instanceof DateTimeInterface => self::create($suspect->getTimestamp())->setTimezone($suspect->getTimezone()),
+			$suspect instanceof DateTimeInterface => self::createFromInterface($suspect),
 			default => self::create($suspect ?? 'now')
 		};
 	}

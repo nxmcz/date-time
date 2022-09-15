@@ -112,7 +112,7 @@ class Difference implements Attributes\Intervalic
 		return $clone->diff($this->getEnd());
 	}
 
-	public function createSecondsForConversion(): int
+	public function createBaseForTimeConversion(): int
 	{
 		$res = $this->getEndTimestamp() - $this->getStartTimestamp();
 		return $this->absoluteCalculation ? abs($res) : $res;

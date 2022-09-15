@@ -7,36 +7,32 @@ use Noxem\DateTime\Utils\Formatter;
 
 trait DateConversion
 {
-	public function seconds(): int {
-		return $this->getTimestamp();
-	}
-
-	public function msec(): int {
+	public function getMillis(): int {
 		return $this->getTimestamp() * 1000;
 	}
 
-	public function millis(): int {
+	public function getMillisPart(): int {
 		return (int)$this->format(Formatter::MILLIS);
 	}
 
-	public function week(): int {
+	public function getWeek(): int {
 		return (int)$this->format('W');
 	}
 
-	public function hour(): int {
+	public function getHour(): int {
 		return (int)$this->format('H');
 	}
 
-	public function day(): int {
+	public function getDay(): int {
 		return (int)$this->format('d');
 	}
 
-	public function month(): int {
+	public function getMonth(): int {
 		return (int)$this->format('m');
 	}
 
 	public function getWeeksOfYear(): int {
-		return (int)static::createFromParts($this->year(), 12, 28)->format("W");
+		return (int)static::createFromParts($this->getYear(), 12, 28)->format("W");
 	}
 
 	/**
@@ -60,7 +56,7 @@ trait DateConversion
 		return (bool)$this->format('L');
 	}
 
-	public function year(): int {
+	public function getYear(): int {
 		return (int)$this->format('Y');
 	}
 }

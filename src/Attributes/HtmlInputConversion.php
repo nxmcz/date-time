@@ -2,6 +2,7 @@
 
 namespace Noxem\DateTime\Attributes;
 
+use DateTimeInterface;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
 
@@ -10,7 +11,7 @@ class HtmlInputConversion
 {
 	private DT $value;
 
-	public function __construct($value) {
+	public function __construct(string|int|float|null|DateTimeInterface $value = NULL) {
 		$this->value = DT::getOrCreateInstance($value);
 	}
 

@@ -20,13 +20,13 @@ class HtmlInputConversionTest extends AbstractTestCase
 	public function testInit()
 	{
 		$dt = DT::create("2022-07-20 12:34:56");
-		Assert::type(HtmlInputConversion::class, $dt->convertInput());
-		Assert::same("2022-07-20", $dt->convertInput()->toDate());
-		Assert::same("2022-07-20T12:34:56", $dt->convertInput()->toDateTime());
-		Assert::same("2022-07-20T12:34:56Z", $dt->convertInput()->toUTC());
-		Assert::same("2022-07", $dt->convertInput()->toMonth());
-		Assert::same("2022-W29", $dt->convertInput()->toWeek());
-		Assert::same("2022", $dt->convertInput()->toYear());
+		Assert::type(HtmlInputConversion::class, $dt->toHtmlInput());
+		Assert::same("2022-07-20", $dt->toHtmlInput()->toDate());
+		Assert::same("2022-07-20T12:34:56", $dt->toHtmlInput()->toDateTime());
+		Assert::same("2022-07-20T12:34:56Z", $dt->toHtmlInput()->toUTC());
+		Assert::same("2022-07", $dt->toHtmlInput()->toMonth());
+		Assert::same("2022-W29", $dt->toHtmlInput()->toWeek());
+		Assert::same("2022", $dt->toHtmlInput()->toYear());
 	}
 }
 

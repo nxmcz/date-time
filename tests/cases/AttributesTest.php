@@ -25,20 +25,8 @@ class AttributesTest extends AbstractTestCase
 
 	public function testConverts()
 	{
-		Assert::same(1654077600, DateTime::create(1654077600)->seconds());
-		Assert::same(1654077600000, DateTime::create(1654077600)->msec());
-	}
-
-	public function testInitializeByInput()
-	{
-		Assert::true(
-			DateTime::create('2022-05-01 00:00:00')->areEquals(DateTime::createByMonth('2022-05'))
-		);
-
-		Assert::exception(
-			fn() => DateTime::createByMonth('2022-foo'),
-			BadFormatException::class
-		);
+		Assert::same(1654077600, DateTime::create(1654077600)->getTimestamp());
+		Assert::same(1654077600000, DateTime::create(1654077600)->getMillis());
 	}
 }
 

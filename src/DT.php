@@ -12,7 +12,6 @@ class DT extends NativeDateTimeImmutable
 {
 	use Attributes\Initialize;
 	use Attributes\DateConversion;
-	use Attributes\InputParser;
 
 	public function areEquals(DateTimeInterface $suspect): bool
 	{
@@ -43,7 +42,7 @@ class DT extends NativeDateTimeImmutable
 		return $this->format(Utils\Formatter::TIMESTAMPS);
 	}
 
-	public function convertInput(): Attributes\HtmlInputConversion {
+	public function toHtmlInput(): Attributes\HtmlInputConversion {
 		return new Attributes\HtmlInputConversion($this);
 	}
 }

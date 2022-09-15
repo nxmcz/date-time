@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Noxem\DateTime\DT;
+use Noxem\DateTime\Exception\BadFormatException;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
 
@@ -362,6 +363,11 @@ class DTTest extends AbstractTestCase
 			[2099,53],
 			[2100,52]
 		];
+	}
+
+	public function testCreateBadParts(): void
+	{
+		Assert::exception(fn() => DT::createFromParts(2022, second: 60), BadFormatException::class);
 	}
 }
 
