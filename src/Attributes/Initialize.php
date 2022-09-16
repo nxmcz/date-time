@@ -26,7 +26,7 @@ trait Initialize
 
 		if (Utils\Validators::isDate($suspect) === FALSE) {
 			if ($throw === TRUE) {
-				BadFormatException::create();
+				throw BadFormatException::create();
 			}
 
 			$suspect = $defaultValue ?? 'now';
@@ -53,7 +53,8 @@ trait Initialize
 			|| $second < 0
 			|| $second > 59
 		) {
-			throw new BadFormatException("Invalid date $s");
+			throw BadFormatException::create()
+				->withMessage("This date parts are invalid: $s");
 		}
 
 		return new self($s);

@@ -8,10 +8,11 @@ use Noxem\DateTime\Attributes;
 use Noxem\DateTime\Utils;
 
 
-class DT extends NativeDateTimeImmutable
+class DT extends NativeDateTimeImmutable implements \JsonSerializable
 {
 	use Attributes\Initialize;
 	use Attributes\DateConversion;
+	use Attributes\Addition;
 
 	public function areEquals(DateTimeInterface $suspect): bool
 	{
@@ -44,5 +45,14 @@ class DT extends NativeDateTimeImmutable
 
 	public function toHtmlInput(): Attributes\HtmlInputConversion {
 		return new Attributes\HtmlInputConversion($this);
+	}
+
+	public function jsonSerialize(): mixed
+	{
+		return array_merge((array)$this, [
+			"date" => $this->format(Utils\Formatter::TIMESTAMPS),
+			"utc" => $this->format(Utils\Formatter::UTC),
+			"atom" => $this->format(self::ATOM),
+		]);
 	}
 }

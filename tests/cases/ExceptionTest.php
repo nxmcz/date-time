@@ -19,9 +19,15 @@ class ExceptionTest extends AbstractTestCase
 	public function testBadFormatException(): void
 	{
 		Assert::exception(
-			fn() => BadFormatException::create(),
+			fn() => throw BadFormatException::create(),
 			BadFormatException::class,
 			"Bad DateTimeImmutable constructors format. Must be INT >= 32400 or string-date in format like: YYYY-MM-DD H:i:s"
+		);
+
+		Assert::exception(
+			fn() => throw BadFormatException::create()->withMessage("Foo bar BAZ"),
+			BadFormatException::class,
+			"Foo bar BAZ"
 		);
 	}
 }

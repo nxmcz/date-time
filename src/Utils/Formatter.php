@@ -12,6 +12,6 @@ class Formatter
 	public const TIMESTAMPS = 'Y-m-d H:i:s';
 	public const TIMESTAMP_MILLIS = 'Y-m-d H:i:s.u';
 	public const MILLIS = 'u';
-	public const ISO8601 = 'Y-m-d\TH:i:sP';
+	public const ATOM = 'Y-m-d\TH:i:sP';
 	public const UTC = 'Y-m-d\TH:i:s\Z';
 }

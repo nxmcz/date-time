@@ -7,7 +7,7 @@ use DateTimeInterface as NativeDateTimeInterface;
 use Noxem\DateTime\Attributes;
 
 
-class Difference implements Attributes\Intervalic
+class Difference implements Attributes\Intervalic, \JsonSerializable
 {
 	use Attributes\TimeConversion;
 
@@ -76,31 +76,31 @@ class Difference implements Attributes\Intervalic
 		return $this->getEndTimestamp() - (DT::getOrCreateInstance($now ?? 'now')->getTimestamp());
 	}
 
-	public function solidWeeks(): int
+	public function getSolidWeeks(): int
 	{
-		$date1 = $this->getStart()->setTime(0,0);
-		$date2 = $this->getEnd()->setTime(0,0);
+		$start = $this->getStart()->setTime(0,0);
+		$end = $this->getEnd()->setTime(0,0);
+		$multiplier = ($start->getTimestamp() > $end->getTimestamp()) ? -1 : 1;
 
-		$week1 = idate('W', $date1->getTimestamp());
-		$week2 = idate('W', $date2->getTimestamp());
+		$week1 = $start->getWeek();
+		$week2 = $end->getWeek();
 
-		if($this->absoluteCalculation && $week1 > $week2) {
-			$_temp = $week2;
-			$week2 = $week1;
-			$week1 = $_temp;
+		if($start->getYear() === $end->getYear()) {
+			$res = abs($week2 - $week1)*$multiplier;
+		} else {
+			$diff = date_diff( $end->modify("monday this week"), $start->modify("monday this week"));
+			$res = (int)($diff->days / 7) * $multiplier;
 		}
 
-		$multiplier = ($week1 > $week2 ? (-1) : 1);
-
-		if($date2->format('Y') === $date1->format('Y')) {
-			return ($week2 - $week1);
-		}
-
-		$diff = date_diff( $date2->modify("monday this week"), $date1->modify("monday this week"));
-		return (int)($diff->days / 7) * $multiplier;
+		return $this->absoluteCalculation ? abs($res) : $res;
 	}
 
-	public function days(): int
+	public function getWeeks(): float
+	{
+		return (float)($this->getSeconds()/604800);
+	}
+
+	public function getDays(): int
 	{
 		$res = (int)$this->getInterval()->format("%r%a");
 		return $this->absoluteCalculation ? abs($res) : $res;
@@ -116,5 +116,23 @@ class Difference implements Attributes\Intervalic
 	{
 		$res = $this->getEndTimestamp() - $this->getStartTimestamp();
 		return $this->absoluteCalculation ? abs($res) : $res;
+	}
+
+	/**
+	 * @return array<string, float|int|DT>>
+	 */
+	public function jsonSerialize(): array
+	{
+		return [
+			"start" => $this->getStart(),
+			"end" => $this->getEnd(),
+			"millis" => $this->getMillis(),
+			"seconds" => $this->getSeconds(),
+			"minutes" => $this->getMinutes(),
+			"hours" => $this->getHours(),
+			"days" => $this->getDays(),
+			"weeks" => $this->getWeeks(),
+			"solidWeeks" => $this->getSolidWeeks(),
+		];
 	}
 }

@@ -71,55 +71,65 @@ class DifferenceTest extends AbstractTestCase
 	/**
 	 * @dataProvider providerWeeks
 	 */
-	public function testWeeks(int $number, string $a, string $b): void
+	public function testWeeks(int $solidNumber, float $weekNumber, string $a, string $b): void
 	{
 		$first = DT::create($a);
 
 		Assert::same(
-			$number,
+			$solidNumber,
 			$first
 				->difference(DT::create($b))
-				->solidWeeks()
+				->getSolidWeeks()
+		);
+
+		Assert::same(
+			$weekNumber,
+			$first
+				->difference(DT::create($b))
+				->getWeeks()
 		);
 	}
 
 	public function providerWeeks(): array
 	{
 		return [
-			[2, '2021/07/07', '2021/07/21'],
-			[3, '2021/07/05', '2021/07/26'],
-			[3, '2021/07/05', '2021/07/29'],
-			[-3, '2021/07/26', '2021/07/05'],
-			[1, '2021/06/28', '2021/07/05'],
-			[0, '2021/06/28', '2021/06/28'],
-			[0, '2021/06/21', '2021/06/27'],
-			[0, '2021/06/23', '2021/06/24'],
-			[1, '2021/06/20', '2021/06/21'],
-			[-1, '2020/12/29', '2021/01/05'],
-			[-1, '2020/12/31', '2021/01/05'],
-			[-2, '2020/12/23', '2021/01/05'],
-			[-3, '2020/12/19', '2021/01/05'],
-			[-1, '2020/12/29 22:00', '2021/01/04 00:00'],
-			[-2, '2020/12/24 22:00', '2021/01/04 00:00'],
-			[-2, '2020/12/24 00:00', '2021/01/04 00:00'],
-			[-2, '2020/12/24 03:00', '2021/01/04 05:00'],
+			[2, 2.0, '2021/07/07', '2021/07/21'],
+			[3, 3.0, '2021/07/05', '2021/07/26'],
+			[3, 24 / 7, '2021/07/05', '2021/07/29'],
+			[-3, -24 / 7, '2021/07/29', '2021/07/05'],
+			[-3, -3.0, '2021/07/26', '2021/07/05'],
+			[1, 1.0, '2021/06/28', '2021/07/05'],
+			[0, 0.0, '2021/06/28', '2021/06/28'],
+			[0, 6 / 7, '2021/06/21', '2021/06/27'],
+			[0, 1 / 7, '2021/06/23', '2021/06/24'],
+			[1, 1 / 7, '2021/06/20', '2021/06/21'],
+			[1, 1.0, '2020/12/29', '2021/01/05'],
+			[1, 5 / 7, '2020/12/31', '2021/01/05'],
+			[2, 13 / 7, '2020/12/23', '2021/01/05'],
+			[3, 17 / 7, '2020/12/19', '2021/01/05'],
+			[1, 439200 / 604800, '2020/12/29 22:00', '2021/01/04 00:00'],
+			[2, 871200 / 604800, '2020/12/24 22:00', '2021/01/04 00:00'],
+			[2, 11 / 7, '2020/12/24 00:00', '2021/01/04 00:00'],
+			[2, 957600 / 604800, '2020/12/24 03:00', '2021/01/04 05:00'],
 
-			[1, '2022/08/19 03:00', '2022/08/22 05:00'],
-			[1, '2022/08/19 03:00', '2022/08/26 03:00'],
-			[1, '2022/08/15 03:00', '2022/08/28 23:59:59'],
+			[1, 266400 / 604800, '2022/08/19 03:00', '2022/08/22 05:00'],
+			[1, 1.0, '2022/08/19 03:00', '2022/08/26 03:00'],
+			[1, 1198799 / 604800, '2022/08/15 03:00', '2022/08/28 23:59:59'],
+			[-1, -266400 / 604800, '2022/08/22 05:00', '2022/08/19 03:00'],
+			[-1, -1.0, '2022/08/26 03:00', '2022/08/19 03:00'],
+			[-1, -1198799 / 604800, '2022/08/28 23:59:59', '2022/08/15 03:00'],
 
-			[0, '2021/01/02', '2021/01/03'],
-			[0, '2020/12/29', '2021/01/03'],
-			[1, '2021/12/22', '2021/12/29'],
-			[1, '2021/12/22', '2022/01/01'],
-			[1, '2021/12/22', '2022/01/02'],
-			[51, '2021/01/05', '2021/12/29'],
-			[51, '2021/01/05', '2022/01/02'],
+			[0, 1 / 7, '2021/01/02', '2021/01/03'],
+			[0, 5 / 7, '2020/12/29', '2021/01/03'],
+			[1, 1.0, '2021/12/22', '2021/12/29'],
+			[1, 10 / 7, '2021/12/22', '2022/01/01'],
+			[-1, -10 / 7, '2022/01/01', '2021/12/22'],
+			[1, 11 / 7, '2021/12/22', '2022/01/02'],
+			[51, 30931200 / 604800, '2021/01/05', '2021/12/29'],
+			[51, 31276800 / 604800, '2021/01/05', '2022/01/02'],
 
-			[139, '2019/05/05', '2022/01/02'],
-			[-139, '2022/01/02', '2019/05/05'],
-			[139, '2019/05/05', '2022/01/02'],
-			[-139, '2022/01/02', '2019/05/05'],
+			[139, (84067200 + 3600) / 604800, '2019/05/05', '2022/01/02'],
+			[-139, -(84067200 + 3600) / 604800, '2022/01/02', '2019/05/05'],
 		];
 	}
 
@@ -132,7 +142,7 @@ class DifferenceTest extends AbstractTestCase
 			$number,
 			DT::create($a)
 				->difference(DT::create($b))
-				->days()
+				->getDays()
 		);
 	}
 
@@ -162,15 +172,15 @@ class DifferenceTest extends AbstractTestCase
 
 		$dt = $smaller->difference($bigger);
 		Assert::same(168.0, $dt->getHours());
-		Assert::same(7, $dt->days());
-		Assert::same(1, $dt->solidWeeks());
+		Assert::same(7, $dt->getDays());
+		Assert::same(1, $dt->getSolidWeeks());
 		Assert::same(10080.0, $dt->getMinutes());
 		Assert::same(604800000, $dt->getMillis());
 
 		$dt = $bigger->difference($smaller);
 		Assert::same(-168.0, $dt->getHours());
-		Assert::same(-7, $dt->days());
-		Assert::same(-1, $dt->solidWeeks());
+		Assert::same(-7, $dt->getDays());
+		Assert::same(-1, $dt->getSolidWeeks());
 		Assert::same(-10080.0, $dt->getMinutes());
 		Assert::same(-604800000, $dt->getMillis());
 	}
@@ -183,23 +193,77 @@ class DifferenceTest extends AbstractTestCase
 		$dt = $first->difference($last);
 
 		Assert::same(-168.0, $dt->getHours());
-		Assert::same(-7, $dt->days());
-		Assert::same(-1, $dt->solidWeeks());
+		Assert::same(-7, $dt->getDays());
+		Assert::same(-1, $dt->getSolidWeeks());
+		Assert::same(-1.0, $dt->getWeeks());
 		Assert::same(-10080.0, $dt->getMinutes());
 		Assert::same(-604800000, $dt->getMillis());
 
 		$abs = $dt->withAbsolute();
 		Assert::same(168.0, $abs->getHours());
-		Assert::same(7, $abs->days());
-		Assert::same(1, $abs->solidWeeks());
+		Assert::same(7, $abs->getDays());
+		Assert::same(1, $abs->getSolidWeeks());
+		Assert::same(1.0, $abs->getWeeks());
 		Assert::same(10080.0, $abs->getMinutes());
 		Assert::same(604800000, $abs->getMillis());
 
 		Assert::same(-168.0, $dt->getHours());
-		Assert::same(-7, $dt->days());
-		Assert::same(-1, $dt->solidWeeks());
+		Assert::same(-7, $dt->getDays());
+		Assert::same(-1, $dt->getSolidWeeks());
+		Assert::same(-1.0, $dt->getWeeks());
 		Assert::same(-10080.0, $dt->getMinutes());
 		Assert::same(-604800000, $dt->getMillis());
+	}
+
+	public function testToJson(): void
+	{
+		$first = DT::create('2022-05-20 11:45:00');
+		$last = DT::create('2022-05-13 11:45:00');
+
+		$dt = $first->difference($last);
+		$serialize = $dt->jsonSerialize();
+		Assert::true($dt->getStart()->areEquals($serialize["start"]));
+		Assert::true($dt->getEnd()->areEquals($serialize["end"]));
+
+		Assert::same($serialize["millis"], $dt->getMillis());
+		Assert::same($serialize["seconds"], $dt->getSeconds());
+		Assert::same($serialize["minutes"], $dt->getMinutes());
+		Assert::same($serialize["hours"], $dt->getHours());
+		Assert::same($serialize["days"], $dt->getDays());
+		Assert::same($serialize["weeks"], $dt->getWeeks());
+	}
+
+	public function testTwoObjects()
+	{
+		Assert::same(59,
+			DT::create('2022-07-20 15:44:30')
+				->difference(DT::create('2022-07-20 15:45:29'))
+				->getSeconds()
+		);
+
+		Assert::same(3.0,
+			DT::create('2022-07-20 15:44:30')
+				->difference(DT::create('2022-07-20 15:47:30'))
+				->getMinutes()
+		);
+
+		Assert::true(
+			DT::create('2022-07-20 15:44:30')
+				->difference(DT::create('2022-07-20 15:47:30'))
+				->isValid()
+		);
+
+		Assert::exception(fn() => DT::create('2022-07-20 15:44:30')
+			->difference(DT::create('2022-07-20 15:44:30'), TRUE)
+			->isValid()
+			, \InvalidArgumentException::class
+		);
+
+		Assert::exception(fn() => DT::create('2022-07-20 15:44:30')
+			->difference(DT::create('2022-07-20 15:44:29'), TRUE)
+			->isValid()
+			, \InvalidArgumentException::class
+		);
 	}
 
 }
