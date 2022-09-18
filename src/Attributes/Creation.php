@@ -11,7 +11,7 @@ use Noxem\DateTime\Utils;
 /**
  * @internal
  */
-trait Initialize
+trait Creation
 {
 	public static function create(
 		string|int|float|null $suspect = 'now',

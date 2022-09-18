@@ -10,15 +10,16 @@ use Noxem\DateTime\Utils;
 
 class DT extends NativeDateTimeImmutable implements \JsonSerializable
 {
-	use Attributes\Initialize;
+	use Attributes\Creation;
 	use Attributes\DateConversion;
 	use Attributes\Addition;
+	use Attributes\Comparation;
 
-	public function areEquals(DateTimeInterface $suspect): bool
+	/*public function areEquals(DateTimeInterface $suspect): bool
 	{
 		return $suspect->getTimestamp() === $this->getTimestamp()
 			&& $suspect->getTimezone()->getName() === $this->getTimezone()->getName();
-	}
+	}*/
 
 	public function isFuture(): bool
 	{
@@ -34,7 +35,6 @@ class DT extends NativeDateTimeImmutable implements \JsonSerializable
 	{
 		$zone = date_default_timezone_get();
 		$datetime = new self('@' . (string)$timestamp);
-
 		return $datetime->setTimezone(new \DateTimeZone($zone));
 	}
 
