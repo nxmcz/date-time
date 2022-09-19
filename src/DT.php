@@ -33,14 +33,25 @@ class DT extends NativeDateTimeImmutable implements \JsonSerializable
 
 	public function setTimestamp($timestamp): self
 	{
-		$zone = date_default_timezone_get();
+		$zone = $this->getTimezone();
 		$datetime = new self('@' . (string)$timestamp);
-		return $datetime->setTimezone(new \DateTimeZone($zone));
+		return $datetime->setTimezone($zone);
+	}
+
+	public function resetTimezone(string $timezone): self
+	{
+		$capture = $this->format(Utils\Formatter::TIMESTAMP_MILLIS);
+		$datetime = new self($capture);
+		return $datetime->setTimezone(new \DateTimeZone($timezone));
 	}
 
 	public function __toString(): string
 	{
 		return $this->format(Utils\Formatter::TIMESTAMPS);
+	}
+
+	public function toIso8601ZuluString(): string {
+		return $this->setTimezone(new \DateTimeZone("UTC"))->format(Utils\Formatter::UTC);
 	}
 
 	public function toHtmlInput(): Attributes\HtmlInputConversion {

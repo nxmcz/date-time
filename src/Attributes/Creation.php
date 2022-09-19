@@ -13,7 +13,7 @@ use Noxem\DateTime\Utils;
  */
 trait Creation
 {
-	public static function create(string|int|float $suspect = 'now'): self {
+	public static function create(string|int|float $suspect = 'now', string $timezone = NULL): self {
 
 		if (Utils\Validators::isTimestamp($suspect)) {
 			return (new self())->setTimestamp((int) $suspect);
@@ -27,9 +27,18 @@ trait Creation
 
 			$suspect = $defaultValue ?? 'now';
 		}*/
+		$suspect = (string)$suspect;
 
 		try {
-			return new self((string) $suspect);
+			if(str_ends_with($suspect, "Z")) {
+				$dt = (new self($suspect));
+				$e = $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+				var_dump($e);
+				return $e;
+				//$timezone = new \DateTimeZone("UTC");
+			}
+
+			return (new self((string) $suspect, new \DateTimeZone($timezone ?? date_default_timezone_get())));
 		} catch (\Exception) {
 			throw BadFormatException::create()
 				->withMessage("Error format is: $suspect");

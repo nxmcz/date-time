@@ -24,19 +24,14 @@ trait Comparation
 	 */
 	public function compare(DateTimeInterface $suspect): int
 	{
-		var_dump([
-			($suspect->getOffset() - $this->getOffset()),
-			$suspect->getOffset(),
-			$this->getOffset()
-		]);
-		$a = $this->getTimestamp() + ($suspect->getOffset() - $this->getOffset());
+		$current = $this->getTimestamp() + ($suspect->getOffset() - $this->getOffset());
 		$suspect = $suspect->getTimestamp();
 
-		if (abs($a - $suspect) === 0) {
+		if (abs($current - $suspect) === 0) {
 			return 0;
 		}
 
-		return $a < $suspect ? -1 : 1;
+		return $current < $suspect ? -1 : 1;
 	}
 
 	public function isLessThan(DateTimeInterface $b): bool
