@@ -13,26 +13,27 @@ use Noxem\DateTime\Utils;
  */
 trait Creation
 {
-	public static function create(
-		string|int|float|null $suspect = 'now',
-		bool $throw = TRUE,
-		string|int|float|null $defaultValue = NULL
-	): self {
+	public static function create(string|int|float $suspect = 'now'): self {
+
 		if (Utils\Validators::isTimestamp($suspect)) {
 			return (new self())->setTimestamp((int) $suspect);
 		}
 
-		$suspect = (string) $suspect;
-
-		if (Utils\Validators::isDate($suspect) === FALSE) {
+		/*if (Utils\Validators::isDate($suspect) === FALSE) {
 			if ($throw === TRUE) {
-				throw BadFormatException::create();
+				throw BadFormatException::create()
+					->withMessage("Error format is: $suspect");
 			}
 
 			$suspect = $defaultValue ?? 'now';
-		}
+		}*/
 
-		return new self((string) $suspect);
+		try {
+			return new self((string) $suspect);
+		} catch (\Exception) {
+			throw BadFormatException::create()
+				->withMessage("Error format is: $suspect");
+		}
 	}
 
 	public static function createFromParts(
