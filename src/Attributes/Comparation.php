@@ -24,6 +24,11 @@ trait Comparation
 	 */
 	public function compare(DateTimeInterface $suspect): int
 	{
+		var_dump([
+			($suspect->getOffset() - $this->getOffset()),
+			$suspect->getOffset(),
+			$this->getOffset()
+		]);
 		$a = $this->getTimestamp() + ($suspect->getOffset() - $this->getOffset());
 		$suspect = $suspect->getTimestamp();
 
