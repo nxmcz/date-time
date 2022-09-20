@@ -25,6 +25,11 @@ class ComparationTest extends AbstractTestCase
 			$state,
 			$a->areEquals($b)
 		);
+
+		Assert::same(
+			$state,
+			$b->areEquals($a)
+		);
 	}
 
 	public function providerEqualsData(): array
@@ -33,51 +38,47 @@ class ComparationTest extends AbstractTestCase
 			[
 				TRUE,
 				DT::create("2020-07-20 15:00:00"),
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague"))
-			], [
+				DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Prague"))
+			],
+			[
 				TRUE,
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague"))
-			], [
+				DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Prague"))
+			],
+			[
 				TRUE,
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-07-20 14:00:00")->setTimezone( new \DateTimeZone("Europe/London"))
-			], [ # this one not working
-				TRUE,
-				DT::create("2020-07-20 14:00:00")->setTimezone( new \DateTimeZone("Europe/London")),
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-			], [
+				DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-07-20 14:00:00")->resetTimezone("Europe/London")
+			],
+			[
 				TRUE,
 				DT::create("2020-09-17 12:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-09-17 06:00:00")->setTimezone(new \DateTimeZone("America/New_York"))
-			], [ # this one not working
+				DT::create("2020-09-17 06:00:00")->resetTimezone("America/New_York")
+			],
+			[ # this one not working
 				TRUE,
-				DT::create("2020-09-17 10:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-09-17 11:00:00")->setTimezone( new \DateTimeZone("Europe/Moscow"))
-			], [
+				DT::create("2020-09-17 10:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-09-17 11:00:00")->resetTimezone("Europe/Moscow")
+			],
+			[
 				TRUE,
-				DT::create("2020-09-17 11:00:00")->setTimezone( new \DateTimeZone("Europe/Moscow")),
-				DT::create("2020-09-17 10:00:00")->setTimezone( new \DateTimeZone("Europe/Prague"))
-			], [
+				DT::create("2020-09-17 13:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-09-17 20:00:00")->resetTimezone("Asia/Tokyo")
+			],
+			[
 				TRUE,
-				DT::create("2020-09-17 13:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-09-17 20:00:00")->setTimezone( new \DateTimeZone("Asia/Tokyo"))
-			], [
-				TRUE,
-				DT::create("2020-09-17 07:00:00")->setTimezone( new \DateTimeZone("America/New_York")),
-				DT::create("2020-09-17 20:00:00")->setTimezone( new \DateTimeZone("Asia/Tokyo"))
-			], [
-				TRUE,
-				DT::create("2020-09-17 20:00:00")->setTimezone( new \DateTimeZone("Asia/Tokyo")),
-				DT::create("2020-09-17 07:00:00")->setTimezone( new \DateTimeZone("America/New_York"))
-			], [
+				DT::create("2020-09-17 07:00:00")->resetTimezone("America/New_York"),
+				DT::create("2020-09-17 20:00:00")->resetTimezone("Asia/Tokyo")
+			],
+			[
 				FALSE,
-				DT::create("2020-07-20 14:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-07-20 14:00:00")->setTimezone( new \DateTimeZone("Europe/London"))
-			], [
+				DT::create("2020-07-20 14:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-07-20 14:00:00")->resetTimezone("Europe/London")
+			],
+			[
 				FALSE,
 				DT::create("2020-07-20 14:00:00"),
-				DT::create("2020-07-20 14:00:00")->setTimezone( new \DateTimeZone("Europe/London"))
+				DT::create("2020-07-20 14:00:00")->resetTimezone("Europe/London")
 			],
 		];
 	}
@@ -107,39 +108,42 @@ class ComparationTest extends AbstractTestCase
 			[
 				FALSE,
 				DT::create("2020-07-20 15:00:00"),
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague"))
-			], [
+				DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Prague"))
+			],
+			[
 				FALSE,
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/London"))
-			], [
-				FALSE,
-				DT::create("2020-07-20 15:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-07-20 14:00:00")->setTimezone( new \DateTimeZone("Europe/London"))
-			],[
+				DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/London"))
+			],
+			[
 				TRUE,
-				DT::create("2020-07-20 15:00:01")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-07-20 14:00:00")->setTimezone( new \DateTimeZone("Europe/London"))
-			], [ # SAME so NOT EQUALS
+				DT::create("2020-07-20 15:00:01")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-07-20 14:00:00")->setTimezone(new \DateTimeZone("Europe/London"))
+			],
+			[ # SAME so NOT EQUALS
 				FALSE,
-				DT::create("2020-09-17 13:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-09-17 07:00:00")->setTimezone( new \DateTimeZone("America/New_York"))
-			], [
+				DT::create("2020-09-17 13:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-09-17 07:00:00")->resetTimezone("America/New_York")
+			],
+			[
 				TRUE,
-				DT::create("2020-09-17 13:00:01")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-09-17 07:00:00")->setTimezone( new \DateTimeZone("America/New_York"))
-			], [
+				DT::create("2020-09-17 13:00:01")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-09-17 07:00:00")->resetTimezone("America/New_York")
+			],
+			[
 				FALSE,
-				DT::create("2020-09-17 11:00:00")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-09-17 12:00:00")->setTimezone( new \DateTimeZone("Europe/Moscow"))
-			], [
+				DT::create("2020-09-17 11:00:00")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-09-17 12:00:00")->setTimezone(new \DateTimeZone("Europe/Moscow"))
+			],
+			[
 				TRUE,
-				DT::create("2020-09-17 12:00:01")->setTimezone( new \DateTimeZone("Europe/Prague")),
-				DT::create("2020-09-17 11:00:00")->setTimezone( new \DateTimeZone("Europe/Moscow"))
-			], [
+				DT::create("2020-09-17 12:00:01")->setTimezone(new \DateTimeZone("Europe/Prague")),
+				DT::create("2020-09-17 11:00:00")->setTimezone(new \DateTimeZone("Europe/Moscow"))
+			],
+			[
 				FALSE,
-				DT::create("2020-09-17 11:00:00")->setTimezone( new \DateTimeZone("Europe/Moscow")),
-				DT::create("2020-09-17 12:00:01")->setTimezone( new \DateTimeZone("Europe/Prague"))
+				DT::create("2020-09-17 11:00:00")->setTimezone(new \DateTimeZone("Europe/Moscow")),
+				DT::create("2020-09-17 12:00:01")->setTimezone(new \DateTimeZone("Europe/Prague"))
 			]
 
 		];
@@ -150,34 +154,26 @@ class ComparationTest extends AbstractTestCase
 	{
 		$dt = DT::create("2020-07-20 15:00:00");
 
-		Assert::true( $dt->areEquals( DT::create("2020-07-20 15:00:00") ) );
-		Assert::false( $dt->areEquals( DT::create("2020-07-20 15:00:01") ) );
-		Assert::false( $dt->areEquals( DT::create("2020-07-20 14:59:59") ) );
+		Assert::true($dt->areEquals(DT::create("2020-07-20 15:00:00")));
+		Assert::false($dt->areEquals(DT::create("2020-07-20 15:00:01")));
+		Assert::false($dt->areEquals(DT::create("2020-07-20 14:59:59")));
 
-		Assert::false( $dt->areNotEquals( DT::create("2020-07-20 15:00:00") ) );
-		Assert::true( $dt->areNotEquals( DT::create("2020-07-20 15:00:01") ) );
-		Assert::true( $dt->areNotEquals( DT::create("2020-07-20 14:59:59") ) );
+		Assert::false($dt->areNotEquals(DT::create("2020-07-20 15:00:00")));
+		Assert::true($dt->areNotEquals(DT::create("2020-07-20 15:00:01")));
+		Assert::true($dt->areNotEquals(DT::create("2020-07-20 14:59:59")));
 
-		Assert::true( $dt->isGreaterThan( DT::create("2020-07-20 14:59:59") ) );
-		Assert::false( $dt->isGreaterThan( DT::create("2020-07-20 15:00:00") ) );
-		Assert::true( $dt->isGreaterThan( DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Moscow")) ) );
-		Assert::false( $dt->isGreaterThan( DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/London")) ) );
+		Assert::true($dt->isGreaterThan(DT::create("2020-07-20 14:59:59")));
+		Assert::false($dt->isGreaterThan(DT::create("2020-07-20 15:00:00")));
 
-		Assert::false( $dt->isLessThan( DT::create("2020-07-20 15:00:00") ) );
-		Assert::true( $dt->isLessThan( DT::create("2020-07-20 15:00:01") ) );
-		Assert::false( $dt->isLessThan( DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/Moscow")) ) );
-		Assert::true( $dt->isLessThan( DT::create("2020-07-20 15:00:00")->setTimezone(new \DateTimeZone("Europe/London")) ) );
-		Assert::false( $dt->isLessThanOrEqualTo( DT::create("2020-07-20 14:59:59") ) );
-		Assert::true( $dt->isLessThanOrEqualTo( DT::create("2020-07-20 15:00:00") ) );
-		Assert::true( $dt->isLessThanOrEqualTo( DT::create("2020-07-20 15:00:01") ) );
+		Assert::false($dt->isLessThan(DT::create("2020-07-20 15:00:00")));
+		Assert::true($dt->isLessThan(DT::create("2020-07-20 15:00:01")));
+		Assert::false($dt->isLessThanOrEqualTo(DT::create("2020-07-20 14:59:59")));
+		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 15:00:00")));
+		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 15:00:01")));
 
-		Assert::true( $dt->isGreaterThanOrEqualTo( DT::create("2020-07-20 14:59:59") ) );
-		Assert::true( $dt->isGreaterThanOrEqualTo( DT::create("2020-07-20 15:00:00") ) );
-		Assert::false( $dt->isGreaterThanOrEqualTo( DT::create("2020-07-20 15:00:01") ) );
-		Assert::true( $dt->isGreaterThanOrEqualTo( DT::create("2020-07-20 16:00:00")->setTimezone(new \DateTimeZone("Europe/Moscow")) ) );
-		Assert::false( $dt->isGreaterThanOrEqualTo( DT::create("2020-07-20 16:00:01")->setTimezone(new \DateTimeZone("Europe/Moscow")) ) );
-		Assert::true( $dt->isGreaterThanOrEqualTo( DT::create("2020-07-20 14:00:00")->setTimezone(new \DateTimeZone("Europe/London")) ) );
-		Assert::false( $dt->isGreaterThanOrEqualTo( DT::create("2020-07-20 14:00:01")->setTimezone(new \DateTimeZone("Europe/London")) ) );
+		Assert::true($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 14:59:59")));
+		Assert::true($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 15:00:00")));
+		Assert::false($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 15:00:01")));
 	}
 
 	public function testSameTimezone(): void
@@ -205,6 +201,81 @@ class ComparationTest extends AbstractTestCase
 		Assert::false($dt->isLessThanOrEqualTo(DT::create("2020-07-19 23:59:59")));
 		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 00:00:00")));
 		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 00:00:01")));
+	}
+
+	public function testTimezone1(): void
+	{
+		$dt = DT::create("2020-07-20 00:00:00");
+
+		Assert::false($dt->areEquals(DT::create("2020-07-20 07:00:01")->resetTimezone("Asia/Tokyo")));
+		Assert::true($dt->areEquals(DT::create("2020-07-20 07:00:00")->resetTimezone("Asia/Tokyo")));
+		Assert::false($dt->areEquals(DT::create("2020-07-20 06:59:59")->resetTimezone("Asia/Tokyo")));
+
+		Assert::true($dt->areNotEquals(DT::create("2020-07-20 07:00:01")->resetTimezone("Asia/Tokyo")));
+		Assert::false($dt->areNotEquals(DT::create("2020-07-20 07:00:00")->resetTimezone("Asia/Tokyo")));
+		Assert::true($dt->areNotEquals(DT::create("2020-07-20 06:59:59")->resetTimezone("Asia/Tokyo")));
+
+		Assert::true($dt->isLessThan(DT::create("2020-07-20 07:00:01")->resetTimezone("Asia/Tokyo")));
+		Assert::false($dt->isLessThan(DT::create("2020-07-20 07:00:00")->resetTimezone("Asia/Tokyo")));
+		Assert::false($dt->isLessThan(DT::create("2020-07-20 06:59:59")->resetTimezone("Asia/Tokyo")));
+
+		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 07:00:01")->resetTimezone("Asia/Tokyo")));
+		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 07:00:00")->resetTimezone("Asia/Tokyo")));
+		Assert::false($dt->isLessThanOrEqualTo(DT::create("2020-07-20 06:59:59")->resetTimezone("Asia/Tokyo")));
+
+		Assert::false($dt->isGreaterThan(DT::create("2020-07-20 07:00:01")->resetTimezone("Asia/Tokyo")));
+		Assert::false($dt->isGreaterThan(DT::create("2020-07-20 07:00:00")->resetTimezone("Asia/Tokyo")));
+		Assert::true($dt->isGreaterThan(DT::create("2020-07-20 06:59:59")->resetTimezone("Asia/Tokyo")));
+
+		Assert::false($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 07:00:01")->resetTimezone("Asia/Tokyo")));
+		Assert::true($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 07:00:00")->resetTimezone("Asia/Tokyo")));
+		Assert::true($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 06:59:59")->resetTimezone("Asia/Tokyo")));
+	}
+
+	public function testTimezone0(): void
+	{
+		$dt = DT::create("2020-07-20 00:00:00");
+
+		Assert::false($dt->areEquals(DT::create("2020-07-20 00:00:01")));
+		Assert::true($dt->areEquals(DT::create("2020-07-20 00:00:00")));
+		Assert::false($dt->areEquals(DT::create("2020-07-19 23:59:59")));
+
+		Assert::true($dt->areNotEquals(DT::create("2020-07-20 00:00:01")));
+		Assert::false($dt->areNotEquals(DT::create("2020-07-20 00:00:00")));
+		Assert::true($dt->areNotEquals(DT::create("2020-07-19 23:59:59")));
+
+		Assert::true($dt->isLessThan(DT::create("2020-07-20 00:00:01")));
+		Assert::false($dt->isLessThan(DT::create("2020-07-20 00:00:00")));
+		Assert::false($dt->isLessThan(DT::create("2020-07-19 23:59:59")));
+
+		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 00:00:01")));
+		Assert::true($dt->isLessThanOrEqualTo(DT::create("2020-07-20 00:00:00")));
+		Assert::false($dt->isLessThanOrEqualTo(DT::create("2020-07-19 23:59:59")));
+
+		Assert::false($dt->isGreaterThan(DT::create("2020-07-20 00:00:01")));
+		Assert::false($dt->isGreaterThan(DT::create("2020-07-20 00:00:00")));
+		Assert::true($dt->isGreaterThan(DT::create("2020-07-19 23:59:59")));
+
+		Assert::false($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 00:00:01")));
+		Assert::true($dt->isGreaterThanOrEqualTo(DT::create("2020-07-20 00:00:00")));
+		Assert::true($dt->isGreaterThanOrEqualTo(DT::create("2020-07-19 23:59:59")));
+	}
+
+	public function testTimezoneOffset(): void
+	{
+		$dt = DT::create();
+
+		Assert::equal(0, $dt->getTimezoneOffset(DT::create()));
+		Assert::equal(1, $dt->getTimezoneOffset(DT::create()->resetTimezone("Europe/Moscow")));
+		Assert::equal(7, $dt->getTimezoneOffset(DT::create()->resetTimezone("Asia/Tokyo")));
+		Assert::equal(-6, $dt->getTimezoneOffset(DT::create()->resetTimezone("America/New_York")));
+		Assert::equal(-9, $dt->getTimezoneOffset(DT::create()->resetTimezone("America/Los_Angeles")));
+
+		Assert::equal(9, DT::create()->resetTimezone("America/Los_Angeles")->getTimezoneOffset($dt));
+		Assert::equal(16,
+			DT::create()->resetTimezone("America/Los_Angeles")->getTimezoneOffset(DT::create()->resetTimezone("Asia/Tokyo")));
+		Assert::equal(-16,
+			DT::create()->resetTimezone("Asia/Tokyo")->getTimezoneOffset(DT::create()->resetTimezone("America/Los_Angeles")));
 	}
 }
 

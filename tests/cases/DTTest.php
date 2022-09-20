@@ -75,7 +75,7 @@ class DTTest extends AbstractTestCase
 
 		Assert::true(DT::create()->areEquals(DT::getOrCreateInstance(new \DateTimeImmutable())));
 		Assert::true(DT::create()->areEquals(DT::getOrCreateInstance(new DateTime())));
-		Assert::false(DT::create()->areEquals(DT::getOrCreateInstance((new DateTime())->setTimezone(new \DateTimeZone('America/New_York')))));
+		Assert::true(DT::create()->areEquals(DT::getOrCreateInstance((new DateTime())->setTimezone(new \DateTimeZone('America/New_York')))));
 	}
 
 	public function testAreEquals()
@@ -91,17 +91,24 @@ class DTTest extends AbstractTestCase
 				->areEquals(DT::create('2022-07-20 01:00:00')->setTimezone(new \DateTimeZone('Europe/Prague')))
 		);
 
-		Assert::false(
+		Assert::true(
 			DT::create('2022-07-20 01:00:00')
 				->setTimezone(new \DateTimeZone('Europe/Prague'))
+				->areEquals(DT::create('2022-07-20 01:00:00')
+					->setTimezone(new \DateTimeZone('America/New_York'))
+				)
+		);
+
+		Assert::true(
+			DT::create('2022-07-20 01:00:00')
 				->areEquals(DT::create('2022-07-20 01:00:00')
 					->setTimezone(new \DateTimeZone('America/New_York')))
 		);
 
-		Assert::false(
+		Assert::true(
 			DT::create('2022-07-20 01:00:00')
-				->areEquals(DT::create('2022-07-20 01:00:00')
-					->setTimezone(new \DateTimeZone('America/New_York')))
+				->areEquals(DT::create('2022-07-19 19:00:00')
+					->resetTimezone('America/New_York'))
 		);
 	}
 
@@ -210,78 +217,78 @@ class DTTest extends AbstractTestCase
 	public function providerIsLeap(): array
 	{
 		return [
-			[1595, false],
-			[1596, true],
-			[1597, false],
-			[1598, false],
-			[1599, false],
-			[1600, true],
-			[1601, false],
-			[1602, false],
-			[1603, false],
-			[1604, true],
-			[1605, false],
-			[1695, false],
-			[1696, true],
-			[1697, false],
-			[1698, false],
-			[1699, false],
-			[1700, false],
-			[1701, false],
-			[1702, false],
-			[1703, false],
-			[1704, true],
-			[1705, false],
-			[1795, false],
-			[1796, true],
-			[1797, false],
-			[1798, false],
-			[1799, false],
-			[1800, false],
-			[1801, false],
-			[1802, false],
-			[1803, false],
-			[1804, true],
-			[1805, false],
-			[1895, false],
-			[1896, true],
-			[1897, false],
-			[1898, false],
-			[1899, false],
-			[1900, false],
-			[1901, false],
-			[1902, false],
-			[1903, false],
-			[1904, true],
-			[1905, false],
-			[1995, false],
-			[1996, true],
-			[1997, false],
-			[1998, false],
-			[1999, false],
-			[2000, true],
-			[2001, false],
-			[2002, false],
-			[2003, false],
-			[2004, true],
-			[2005, false],
-			[2006, false],
-			[2007, false],
-			[2008, true],
-			[2009, false],
-			[2010, false],
-			[2011, false],
-			[2012, true],
-			[2013, false],
-			[2014, false],
-			[2015, false],
-			[2016, true],
-			[2017, false],
-			[2018, false],
-			[2019, false],
-			[2020, true],
-			[2021, false],
-			[2022, false],
+			[1595, FALSE],
+			[1596, TRUE],
+			[1597, FALSE],
+			[1598, FALSE],
+			[1599, FALSE],
+			[1600, TRUE],
+			[1601, FALSE],
+			[1602, FALSE],
+			[1603, FALSE],
+			[1604, TRUE],
+			[1605, FALSE],
+			[1695, FALSE],
+			[1696, TRUE],
+			[1697, FALSE],
+			[1698, FALSE],
+			[1699, FALSE],
+			[1700, FALSE],
+			[1701, FALSE],
+			[1702, FALSE],
+			[1703, FALSE],
+			[1704, TRUE],
+			[1705, FALSE],
+			[1795, FALSE],
+			[1796, TRUE],
+			[1797, FALSE],
+			[1798, FALSE],
+			[1799, FALSE],
+			[1800, FALSE],
+			[1801, FALSE],
+			[1802, FALSE],
+			[1803, FALSE],
+			[1804, TRUE],
+			[1805, FALSE],
+			[1895, FALSE],
+			[1896, TRUE],
+			[1897, FALSE],
+			[1898, FALSE],
+			[1899, FALSE],
+			[1900, FALSE],
+			[1901, FALSE],
+			[1902, FALSE],
+			[1903, FALSE],
+			[1904, TRUE],
+			[1905, FALSE],
+			[1995, FALSE],
+			[1996, TRUE],
+			[1997, FALSE],
+			[1998, FALSE],
+			[1999, FALSE],
+			[2000, TRUE],
+			[2001, FALSE],
+			[2002, FALSE],
+			[2003, FALSE],
+			[2004, TRUE],
+			[2005, FALSE],
+			[2006, FALSE],
+			[2007, FALSE],
+			[2008, TRUE],
+			[2009, FALSE],
+			[2010, FALSE],
+			[2011, FALSE],
+			[2012, TRUE],
+			[2013, FALSE],
+			[2014, FALSE],
+			[2015, FALSE],
+			[2016, TRUE],
+			[2017, FALSE],
+			[2018, FALSE],
+			[2019, FALSE],
+			[2020, TRUE],
+			[2021, FALSE],
+			[2022, FALSE],
 		];
 	}
 
@@ -499,10 +506,12 @@ class DTTest extends AbstractTestCase
 			[2100, 52]
 		];
 	}
+
 	public function testCreateBadParts(): void
 	{
 		Assert::exception(fn() => DT::createFromParts(2022, second: 60), BadFormatException::class);
 	}
+
 	public function testToJson(): void
 	{
 		$dt = DT::create('2022-05-20 11:45:00');

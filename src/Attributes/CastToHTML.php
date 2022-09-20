@@ -7,7 +7,7 @@ use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
 
 
-class HtmlInputConversion
+class CastToHTML
 {
 	private DT $value;
 
@@ -17,10 +17,6 @@ class HtmlInputConversion
 
 	public function toDateTime(): string {
 		return $this->value->format("Y-m-d\TH:i:s");
-	}
-
-	public function toUTC(): string {
-		return $this->value->format(Formatter::UTC);
 	}
 
 	public function toDate(): string {

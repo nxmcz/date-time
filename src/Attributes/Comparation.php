@@ -24,8 +24,9 @@ trait Comparation
 	 */
 	public function compare(DateTimeInterface $suspect): int
 	{
-		$current = $this->getTimestamp() + ($suspect->getOffset() - $this->getOffset());
-		$suspect = $suspect->getTimestamp();
+		$zone = new \DateTimeZone(date_default_timezone_get());
+		$current = $this->setTimezone($zone)->getTimestamp();
+		$suspect = self::createFromInterface($suspect)->setTimezone($zone)->getTimestamp();
 
 		if (abs($current - $suspect) === 0) {
 			return 0;
@@ -52,5 +53,10 @@ trait Comparation
 	public function isGreaterThanOrEqualTo(DateTimeInterface $b): bool
 	{
 		return $this->compare($b) >= 0;
+	}
+
+	public function getTimezoneOffset(DateTimeInterface $b): int
+	{
+		return (int)(($b->getOffset() - $this->getOffset())/3600);
 	}
 }

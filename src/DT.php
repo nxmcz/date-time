@@ -14,6 +14,7 @@ class DT extends NativeDateTimeImmutable implements \JsonSerializable
 	use Attributes\DateConversion;
 	use Attributes\Addition;
 	use Attributes\Comparation;
+	use Attributes\Casting;
 
 	/*public function areEquals(DateTimeInterface $suspect): bool
 	{
@@ -41,21 +42,15 @@ class DT extends NativeDateTimeImmutable implements \JsonSerializable
 	public function resetTimezone(string $timezone): self
 	{
 		$capture = $this->format(Utils\Formatter::TIMESTAMP_MILLIS);
-		$datetime = new self($capture);
-		return $datetime->setTimezone(new \DateTimeZone($timezone));
+		return new self($capture, new \DateTimeZone($timezone));
 	}
 
-	public function __toString(): string
-	{
-		return $this->format(Utils\Formatter::TIMESTAMPS);
+	public function toHtmlInput(): Attributes\CastToHTML {
+		return new Attributes\CastToHTML($this);
 	}
 
-	public function toIso8601ZuluString(): string {
-		return $this->setTimezone(new \DateTimeZone("UTC"))->format(Utils\Formatter::UTC);
-	}
-
-	public function toHtmlInput(): Attributes\HtmlInputConversion {
-		return new Attributes\HtmlInputConversion($this);
+	public function __toString(): string {
+		return $this->toLocalHumanString();
 	}
 
 	public function jsonSerialize(): mixed

@@ -21,12 +21,11 @@ class DTCreationAlwaysSameTest extends AbstractTestCase
 	/**
 	 * @dataProvider providerOfFormatsToCreatingObject
 	 */
-	public function testCreateWith($suspect): void {
+	public function testCreateWith($suspect): void
+	{
 
 		$dt = DT::create("2022-02-28 12:13:52");
-		Assert::true( $dt->areEquals(DT::create($suspect)->setTimezone(new \DateTimeZone("Europe/Prague"))) );
-
-
+		Assert::true($dt->areEquals(DT::create($suspect)->setTimezone(new \DateTimeZone("Europe/Prague"))));
 	}
 
 	public function providerOfFormatsToCreatingObject(): array
@@ -35,6 +34,13 @@ class DTCreationAlwaysSameTest extends AbstractTestCase
 			['2022-02-28 12:13:52'],
 			['2022-02-28T11:13:52Z'],
 		];
+	}
+
+	public function testCreateFromUTC(): void
+	{
+
+		$dt = DT::createFromUTC("2022-02-28T11:13:52Z");
+		Assert::true($dt->areEquals(DT::create("2022-02-28 12:13:52")->resetTimezone("Europe/Prague")));
 	}
 }
 

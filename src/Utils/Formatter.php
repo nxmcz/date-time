@@ -17,6 +17,7 @@ class Formatter
 	public const CZECH = 'd.m.Y H:i:s';
 	public const TIMESTAMP = 'Y-m-d H:i';
 	public const TIMESTAMPS = 'Y-m-d H:i:s';
+	public const LOCAL = 'Y-m-d\TH:i:s';
 	public const TIMESTAMP_MILLIS = 'Y-m-d H:i:s.u';
 	public const MILLIS = 'u';
 	public const C = 'c';

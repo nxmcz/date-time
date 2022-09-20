@@ -19,30 +19,24 @@ trait Creation
 			return (new self())->setTimestamp((int) $suspect);
 		}
 
-		/*if (Utils\Validators::isDate($suspect) === FALSE) {
-			if ($throw === TRUE) {
-				throw BadFormatException::create()
-					->withMessage("Error format is: $suspect");
-			}
-
-			$suspect = $defaultValue ?? 'now';
-		}*/
 		$suspect = (string)$suspect;
 
 		try {
 			if(str_ends_with($suspect, "Z")) {
 				$dt = (new self($suspect));
-				$e = $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-				var_dump($e);
-				return $e;
-				//$timezone = new \DateTimeZone("UTC");
+				return $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 			}
 
-			return (new self((string) $suspect, new \DateTimeZone($timezone ?? date_default_timezone_get())));
+			return (new self($suspect, new \DateTimeZone($timezone ?? date_default_timezone_get())));
 		} catch (\Exception) {
 			throw BadFormatException::create()
 				->withMessage("Error format is: $suspect");
 		}
+	}
+
+	public static function createFromUTC(string $suspect): self {
+		$dt = (new self($suspect));
+		return $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 	}
 
 	public static function createFromParts(
