@@ -3,12 +3,11 @@
 namespace Noxem\DateTime;
 
 use DateTimeImmutable as NativeDateTimeImmutable;
-use DateTimeInterface;
+use DateTimeZone;
 use Noxem\DateTime\Attributes;
 use Noxem\DateTime\Utils;
 
-
-class DT extends NativeDateTimeImmutable implements \JsonSerializable
+class DT extends NativeDateTimeImmutable
 {
 	use Attributes\Creation;
 	use Attributes\DateConversion;
@@ -33,22 +32,22 @@ class DT extends NativeDateTimeImmutable implements \JsonSerializable
 		return $datetime->setTimezone($zone);
 	}
 
-	public function resetTimezone(string $timezone): self
+	public function setTimezone(DateTimeZone|string $timezone): self
 	{
+		$tz = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone ?? date_default_timezone_get());
+		return parent::setTimezone($tz);
+	}
+
+	public function resetTimezone(DateTimeZone|string $timezone): self
+	{
+		$tz = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
 		$capture = $this->format(Utils\Formatter::TIMESTAMP_MILLIS);
-		return new self($capture, new \DateTimeZone($timezone));
+
+		return new self($capture, $tz);
 	}
 
-	public function __toString(): string {
-		return $this->toLocalHumanString();
-	}
-
-	public function jsonSerialize(): mixed
+	public function __toString(): string
 	{
-		return array_merge((array)$this, [
-			"date" => $this->format(Utils\Formatter::TIMESTAMPS),
-			"utc" => $this->format(Utils\Formatter::UTC),
-			"atom" => $this->format(self::ATOM),
-		]);
+		return $this->toLocalHumanString();
 	}
 }

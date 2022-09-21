@@ -519,15 +519,37 @@ class DTTest extends AbstractTestCase
 
 	public function testToJson(): void
 	{
-		$dt = DT::create('2022-05-20 11:45:00');
+		Assert::same(
+			json_encode(DT::create('2022-05-20 11:45:00')),
+			'{"date":"2022-05-20 11:45:00.000000","timezone_type":3,"timezone":"Europe\/Prague"}'
+		);
 
-		Assert::same($dt->jsonSerialize(), [
-			'date' => "2022-05-20 11:45:00",
-			'timezone_type' => 3,
-			'timezone' => "Europe/Prague",
-			'utc' => "2022-05-20T11:45:00Z",
-			'atom' => "2022-05-20T11:45:00+02:00"
-		]);
+		Assert::same(
+			json_encode(DT::create('2022-05-20 11:45:00.1234')),
+			'{"date":"2022-05-20 11:45:00.123400","timezone_type":3,"timezone":"Europe\/Prague"}'
+		);
+
+		Assert::same(
+			json_encode(DT::create('2022-05-20 11:45:00.1234')->setTimezone(new \DateTimeZone("Asia/Tokyo"))),
+			'{"date":"2022-05-20 18:45:00.123400","timezone_type":3,"timezone":"Asia\/Tokyo"}'
+		);
+	}
+
+	public function test_set_timezone(): void
+	{
+		Assert::true(
+			DT::create('2022-05-20 11:45:00.1234')->setTimezone("Asia/Tokyo")
+				->areEquals(
+					DT::create('2022-05-20 11:45:00.1234')->setTimezone(new \DateTimeZone("Asia/Tokyo"))
+				)
+		);
+
+		Assert::false(
+			DT::create('2022-05-20 11:45:00.1234')->setTimezone("America/New_York")
+				->areEquals(
+					DT::create('2022-05-20 11:45:00.1234')->resetTimezone("Asia/Tokyo")
+				)
+		);
 	}
 }
 
