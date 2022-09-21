@@ -42,7 +42,7 @@ class DTTest extends AbstractTestCase
 
 		Assert::true(
 			DT::create()->setTime(20, 7, 0)
-				->areEquals(DT::create('20.7'))
+				->areEquals(DT::create('20.7.'))
 		);
 
 		Assert::true(
@@ -57,6 +57,22 @@ class DTTest extends AbstractTestCase
 
 		Assert::true(
 			DT::create()->areEquals(DT::now())
+		);
+
+		Assert::true(
+			DT::create()->areEquals(DT::parse())
+		);
+
+		Assert::true(
+			DT::create("2022-07-20 11:22:33")->areEquals(DT::parse("2022-07-20 11:22:33"))
+		);
+
+		Assert::true(
+			DT::create("2022-07-20 11:22:33")->areNotEquals(DT::parse("2022-07-20 11:22:34"))
+		);
+
+		Assert::true(
+			DT::create("2022-07-20 11:22:33")->areNotEquals(DT::parse("2022-07-20 11:22:32"))
 		);
 	}
 
@@ -128,17 +144,6 @@ class DTTest extends AbstractTestCase
 		Assert::same(20, $dt->getDay());
 		Assert::same(19, $dt->getHour());
 		Assert::same(29, $dt->getWeek());
-	}
-
-	public function testParseInputs()
-	{
-		$dt = DT::create('2022-07-20 19:00:00');
-
-		Assert::same("2022-07-20T19:00:00", $dt->toHtmlInput()->toDateTime());
-		Assert::same("2022-07-20", $dt->toHtmlInput()->toDate());
-		Assert::same("2022-W29", $dt->toHtmlInput()->toWeek());
-		Assert::same("2022-07", $dt->toHtmlInput()->toMonth());
-		Assert::same("2022", $dt->toHtmlInput()->toYear());
 	}
 
 	public function testConverts()

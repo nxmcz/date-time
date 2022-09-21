@@ -16,12 +16,6 @@ class DT extends NativeDateTimeImmutable implements \JsonSerializable
 	use Attributes\Comparation;
 	use Attributes\Casting;
 
-	/*public function areEquals(DateTimeInterface $suspect): bool
-	{
-		return $suspect->getTimestamp() === $this->getTimestamp()
-			&& $suspect->getTimezone()->getName() === $this->getTimezone()->getName();
-	}*/
-
 	public function isFuture(): bool
 	{
 		return $this->getTimestamp() > time();
@@ -43,10 +37,6 @@ class DT extends NativeDateTimeImmutable implements \JsonSerializable
 	{
 		$capture = $this->format(Utils\Formatter::TIMESTAMP_MILLIS);
 		return new self($capture, new \DateTimeZone($timezone));
-	}
-
-	public function toHtmlInput(): Attributes\CastToHTML {
-		return new Attributes\CastToHTML($this);
 	}
 
 	public function __toString(): string {

@@ -17,22 +17,35 @@ require_once __DIR__ . '/../bootstrap.php';
  */
 class CastingTest extends AbstractTestCase
 {
-	public function testIsDate(): void
+	public function testCastMethods(): void
 	{
 		$prague = DT::create("2022-07-05 15:30:00")->resetTimezone("Europe/Prague");
 		$tokyo = DT::create("2022-07-05 15:30:00")->resetTimezone("Asia/Tokyo");
+		$la = DT::create("2022-07-04 22:00:00")->resetTimezone("America/Los_Angeles");
 
 		Assert::same("2022-07-05 08:30:00", $tokyo->toLocalHumanString());
+		Assert::same("2022-07-05 15:30:00", $prague->toLocalHumanString());
+		Assert::same("2022-07-05 07:00:00", $la->toLocalHumanString());
+
+		Assert::same("2022-07-05 15:30:00", $prague->toHumanString());
 		Assert::same("2022-07-05 15:30:00", $tokyo->toHumanString());
+		Assert::same("2022-07-04 22:00:00", $la->toHumanString());
 
 		Assert::same("2022-07-05T06:30:00Z", $tokyo->toIso8601ZuluString());
 		Assert::same("2022-07-05T13:30:00Z", $prague->toIso8601ZuluString());
+		Assert::same("2022-07-05T05:00:00Z", $la->toIso8601ZuluString());
 
-		Assert::same("2022-07-05T15:30:00Z", $tokyo->toUtcString());
-		Assert::same("2022-07-05T15:30:00Z", $prague->toUtcString());
+		Assert::same("2022-07-05T15:30:00", $tokyo->toDateTimeString());
+		Assert::same("2022-07-05T15:30:00", $prague->toDateTimeString());
+		Assert::same("2022-07-04T22:00:00", $la->toDateTimeString());
 
-		Assert::same("2022-07-05T08:30:00", $tokyo->toDateTimeLocalString());
-		Assert::same("2022-07-05T15:30:00", $prague->toDateTimeLocalString());
+		Assert::same("2022-07-05T08:30:00", $tokyo->toLocalDateTimeString());
+		Assert::same("2022-07-05T15:30:00", $prague->toLocalDateTimeString());
+		Assert::same("2022-07-05T07:00:00", $la->toLocalDateTimeString());
+
+		Assert::same("2022-07-05", $tokyo->toHtmlDate());
+		Assert::same("2022-07-05", $prague->toHtmlDate());
+		Assert::same("2022-07-04", $la->toHtmlDate());
 
 		Assert::same("2022-07-05T15:30:00+09:00", $tokyo->toW3cString());
 		Assert::same("2022-07-05T15:30:00+02:00", $prague->toW3cString());
@@ -42,6 +55,18 @@ class CastingTest extends AbstractTestCase
 
 		Assert::same("2022-07-05T15:30:00+09:00", $tokyo->toAtomString());
 		Assert::same("2022-07-05T15:30:00+02:00", $prague->toAtomString());
+
+		Assert::same("2022-07-05", $tokyo->toHtmlDate());
+		Assert::same("2022-07-05", $prague->toHtmlDate());
+
+		Assert::same("2022-07", $tokyo->toHtmlMonth());
+		Assert::same("2022-07", $prague->toHtmlMonth());
+
+		Assert::same("2022-W27", $tokyo->toHtmlWeek());
+		Assert::same("2022-W27", $prague->toHtmlWeek());
+
+		Assert::same("2022", $tokyo->toHtmlYear());
+		Assert::same("2022", $prague->toHtmlYear());
 	}
 }
 

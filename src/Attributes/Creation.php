@@ -3,38 +3,40 @@
 namespace Noxem\DateTime\Attributes;
 
 use DateTimeInterface;
+use Nette\Utils\Validators;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
-use Noxem\DateTime\Utils;
-
 
 /**
  * @internal
  */
 trait Creation
 {
-	public static function create(string|int|float $suspect = 'now', string $timezone = NULL): self {
-
-		if (Utils\Validators::isTimestamp($suspect)) {
+	public static function create(string|int $suspect = 'now', string $timezone = NULL): self
+	{
+		if (Validators::isNumeric($suspect)) {
 			return (new self())->setTimestamp((int) $suspect);
 		}
 
-		$suspect = (string)$suspect;
-
 		try {
-			if(str_ends_with($suspect, "Z")) {
-				$dt = (new self($suspect));
-				return $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-			}
-
-			return (new self($suspect, new \DateTimeZone($timezone ?? date_default_timezone_get())));
+			return (new self((string) $suspect))
+				->setTimezone(new \DateTimeZone($timezone ?? date_default_timezone_get()));
 		} catch (\Exception) {
 			throw BadFormatException::create()
-				->withMessage("Error format is: $suspect");
+				->withMessage("Error DT format. Must be compatible with createFromFormat method.");
 		}
 	}
 
-	public static function createFromUTC(string $suspect): self {
+	/**
+	 * Equivalent to create
+	 */
+	public static function parse(string|int $suspect = 'now', string $timezone = NULL): self
+	{
+		return self::create(...func_get_args());
+	}
+
+	public static function createFromUTC(string $suspect): self
+	{
 		$dt = (new self($suspect));
 		return $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 	}
@@ -77,7 +79,7 @@ trait Creation
 		return self::create($immutable->getTimestamp())->setTimezone($immutable->getTimezone());
 	}
 
-	public static function getOrCreateInstance(string|int|float|null|DateTimeInterface $suspect = NULL): self
+	public static function getOrCreateInstance(string|int|DateTimeInterface $suspect = NULL): self
 	{
 		return match (TRUE) {
 			$suspect instanceof DT => $suspect,

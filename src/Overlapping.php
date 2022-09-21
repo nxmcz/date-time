@@ -4,7 +4,6 @@ namespace Noxem\DateTime;
 
 use DateTimeInterface as AnyDT;
 
-
 class Overlapping
 {
 	/**
@@ -12,7 +11,7 @@ class Overlapping
 	 *
 	 * AFTER										======	|			|							FALSE
 	 * START TOUCHING								 =======|			|							FALSE
-	 * START INSIDE										====|===		|							TRUE
+	 * START INSIDE										====|==			|							TRUE
 	 * INSIDE START TOUCHING								|===========|=======					TRUE
 	 * ENCLOSING START TOUCHING								|======		|							TRUE
 	 * ENCLOSING											|	=====	|							TRUE

@@ -12,6 +12,7 @@ class Parser
 	public const WEEK_PATTERN = '/\d{4}-W\d{2}$/';
 	public const MONTH_PATTERN = '/\d{4}-\d{2}$/';
 	public const DAY_PATTERN = '/\d{4}-\d{2}-\d{2}$/';
+	public const MIN_YEAR = -999999;
 
 	public static function fromWeek(string|null|DateTimeInterface $value): ?DT
 	{
@@ -27,7 +28,7 @@ class Parser
 			// https://stackoverflow.com/a/3319413
 			$dt = (int)DT::createFromParts($year, 12, 28)->format("W");
 
-			if ($year >= Validators::MIN_YEAR && $week > 0 && $week <= $dt) {
+			if ($year >= self::MIN_YEAR && $week > 0 && $week <= $dt) {
 				return DT::create()
 					->setISODate($year, $week)
 					->setTime(0,0);
@@ -48,7 +49,7 @@ class Parser
 			$year = (int)Strings::substring($value,0, 4);
 			$month = (int)Strings::substring($value,5, 2);
 
-			if ($year >= Validators::MIN_YEAR && $month > 0 && $month <= 12) {
+			if ($year >= self::MIN_YEAR && $month > 0 && $month <= 12) {
 				return DT::create()
 					->setDate($year, $month, 1)
 					->setTime(0,0);
@@ -70,7 +71,7 @@ class Parser
 			$month = (int)Strings::substring($value,5, 2);
 			$day = (int)Strings::substring($value,8, 2);
 
-			if ($year >= Validators::MIN_YEAR && checkdate($month, $day, $year)) {
+			if ($year >= self::MIN_YEAR && checkdate($month, $day, $year)) {
 				return DT::create()
 					->setDate($year, $month, $day)
 					->setTime(0,0);
@@ -79,15 +80,4 @@ class Parser
 
 		return NULL;
 	}
-
-	/*public static function convertInput(string|null|DateTimeInterface $value, string $type): ?string
-	{
-		$result = self::$type($value) ?? DT::create();
-
-		return match($type) {
-			'toWeek' => sprintf(self::HTML_WEEK_FORMAT, $result->year(), $result->week()),
-			'toMonth' => sprintf(self::HTML_MONTH_FORMAT, $result->year(), $result->month()),
-			'toDay' => sprintf(self::HTML_DAY_FORMAT, $result->year(), $result->month(), $result->day())
-		};
-	}*/
 }
