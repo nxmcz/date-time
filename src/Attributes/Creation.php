@@ -82,7 +82,7 @@ trait Creation
 	public static function getOrCreateInstance(string|int|DateTimeInterface $suspect = NULL): self
 	{
 		return match (TRUE) {
-			$suspect instanceof DT => $suspect,
+			$suspect instanceof DT => $suspect->setTimezone(date_default_timezone_get()),
 			$suspect instanceof DateTimeInterface => self::createFromInterface($suspect),
 			default => self::create($suspect ?? 'now')
 		};

@@ -18,21 +18,20 @@ require_once __DIR__ . '/../bootstrap.php';
  */
 class DifferenceTest extends AbstractTestCase
 {
-	public function testValid()
+	public function test_valid()
 	{
 		$difference = new Difference(
 			$start = DateTime::create('2019-08-01 20:55:59'),
 			$end = DateTime::create('2019-08-02 20:55:59')
 		);
 
-		Assert::same($start, $difference->getStart());
+		Assert::true($start->areEquals($difference->getStart()));
 
 		Assert::same(1564685759000, $difference->getStart()->getMillis());
 		Assert::same(1564772159000, $difference->getEnd()->getMillis());
 
-		Assert::same($end, $difference->getEnd());
+		Assert::true($end->areEquals($difference->getEnd()));
 		Assert::type(\DateInterval::class, $difference->getInterval());
-		Assert::same($end, $difference->getEnd());
 
 		Assert::same(86400000, $difference->getMillis());
 		Assert::same(86400, $difference->getSeconds());
@@ -209,6 +208,17 @@ class DifferenceTest extends AbstractTestCase
 		Assert::same(-10080.0, $dt->getMinutes());
 		Assert::same(-604800000, $dt->getMillis());
 	}
+
+	public function test_get_by_instance(): void
+	{
+		$first = DT::create('2022-05-20 11:45:00');
+		$last = DT::getOrCreateInstance( new \DateTimeImmutable('2022-05-13 11:45:00') );
+
+		$dt = $first->difference($last)->withAbsolute();
+
+		Assert::same(168.0, $dt->getHours());
+	}
+
 
 	public function testToJson(): void
 	{

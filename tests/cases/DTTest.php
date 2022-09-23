@@ -81,7 +81,7 @@ class DTTest extends AbstractTestCase
 		Assert::same(1654077600, DT::getOrCreateInstance(1654077600)->getTimestamp());
 
 		$class = DT::create();
-		Assert::same($class, DT::getOrCreateInstance($class));
+		Assert::type($class, DT::getOrCreateInstance($class));
 
 		Assert::same(1654077600, DT::create('2022-06-01 12:00:00')->getTimestamp());
 		Assert::same(time(), DT::getOrCreateInstance()->getTimestamp());
