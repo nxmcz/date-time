@@ -2,11 +2,13 @@
 An immutable class to deal with DateTime object used in `Noxem` systems. Works perfectly with [nette/forms](https://github.com/nette/forms) as Date, DateTime form's field. 
 
 
-<p>
-  <a href="https://packagist.org/packages/nxmcz/date-time"><img src="https://img.shields.io/packagist/dm/nxmcz/date-time"></a>
-  <a href="https://github.com/nxmcz/date-time/actions"><img src="https://badgen.net/github/checks/nxmcz/date-time/main?cache=300"></a>
-  <a href='https://coveralls.io/github/nxmcz/date-time?branch=main'><img src='https://coveralls.io/repos/github/nxmcz/date-time/badge.svg?branch=main' alt='Coverage Status' /></a>
-</p>
+
+[![Testing](https://badgen.net/github/checks/nxmcz/date-time/main?cache=300)](https://github.com/nxmcz/date-time/actions)
+[![Coverage Status](https://coveralls.io/repos/github/nxmcz/date-time/badge.svg?branch=main)](https://coveralls.io/github/nxmcz/date-time?branch=main)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fnxmcz%2Fdate-time%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/nxmcz/date-time/main)
+[![Latest Stable Version](https://poser.pugx.org/tracy/tracy/v/stable)](https://github.com/nette/tracy/releases)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nxmcz/date-time/blob/main/LICENSE)
+[![Latest Stable Version](http://poser.pugx.org/nxmcz/date-time/v)](https://packagist.org/packages/nxmcz/date-time) [![Total Downloads](http://poser.pugx.org/nxmcz/date-time/downloads)](https://packagist.org/packages/nxmcz/date-time) [![Latest Unstable Version](http://poser.pugx.org/nxmcz/date-time/v/unstable)](https://packagist.org/packages/nxmcz/date-time) [![License](http://poser.pugx.org/nxmcz/date-time/license)](https://packagist.org/packages/nxmcz/date-time) [![PHP Version Require](http://poser.pugx.org/nxmcz/date-time/require/php)](https://packagist.org/packages/nxmcz/date-time)
 
 Requirements
 ------------
