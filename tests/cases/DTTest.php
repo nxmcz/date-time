@@ -146,6 +146,24 @@ class DTTest extends AbstractTestCase
 		Assert::same(29, $dt->getWeek());
 	}
 
+	public function testGetLastDayOfMonth()
+	{
+		Assert::same(28, DT::create('2022-02-05')->getLastDayOfMonth()->getDay());
+		Assert::same(30, DT::create('2022-09-01')->getLastDayOfMonth()->getDay());
+		Assert::same(30, DT::create('2022-09-30')->getLastDayOfMonth()->getDay());
+		Assert::same(29, DT::create('2020-02-25')->getLastDayOfMonth()->getDay());
+		Assert::exception(fn() => DT::create('2022-03-32')->getLastDayOfMonth()->getDay(), BadFormatException::class);
+	}
+
+	public function testGetFirstDayOfMonth()
+	{
+		Assert::same(1, DT::create('2022-02-05')->getFirstDayOfMonth()->getDay());
+		Assert::same(1, DT::create('2022-09-01')->getFirstDayOfMonth()->getDay());
+		Assert::same(1, DT::create('2022-09-30')->getFirstDayOfMonth()->getDay());
+		Assert::same(1, DT::create('2020-02-25')->getFirstDayOfMonth()->getDay());
+		Assert::exception(fn() => DT::create('2022-03-32')->getFirstDayOfMonth()->getDay(), BadFormatException::class);
+	}
+
 	public function testConverts()
 	{
 		$dt = DT::create('2022-07-20 19:00:00.677');
