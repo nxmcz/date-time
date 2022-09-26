@@ -46,11 +46,11 @@ trait Addition
 		return $this->makeAdditionRule($days, "days");
 	}
 
-	public function addMonths(int $month): self {
+	public function addMonth(int $month): self {
 		return $this->makeAdditionRule($month, "months", TRUE);
 	}
 
-	public function subMonths(int $month): self {
+	public function subMonth(int $month): self {
 		return $this->makeAdditionRule($month, "months");
 	}
 

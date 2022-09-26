@@ -33,8 +33,8 @@ class AdditionTest extends AbstractTestCase
 		$res[] = $dt->subHours(25);
 		$res[] = $dt->addDays(3);
 		$res[] = $dt->subDays(1);
-		$res[] = $dt->addMonths(2);
-		$res[] = $dt->subMonths(8);
+		$res[] = $dt->addMonth(2);
+		$res[] = $dt->subMonth(8);
 
 		$mirror = [
 			DT::create("2022-05-05 15:00:00"),
@@ -76,8 +76,8 @@ class AdditionTest extends AbstractTestCase
 					$dt
 						->addSeconds(180)
 						->subSeconds(480)
-						->addMonths(2)
-						->subMonths(6)
+						->addMonth(2)
+						->subMonth(6)
 						->subHours(9)
 						->subDays(1)
 						->addDays(91)

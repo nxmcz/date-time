@@ -31,14 +31,6 @@ trait DateConversion
 		return (int)$this->format('m');
 	}
 
-	public function getLastDayOfMonth(): self {
-		return $this->modify('last day of this month')->setTime(0,0);
-	}
-
-	public function getFirstDayOfMonth(): self {
-		return $this->modify('first day of this month')->setTime(0,0);
-	}
-
 	public function getWeeksOfYear(): int {
 		return (int)static::createFromParts($this->getYear(), 12, 28)->format("W");
 	}
