@@ -112,10 +112,15 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 		return $clone->diff($this->getEnd());
 	}
 
+	private function intervalToSeconds(NativeDateInterval $interval): int {
+		return $interval->days * 86400 + $interval->h * 3600 + $interval->i * 60 + $interval->s;
+	}
+
 	public function createBaseForTimeConversion(): int
 	{
-		$res = $this->getEndTimestamp() - $this->getStartTimestamp();
-		return $this->absoluteCalculation ? abs($res) : $res;
+		$res = $this->intervalToSeconds($this->getInterval());
+		$sign = $this->getEndTimestamp() > $this->getStartTimestamp();
+		return $this->absoluteCalculation ? $res : $res * ($sign ? 1 : (-1));
 	}
 
 	/**

@@ -32,9 +32,13 @@ class DT extends NativeDateTimeImmutable
 		return $datetime->setTimezone($zone);
 	}
 
-	public function setTimezone(DateTimeZone|string $timezone): self
+	public function setTimezone(DateTimeZone|string|null $timezone = NULL): self
 	{
-		$tz = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
+		if($timezone === NULL) {
+			$timezone = date_default_timezone_get();
+		}
+
+		$tz =  $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
 		return parent::setTimezone($tz);
 	}
 

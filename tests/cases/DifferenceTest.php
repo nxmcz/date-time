@@ -62,6 +62,16 @@ class DifferenceTest extends AbstractTestCase
 		);
 	}
 
+	public function testDifferenceInLeapYear()
+	{
+		$beforeHourShift = DT::createFromParts(2022,10,29, 15);
+		$afterHourShift = DT::createFromParts(2022,10,30, 15);
+		$difference = $beforeHourShift->difference($afterHourShift);
+
+		Assert::same(1, $difference->getDays());
+		Assert::same(86400, $difference->getSeconds());
+	}
+
 	/**
 	 * @dataProvider providerWeeks
 	 */
@@ -122,8 +132,8 @@ class DifferenceTest extends AbstractTestCase
 			[51, 30931200 / 604800, '2021/01/05', '2021/12/29'],
 			[51, 31276800 / 604800, '2021/01/05', '2022/01/02'],
 
-			[139, (84067200 + 3600) / 604800, '2019/05/05', '2022/01/02'],
-			[-139, -(84067200 + 3600) / 604800, '2022/01/02', '2019/05/05'],
+			[139, 139.0, '2019/05/05', '2022/01/02'],
+			[-139, -139.0, '2022/01/02', '2019/05/05'],
 		];
 	}
 
