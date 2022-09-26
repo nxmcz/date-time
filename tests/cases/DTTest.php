@@ -146,6 +146,12 @@ class DTTest extends AbstractTestCase
 		Assert::same(29, $dt->getWeek());
 	}
 
+	public function testInitByConstructor()
+	{
+		$dt = new DT('2022-07-20 19:00:00');
+		Assert::same('{"date":"2022-07-20 19:00:00.000000","timezone_type":3,"timezone":"Europe\/Prague"}', json_encode($dt));
+	}
+
 	public function testConverts()
 	{
 		$dt = DT::create('2022-07-20 19:00:00.677');
