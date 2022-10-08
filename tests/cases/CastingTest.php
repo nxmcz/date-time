@@ -19,9 +19,9 @@ class CastingTest extends AbstractTestCase
 {
 	public function testCastMethods(): void
 	{
-		$prague = DT::create("2022-07-05 15:30:00")->resetTimezone("Europe/Prague");
-		$tokyo = DT::create("2022-07-05 15:30:00")->resetTimezone("Asia/Tokyo");
-		$la = DT::create("2022-07-04 22:00:00")->resetTimezone("America/Los_Angeles");
+		$prague = DT::create("2022-07-05 15:30:00")->assignTimezone("Europe/Prague");
+		$tokyo = DT::create("2022-07-05 15:30:00")->assignTimezone("Asia/Tokyo");
+		$la = DT::create("2022-07-04 22:00:00")->assignTimezone("America/Los_Angeles");
 
 		Assert::same("2022-07-05 08:30:00", $tokyo->toLocalHumanString());
 		Assert::same("2022-07-05 15:30:00", $prague->toLocalHumanString());

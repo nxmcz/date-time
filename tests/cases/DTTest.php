@@ -124,7 +124,7 @@ class DTTest extends AbstractTestCase
 		Assert::true(
 			DT::create('2022-07-20 01:00:00')
 				->areEquals(DT::create('2022-07-19 19:00:00')
-					->resetTimezone('America/New_York'))
+					->assignTimezone('America/New_York'))
 		);
 	}
 
@@ -553,7 +553,7 @@ class DTTest extends AbstractTestCase
 		Assert::false(
 			DT::create('2022-05-20 11:45:00.1234')->setTimezone("America/New_York")
 				->areEquals(
-					DT::create('2022-05-20 11:45:00.1234')->resetTimezone("Asia/Tokyo")
+					DT::create('2022-05-20 11:45:00.1234')->assignTimezone("Asia/Tokyo")
 				)
 		);
 	}

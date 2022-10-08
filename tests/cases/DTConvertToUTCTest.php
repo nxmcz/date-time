@@ -20,7 +20,7 @@ class DTConvertToUTCTest extends AbstractTestCase
 	public function testConversion(int $offset, string $timezone, string $eq): void # Europe/Prague is different 2 hours
 	{
 		$dt = DT::create("2022-09-29T00:01:10Z")->setTimezone(new \DateTimeZone($timezone));
-		$r = DT::create($eq)->resetTimezone($timezone);
+		$r = DT::create($eq)->assignTimezone($timezone);
 		$utc = DT::create("2022-09-29T00:01:10Z");
 
 		Assert::same($offset, $utc->getTimezoneOffset($dt)); // offset of UTC to default
@@ -53,7 +53,7 @@ class DTConvertToUTCTest extends AbstractTestCase
 
 		Assert::true(
 			DT::create("2022-09-29T00:01:10Z")
-				->areEquals(DT::create("2022-09-29 02:01:10")->resetTimezone("Europe/Prague"))
+				->areEquals(DT::create("2022-09-29 02:01:10")->assignTimezone("Europe/Prague"))
 		);
 	}
 }

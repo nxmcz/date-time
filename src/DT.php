@@ -2,12 +2,11 @@
 
 namespace Noxem\DateTime;
 
-use DateTimeImmutable as NativeDateTimeImmutable;
 use DateTimeZone;
 use Noxem\DateTime\Attributes;
 use Noxem\DateTime\Utils;
 
-class DT extends NativeDateTimeImmutable
+class DT extends \DateTimeImmutable
 {
 	use Attributes\Creation;
 	use Attributes\DateConversion;
@@ -42,7 +41,7 @@ class DT extends NativeDateTimeImmutable
 		return parent::setTimezone($tz);
 	}
 
-	public function resetTimezone(DateTimeZone|string $timezone): self
+	public function assignTimezone(DateTimeZone|string $timezone): self
 	{
 		$tz = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
 		$capture = $this->format(Utils\Formatter::TIMESTAMP_MILLIS);

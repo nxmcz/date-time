@@ -40,7 +40,7 @@ class DTCreationAlwaysSameTest extends AbstractTestCase
 	{
 
 		$dt = DT::createFromUTC("2022-02-28T11:13:52Z");
-		Assert::true($dt->areEquals(DT::create("2022-02-28 12:13:52")->resetTimezone("Europe/Prague")));
+		Assert::true($dt->areEquals(DT::create("2022-02-28 12:13:52")->assignTimezone("Europe/Prague")));
 	}
 }
 

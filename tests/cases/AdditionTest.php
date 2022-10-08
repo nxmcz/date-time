@@ -33,8 +33,8 @@ class AdditionTest extends AbstractTestCase
 		$res[] = $dt->subHours(25);
 		$res[] = $dt->addDays(3);
 		$res[] = $dt->subDays(1);
-		$res[] = $dt->addMonth(2);
-		$res[] = $dt->subMonth(8);
+		$res[] = $dt->addMonths(2);
+		$res[] = $dt->subMonths(8);
 
 		$mirror = [
 			DT::create("2022-05-05 15:00:00"),
@@ -58,6 +58,29 @@ class AdditionTest extends AbstractTestCase
 		Assert::true($dt->areEquals(DT::create("2022-05-05 15:00:00")));
 	}
 
+	public function testModifyPrefix(): void
+	{
+		Assert::true( DT::create("2022-05-05 15:00:00")->addSeconds(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifySeconds(20) ) );
+		Assert::true( DT::create("2022-05-05 15:00:00")->subSeconds(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifySeconds(-20) ) );
+		Assert::false( DT::create("2022-05-05 15:00:00")->subSeconds(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifySeconds(-21) ) );
+
+		Assert::true( DT::create("2022-05-05 15:00:00")->addMinutes(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyMinutes(20) ) );
+		Assert::true( DT::create("2022-05-05 15:00:00")->subMinutes(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyMinutes(-20) ) );
+		Assert::false( DT::create("2022-05-05 15:00:00")->subMinutes(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyMinutes(-21) ) );
+
+		Assert::true( DT::create("2022-05-05 15:00:00")->addHours(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyHours(20) ) );
+		Assert::true( DT::create("2022-05-05 15:00:00")->subHours(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyHours(-20) ) );
+		Assert::false( DT::create("2022-05-05 15:00:00")->subHours(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyHours(-21) ) );
+
+		Assert::true( DT::create("2022-05-05 15:00:00")->addDays(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyDays(20) ) );
+		Assert::true( DT::create("2022-05-05 15:00:00")->subDays(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyDays(-20) ) );
+		Assert::false( DT::create("2022-05-05 15:00:00")->subDays(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyDays(-21) ) );
+
+		Assert::true( DT::create("2022-05-05 15:00:00")->addMonths(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyMonths(20) ) );
+		Assert::true( DT::create("2022-05-05 15:00:00")->subMonths(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyMonths(-20) ) );
+		Assert::false( DT::create("2022-05-05 15:00:00")->subMonths(20)->areEquals( DT::create("2022-05-05 15:00:00")->modifyMonths(-21) ) );
+	}
+
 	public function testInvalidArgumentException(): void
 	{
 		$dt = DT::create("2022-05-05 15:00:00");
@@ -76,8 +99,8 @@ class AdditionTest extends AbstractTestCase
 					$dt
 						->addSeconds(180)
 						->subSeconds(480)
-						->addMonth(2)
-						->subMonth(6)
+						->addMonths(2)
+						->subMonths(6)
 						->subHours(9)
 						->subDays(1)
 						->addDays(91)
