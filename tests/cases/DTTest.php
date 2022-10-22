@@ -7,6 +7,7 @@ namespace Tests\Unit;
 use DateTime;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
+use Noxem\DateTime\Utils\Formatter;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
 
@@ -556,6 +557,43 @@ class DTTest extends AbstractTestCase
 					DT::create('2022-05-20 11:45:00.1234')->assignTimezone("Asia/Tokyo")
 				)
 		);
+	}
+
+	/**
+	 * @dataProvider dataForClamp
+	 */
+	public function testClamp(string $expectedDatetime, string $suspectedDatetime): void {
+		Assert::same($expectedDatetime,
+			DT::create($suspectedDatetime)
+				->clamp(
+					DT::create('2022-07-20 11:00:01'),
+					DT::create('2022-07-20 12:00:00')
+				)->format(Formatter::TIMESTAMPS)
+		);
+	}
+
+	public function dataForClamp(): array {
+		return [
+			[
+				'expectedDatetime' => '2022-07-20 11:00:01',
+				'suspectedDatetime' => '2022-07-20 11:00:00'
+			], [
+				'expectedDatetime' => '2022-07-20 11:00:01',
+				'suspectedDatetime' => '2022-07-20 11:00:01'
+			], [
+				'expectedDatetime' => '2022-07-20 11:59:59',
+				'suspectedDatetime' => '2022-07-20 11:59:59'
+			], [
+				'expectedDatetime' => '2022-07-20 12:00:00',
+				'suspectedDatetime' => '2022-07-20 12:00:00'
+			], [
+				'expectedDatetime' => '2022-07-20 12:00:00',
+				'suspectedDatetime' => '2022-07-20 12:00:01'
+			], [
+				'expectedDatetime' => '2022-07-20 11:33:22',
+				'suspectedDatetime' => '2022-07-20 11:33:22'
+			]
+		];
 	}
 }
 

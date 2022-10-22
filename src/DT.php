@@ -24,6 +24,11 @@ class DT extends \DateTimeImmutable
 		return new Difference($this, $suspect, $throw);
 	}
 
+	public function clamp(\DateTimeInterface $min, \DateTimeInterface $max): self
+	{
+		return Utils\Helpers::clamp($this, $min, $max);
+	}
+
 	public function setTimestamp($timestamp): self
 	{
 		$zone = $this->getTimezone();
@@ -33,11 +38,11 @@ class DT extends \DateTimeImmutable
 
 	public function setTimezone(DateTimeZone|string|null $timezone = NULL): self
 	{
-		if($timezone === NULL) {
+		if ($timezone === NULL) {
 			$timezone = date_default_timezone_get();
 		}
 
-		$tz =  $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
+		$tz = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
 		return parent::setTimezone($tz);
 	}
 
