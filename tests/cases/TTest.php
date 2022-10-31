@@ -6,7 +6,7 @@ namespace Tests\Unit;
 
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
-use Noxem\DateTime\T;
+use Noxem\DateTime\LocalTime;
 use Noxem\DateTime\Utils\Parser;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
@@ -25,9 +25,9 @@ class TTest extends AbstractTestCase
 	public function testResults(bool $exception, mixed $suspect, array $results): void
 	{
 		if($exception) {
-			Assert::exception(fn() => T::create($suspect), BadFormatException::class);
+			Assert::exception(fn() => LocalTime::create($suspect), BadFormatException::class);
 		} else {
-			$t = T::create($suspect);
+			$t = LocalTime::create($suspect);
 
 			Assert::same(
 				$results,
@@ -58,9 +58,9 @@ class TTest extends AbstractTestCase
 	public function testCreateFromString(bool $exception, mixed $suspect, array $results = []): void
 	{
 		if($exception) {
-			Assert::exception(fn() => T::create($suspect), BadFormatException::class);
+			Assert::exception(fn() => LocalTime::create($suspect), BadFormatException::class);
 		} else {
-			$t = T::createFromString($suspect);
+			$t = LocalTime::createFromString($suspect);
 
 			Assert::same(
 				$results,

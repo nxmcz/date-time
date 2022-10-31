@@ -6,40 +6,35 @@ use DateTimeZone;
 use Nette\Utils\Strings;
 use Noxem\DateTime\Exception\BadFormatException;
 
-class T
+class LocalTime
 {
-	private static int $hours;
-	private static int $minutes;
-	private static int $seconds;
-	private static int $millis;
-	private static ?DateTimeZone $dateTimeZone;
-
 	public function __construct(
-		int $hours,
-		int $minutes = 0,
-		int $seconds = 0,
-		int $millis = 0,
-		?DateTimeZone $dateTimeZone = NULL
+		private int $hours,
+		private int $minutes = 0,
+		private int $seconds = 0,
+		private int $millis = 0,
+		private ?DateTimeZone $dateTimeZone = NULL
 	) {
-		self::$hours = $hours;
-		self::$minutes = $minutes;
-		self::$seconds = $seconds;
-		self::$millis = $millis;
-		self::$dateTimeZone = $dateTimeZone;
 	}
 
-	public static function create(string|int|\DateTimeInterface $suspect = 'now', string $timezone = NULL): self
+	public static function create(string|int|\DateTimeInterface|LocalTime $suspect = 'now', string $timezone = NULL): self
 	{
 		try {
-			$dateTimeZone = new \DateTimeZone($timezone ?? date_default_timezone_get());
-			$dt = DT::getOrCreateInstance($suspect)->setTimezone($dateTimeZone);
+			if($suspect instanceof self) {
+				$dt = $suspect;
+				$millis = $dt->getMillis();
+			} else {
+				$dateTimeZone = new \DateTimeZone($timezone ?? date_default_timezone_get());
+				$dt = DT::getOrCreateInstance($suspect)->setTimezone($dateTimeZone);
+				$millis = $dt->getMillisPart();
+			}
 
 			return new self(
 				$dt->getHour(),
 				$dt->getMinute(),
 				$dt->getSecond(),
-				$dt->getMillisPart(),
-				$dateTimeZone
+				$millis,
+				$dt->getTimezone()
 			);
 		} catch (\Exception) {
 			throw BadFormatException::create()
@@ -80,7 +75,7 @@ class T
 			$second = $exp[2] ??= 0;
 			$millis = $exp[3] ??= 0;
 
-			return self::createFromParts($hour, $minute, (int)$second, (int)$millis);
+			return new self($hour, $minute, (int)$second, (int)$millis);
 		}
 
 		throw BadFormatException::create()
@@ -89,30 +84,30 @@ class T
 
 	public function getTimezone(): DateTimeZone
 	{
-		if (self::$dateTimeZone === NULL) {
-			self::$dateTimeZone = new DateTimeZone(date_default_timezone_get());
+		if ($this->dateTimeZone === NULL) {
+			$this->dateTimeZone = new DateTimeZone(date_default_timezone_get());
 		}
 
-		return self::$dateTimeZone;
+		return $this->dateTimeZone;
 	}
 
 	public function getHour(): int
 	{
-		return self::$hours;
+		return $this->hours;
 	}
 
 	public function getMinute(): int
 	{
-		return self::$minutes;
+		return $this->minutes;
 	}
 
 	public function getSecond(): int
 	{
-		return self::$seconds;
+		return $this->seconds;
 	}
 
 	public function getMillis(): int
 	{
-		return self::$millis;
+		return $this->millis;
 	}
 }
