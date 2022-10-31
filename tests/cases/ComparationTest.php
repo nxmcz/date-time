@@ -261,21 +261,38 @@ class ComparationTest extends AbstractTestCase
 		Assert::true($dt->isGreaterThanOrEqualTo(DT::create("2020-07-19 23:59:59")));
 	}
 
-	public function testTimezoneOffset(): void
+	public function testTimezoneOffsetBeforeWinterTime(): void
 	{
-		$dt = DT::create();
+		$dt = DT::create('29.10.2022');
 
-		Assert::equal(0, $dt->getTimezoneOffset(DT::create()));
-		Assert::equal(1, $dt->getTimezoneOffset(DT::create()->assignTimezone("Europe/Moscow")));
-		Assert::equal(7, $dt->getTimezoneOffset(DT::create()->assignTimezone("Asia/Tokyo")));
-		Assert::equal(-6, $dt->getTimezoneOffset(DT::create()->assignTimezone("America/New_York")));
-		Assert::equal(-9, $dt->getTimezoneOffset(DT::create()->assignTimezone("America/Los_Angeles")));
+		Assert::equal(0, $dt->getTimezoneOffset($dt));
+		Assert::equal(1, $dt->getTimezoneOffset($dt->assignTimezone("Europe/Moscow")));
+		Assert::equal(7, $dt->getTimezoneOffset($dt->assignTimezone("Asia/Tokyo")));
+		Assert::equal(-6, $dt->getTimezoneOffset($dt->assignTimezone("America/New_York")));
+		Assert::equal(-9, $dt->getTimezoneOffset($dt->assignTimezone("America/Los_Angeles")));
 
-		Assert::equal(9, DT::create()->assignTimezone("America/Los_Angeles")->getTimezoneOffset($dt));
+		Assert::equal(9, $dt->assignTimezone("America/Los_Angeles")->getTimezoneOffset($dt));
 		Assert::equal(16,
-			DT::create()->assignTimezone("America/Los_Angeles")->getTimezoneOffset(DT::create()->assignTimezone("Asia/Tokyo")));
+			$dt->assignTimezone("America/Los_Angeles")->getTimezoneOffset($dt->assignTimezone("Asia/Tokyo")));
 		Assert::equal(-16,
-			DT::create()->assignTimezone("Asia/Tokyo")->getTimezoneOffset(DT::create()->assignTimezone("America/Los_Angeles")));
+			$dt->assignTimezone("Asia/Tokyo")->getTimezoneOffset($dt->assignTimezone("America/Los_Angeles")));
+	}
+
+	public function testTimezoneOffsetAfterWinterTime(): void
+	{
+		$dt = DT::create('11.11.2022');
+
+		Assert::equal(0, $dt->getTimezoneOffset($dt));
+		Assert::equal(2, $dt->getTimezoneOffset($dt->assignTimezone("Europe/Moscow")));
+		Assert::equal(8, $dt->getTimezoneOffset($dt->assignTimezone("Asia/Tokyo")));
+		Assert::equal(-6, $dt->getTimezoneOffset($dt->assignTimezone("America/New_York")));
+		Assert::equal(-9, $dt->getTimezoneOffset($dt->assignTimezone("America/Los_Angeles")));
+
+		Assert::equal(9, $dt->assignTimezone("America/Los_Angeles")->getTimezoneOffset($dt));
+		Assert::equal(17,
+			$dt->assignTimezone("America/Los_Angeles")->getTimezoneOffset($dt->assignTimezone("Asia/Tokyo")));
+		Assert::equal(-17,
+			$dt->assignTimezone("Asia/Tokyo")->getTimezoneOffset($dt->assignTimezone("America/Los_Angeles")));
 	}
 }
 
