@@ -72,14 +72,15 @@ class T
 
 	public static function createFromString(string $value): self
 	{
-		if( Strings::match($value, '/\d{2}:\d{2}:\d{2}.\d$/') !== NULL) {
+		$exp = explode(":", $value);
+		if( count($exp) === 2 || count($exp) === 3) {
 
-			$hour = (int)Strings::substring($value,0, 2);
-			$minute = (int)Strings::substring($value,3, 2);
-			$second = (int)Strings::substring($value,6, 2);
-			$millis = (int)Strings::substring($value,9);
+			$hour = (int)$exp[0];
+			$minute = (int)$exp[1];
+			$second = $exp[2] ??= 0;
+			$millis = $exp[3] ??= 0;
 
-			return self::createFromParts($hour, $minute, $second, $millis);
+			return self::createFromParts($hour, $minute, (int)$second, (int)$millis);
 		}
 
 		throw BadFormatException::create()
