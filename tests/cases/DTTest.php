@@ -153,24 +153,6 @@ class DTTest extends AbstractTestCase
 		Assert::same('{"date":"2022-07-20 19:00:00.000000","timezone_type":3,"timezone":"Europe\/Prague"}', json_encode($dt));
 	}
 
-	public function testConverts()
-	{
-		$dt = DT::create('2022-07-20 19:00:00.677');
-		Assert::same(677000, $dt->getMillisPart());
-
-		$dt = DT::create('2022-07-20 19:00:00.0');
-		Assert::same(0, $dt->getMillisPart());
-
-		$dt = DT::create('2022-07-20 19:00:00');
-		Assert::same(0, $dt->getMillisPart());
-
-		$dt = DT::create('2022-07-20 19:00:00.123456789');
-		Assert::same(123456, $dt->getMillisPart());
-
-		$dt = DT::create('2022-07-20 19:00:00.1234569');
-		Assert::same(123456, $dt->getMillisPart());
-	}
-
 	public function testToString()
 	{
 		Assert::same('2022-07-20 19:00:00', (string)DT::create('2022-07-20 19:00:00'));

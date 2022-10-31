@@ -19,6 +19,10 @@ trait DateConversion
 		return (int)$this->format('W');
 	}
 
+	public function getMinute(): int {
+		return (int)$this->format('i');
+	}
+
 	public function getHour(): int {
 		return (int)$this->format('H');
 	}
