@@ -17,7 +17,7 @@ require_once __DIR__ . '/../bootstrap.php';
 /**
  * @testCase
  */
-class TTest extends AbstractTestCase
+class LocalTimeTest extends AbstractTestCase
 {
 	/**
 	 * @dataProvider times
@@ -62,6 +62,13 @@ class TTest extends AbstractTestCase
 		} else {
 			$t = LocalTime::createFromString($suspect);
 
+			Assert::noError(fn() => LocalTime::createFromParts(
+				$t->getHour(),
+				$t->getMinute(),
+				$t->getSecond(),
+				$t->getMillis()
+			));
+
 			Assert::same(
 				$results,
 				[
@@ -92,7 +99,17 @@ class TTest extends AbstractTestCase
 			[TRUE, '-6:34:'],
 		];
 	}
+
+	public function testCreate(): void
+	{
+		Assert::exception(fn() => LocalTime::create('abcd'), BadFormatException::class);
+		Assert::exception(fn() => LocalTime::createFromString('22-07-20-1'), BadFormatException::class);
+		Assert::exception(fn() => LocalTime::createFromString('22:07:20:1'), BadFormatException::class);
+
+		Assert::type(LocalTime::class, LocalTime::createFromParts(22,7,20) );
+		Assert::type(LocalTime::class, LocalTime::create( LocalTime::createFromString('22:07:20') ));
+	}
 }
 
-$test = new TTest();
+$test = new LocalTimeTest();
 $test->run();

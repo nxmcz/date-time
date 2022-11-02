@@ -3,11 +3,15 @@
 namespace Noxem\DateTime;
 
 use DateTimeZone;
-use Nette\Utils\Strings;
+use Noxem\DateTime\Attributes\Timezoned;
 use Noxem\DateTime\Exception\BadFormatException;
 
 class LocalTime
 {
+	use Timezoned;
+
+	public const TimeSeparator = ":";
+
 	public function __construct(
 		private int $hours,
 		private int $minutes = 0,
@@ -48,7 +52,7 @@ class LocalTime
 		int $second = 0,
 		int $millis = 0
 	): self {
-		$stringTime = sprintf('%02d:%02d:%02d.%d', $hour, $minute, $second, $millis);
+		$stringTime = sprintf("%02d:%02d:%02d.%d", $hour, $minute, $second, $millis);
 		if (
 			$hour < 0
 			|| $hour > 23
@@ -67,7 +71,7 @@ class LocalTime
 
 	public static function createFromString(string $value): self
 	{
-		$exp = explode(":", $value);
+		$exp = explode(self::TimeSeparator, $value);
 		if( count($exp) === 2 || count($exp) === 3) {
 
 			$hour = (int)$exp[0];
@@ -80,15 +84,6 @@ class LocalTime
 
 		throw BadFormatException::create()
 			->withMessage("Time parts are invalid: $value");
-	}
-
-	public function getTimezone(): DateTimeZone
-	{
-		if ($this->dateTimeZone === NULL) {
-			$this->dateTimeZone = new DateTimeZone(date_default_timezone_get());
-		}
-
-		return $this->dateTimeZone;
 	}
 
 	public function getHour(): int

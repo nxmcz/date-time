@@ -67,4 +67,8 @@ trait DateConversion
 	public function getYear(): int {
 		return (int)$this->format('Y');
 	}
+
+	public function getAbsoluteDate(): int {
+		return (int)$this->format(Formatter::DATE_ABSOLUTE);
+	}
 }

@@ -123,6 +123,10 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 		return $this->absoluteCalculation ? $res : $res * ($sign ? 1 : (-1));
 	}
 
+	public function isDayFlip(): bool {
+		return $this->getStart()->getAbsoluteDate() !== $this->getEnd()->getAbsoluteDate();
+	}
+
 	/**
 	 * @return array<string, float|int|DT>>
 	 */

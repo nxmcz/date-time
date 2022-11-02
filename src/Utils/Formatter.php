@@ -9,6 +9,7 @@ use ReflectionClassConstant;
 class Formatter
 {
 	public const DATE = 'Y-m-d';
+	public const DATE_ABSOLUTE = 'Ymd';
 	public const TIME = 'H:i';
 	public const TIMES = 'H:i:s';
 	public const SLASHES = 'Y/m/d';
@@ -24,4 +25,6 @@ class Formatter
 	public const ATOM = 'Y-m-d\TH:i:sP';
 	public const UTC = 'Y-m-d\TH:i:s\Z';
 	public const UTC_WT = 'Y-m-d\TH:i:s\ZP';
+
+	public const DAY_NAME = 'l';
 }

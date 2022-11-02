@@ -281,6 +281,20 @@ class DifferenceTest extends AbstractTestCase
 		);
 	}
 
+	public function testIsDayFlip(): void
+	{
+		Assert::same( 20220501, DT::create("2022-05-01")->getAbsoluteDate() );
+		Assert::same( 20220501, DT::create("2022-5-1")->getAbsoluteDate() );
+		Assert::same( 20220501, DT::create("2022-05-01 12:34:56")->getAbsoluteDate() );
+
+		Assert::false( DT::create("2022-05-01 00:00:00")->difference( DT::create("2022-05-01 23:59:59"))->isDayFlip() );
+		Assert::false( DT::create("2022-05-01 12:00:00")->difference( DT::create("2022-05-01 14:00:00"))->isDayFlip() );
+		Assert::true( DT::create("2022-05-01 00:00:00")->difference( DT::create("2022-05-02 00:00:00"))->isDayFlip() );
+		Assert::true( DT::create("2022-05-01 12:00:00")->difference( DT::create("2022-05-02 14:00:00"))->isDayFlip() );
+
+		Assert::true( DT::create("2022-05-01 12:00:00")->difference( DT::create("2023-05-01 13:00:00"))->isDayFlip() );
+		Assert::true( DT::create("2022-05-01 22:00:00")->difference( DT::create("2023-05-02 06:00:00"))->isDayFlip() );
+	}
 }
 
 $test = new DifferenceTest();
