@@ -12,13 +12,17 @@ class LocalDate
 	use Timezoned;
 
 	public const DateSeparator = "-";
+	private DT $dt;
 
 	public function __construct(
 		private int $year,
 		private int $month,
-		private int $day = 1,
+		private int $day,
 		private ?DateTimeZone $dateTimeZone = NULL
 	) {
+		$this->dt = DT::createFromParts($year, $month, $day)
+			->setTimezone($this->dateTimeZone)
+			->setTime(0,0);
 	}
 
 	public static function create(string|int|\DateTimeInterface|LocalDate $suspect = 'now', string $timezone = NULL): self
@@ -99,12 +103,12 @@ class LocalDate
 
 	public function getDayOfWeek(): int
 	{
-		return $this->getDT()->getDayOfWeek();
+		return $this->dt->getDayOfWeek();
 	}
 
 	public function getDayName(): string
 	{
-		return strtolower($this->getDT()->format(Formatter::DAY_NAME));
+		return strtolower($this->dt->format(Formatter::DAY_NAME));
 	}
 
 	public function areEquals(LocalDate $equalsTo): bool
@@ -114,7 +118,7 @@ class LocalDate
 
 	public function getDT(): DT
 	{
-		return DT::createFromParts($this->getYear(), $this->getMonth(), $this->getDay(), 0,0,0);
+		return $this->dt;
 	}
 
 	public function __toString(): string {
