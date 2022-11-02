@@ -6,6 +6,7 @@ use DateTimeInterface;
 use Nette\Utils\Validators;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
+use Noxem\DateTime\Utils\Formatter;
 
 /**
  * @internal

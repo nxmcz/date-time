@@ -29,6 +29,12 @@ class DT extends \DateTimeImmutable
 		return Utils\Helpers::clamp($this, $min, $max);
 	}
 
+	public function setTimeByInterface(\DateTimeInterface $interface): self
+	{
+		$dt = DT::createFromInterface($interface);
+		return $this->setTime($dt->getHour(), $dt->getMinute(), $dt->getSecond());
+	}
+
 	public function setTimestamp($timestamp): self
 	{
 		$zone = $this->getTimezone();

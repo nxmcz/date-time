@@ -541,6 +541,19 @@ class DTTest extends AbstractTestCase
 		);
 	}
 
+	public function testSetTimeByInterface(): void
+	{
+		Assert::same(
+			"2022-07-20 00:30:00",
+			(string)DT::create("2022-07-20 12:00:00")->setTimeByInterface(new DateTime("1993-07-20 00:30:00"))
+		);
+
+		Assert::same(
+			"2022-07-20 00:30:00",
+			(string)DT::create("2022-07-20 12:00:00")->setTimeByInterface(new DateTime("1993-07-20 00:30:00.555"))
+		);
+	}
+
 	/**
 	 * @dataProvider dataForClamp
 	 */
