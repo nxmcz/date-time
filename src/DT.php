@@ -38,7 +38,7 @@ class DT extends \DateTimeImmutable
 	public function setTimestamp($timestamp): self
 	{
 		$zone = $this->getTimezone();
-		$datetime = new self('@' . (string)$timestamp);
+		$datetime = new self('@' . (string) $timestamp);
 		return $datetime->setTimezone($zone);
 	}
 
@@ -58,6 +58,16 @@ class DT extends \DateTimeImmutable
 		$capture = $this->format(Utils\Formatter::TIMESTAMP_MILLIS);
 
 		return new self($capture, $tz);
+	}
+
+	public function getLocalTime(): LocalTime
+	{
+		return LocalTime::create($this);
+	}
+
+	public function getLocalDate(): LocalDate
+	{
+		return LocalDate::create($this);
 	}
 
 	public function __toString(): string

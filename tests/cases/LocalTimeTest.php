@@ -109,6 +109,12 @@ class LocalTimeTest extends AbstractTestCase
 		Assert::type(LocalTime::class, LocalTime::createFromParts(22,7,20) );
 		Assert::type(LocalTime::class, LocalTime::create( LocalTime::createFromString('22:07:20') ));
 	}
+
+	public function testHideSeconds(): void
+	{
+		Assert::same('22:07:20', (string)LocalTime::createFromString('22:07:20'));
+		Assert::same('22:07', (string)LocalTime::createFromString('22:07:20')->hideSeconds());
+	}
 }
 
 $test = new LocalTimeTest();

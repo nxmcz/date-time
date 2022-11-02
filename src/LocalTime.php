@@ -11,6 +11,7 @@ class LocalTime
 	use Timezoned;
 
 	public const TimeSeparator = ":";
+	private bool $hideSeconds = FALSE;
 
 	public function __construct(
 		private int $hours,
@@ -104,5 +105,20 @@ class LocalTime
 	public function getMillis(): int
 	{
 		return $this->millis;
+	}
+
+	public function __toString(): string {
+		$time = sprintf("%02d:%02d", $this->getHour(), $this->getMinute());
+		if( ! $this->hideSeconds) {
+			$time .= sprintf(":%02d", $this->getSecond());
+		}
+
+		return $time;
+	}
+
+	public function hideSeconds(bool $hide = TRUE): self {
+		$clone = clone $this;
+		$clone->hideSeconds = $hide;
+		return $clone;
 	}
 }
