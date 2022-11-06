@@ -59,22 +59,6 @@ class DTTest extends AbstractTestCase
 		Assert::true(
 			DT::create()->areEquals(DT::now())
 		);
-
-		Assert::true(
-			DT::create()->areEquals(DT::parse())
-		);
-
-		Assert::true(
-			DT::create("2022-07-20 11:22:33")->areEquals(DT::parse("2022-07-20 11:22:33"))
-		);
-
-		Assert::true(
-			DT::create("2022-07-20 11:22:33")->areNotEquals(DT::parse("2022-07-20 11:22:34"))
-		);
-
-		Assert::true(
-			DT::create("2022-07-20 11:22:33")->areNotEquals(DT::parse("2022-07-20 11:22:32"))
-		);
 	}
 
 	public function testGetOrCreateInstance()

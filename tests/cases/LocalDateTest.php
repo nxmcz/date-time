@@ -54,7 +54,7 @@ class LocalDateTest extends AbstractTestCase
 	 */
 	public function testDays(string $name, int $dayOfWeek, string $date): void
 	{
-		Assert::same($name, LocalDate::createFromString($date)->getDayName());
+		Assert::same($name, LocalDate::createFromString($date)->getDay()->getName());
 		Assert::same($dayOfWeek, LocalDate::createFromString($date)->getDayOfWeek());
 		Assert::noError(fn() => LocalDate::createFromString($date));
 	}

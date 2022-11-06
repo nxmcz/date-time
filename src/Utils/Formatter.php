@@ -27,4 +27,5 @@ class Formatter
 	public const UTC_WT = 'Y-m-d\TH:i:s\ZP';
 
 	public const DAY_NAME = 'l';
+	public const MONTH_NAME = 'F';
 }

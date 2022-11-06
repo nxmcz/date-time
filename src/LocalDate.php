@@ -5,7 +5,8 @@ namespace Noxem\DateTime;
 use DateTimeZone;
 use Noxem\DateTime\Attributes\Timezoned;
 use Noxem\DateTime\Exception\BadFormatException;
-use Noxem\DateTime\Utils\Formatter;
+use Noxem\DateTime\LocalDate\Day;
+use Noxem\DateTime\LocalDate\Month;
 
 class LocalDate
 {
@@ -16,8 +17,8 @@ class LocalDate
 
 	public function __construct(
 		private int $year,
-		private int $month,
-		private int $day,
+		int $month,
+		int $day,
 		private ?DateTimeZone $dateTimeZone = NULL
 	) {
 		$this->dt = DT::createFromParts($year, $month, $day)
@@ -30,16 +31,24 @@ class LocalDate
 		try {
 			if($suspect instanceof self) {
 				$dt = $suspect;
+				$day = $dt->getDay()->getNumber();
+				$month = $dt->getMonth()->getNumber();
 			} else {
 				$dateTimeZone = new \DateTimeZone($timezone ?? date_default_timezone_get());
 				$dt = DT::getOrCreateInstance($suspect)->setTimezone($dateTimeZone)->setTime(0,0);
+				$day = $dt->getDay();
+				$month = $dt->getMonth();
 			}
 
+			$year = $dt->getYear();
+
+			$timezone = $dt->getTimezone();
+
 			return new self(
-				$dt->getYear(),
-				$dt->getMonth(),
-				$dt->getDay(),
-				$dt->getTimezone()
+				$year,
+				$month,
+				$day,
+				$timezone
 			);
 		} catch (\Exception) {
 			throw BadFormatException::create()
@@ -91,24 +100,19 @@ class LocalDate
 		return $this->year;
 	}
 
-	public function getMonth(): int
+	public function getMonth(): Month
 	{
-		return $this->month;
+		return new Month($this->getDT());
 	}
 
-	public function getDay(): int
+	public function getDay(): Day
 	{
-		return $this->day;
+		return new Day($this->getDT());
 	}
 
 	public function getDayOfWeek(): int
 	{
 		return $this->dt->getDayOfWeek();
-	}
-
-	public function getDayName(): string
-	{
-		return strtolower($this->dt->format(Formatter::DAY_NAME));
 	}
 
 	public function areEquals(LocalDate $equalsTo): bool

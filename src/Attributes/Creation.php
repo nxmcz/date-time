@@ -28,14 +28,6 @@ trait Creation
 		}
 	}
 
-	/**
-	 * Equivalent to create
-	 */
-	public static function parse(string|int $suspect = 'now', string $timezone = NULL): self
-	{
-		return self::create(...func_get_args());
-	}
-
 	public static function createFromUTC(string $suspect): self
 	{
 		$dt = (new self($suspect));
