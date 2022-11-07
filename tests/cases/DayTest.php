@@ -20,7 +20,7 @@ class DayTest extends AbstractTestCase
 	/**
 	 * @dataProvider times
 	 */
-	public function testDays(string $date, int $startOffset, int $endOffset, int $dayOfWeek, string $dayName): void
+	public function testDays(string $date, int $startOffset, int $endOffset, int $dayOfWeek, string $dayName, bool $isWeekend): void
 	{
 		$d = LocalDate::createFromString($date)->getDay();
 		Assert::same($startOffset, $d->getStartingWeekOffset());
@@ -28,6 +28,7 @@ class DayTest extends AbstractTestCase
 		Assert::same($dayOfWeek, $d->getDayOfWeek());
 		Assert::same($dayName, $d->getName());
 		Assert::same(30, $d->getMaximumNumber());
+		Assert::same($isWeekend, $d->isWeekend());
 
 		$generator = $d::generate( DT::create("2022-11-07") );
 		Assert::type('array', $generator);
@@ -42,13 +43,13 @@ class DayTest extends AbstractTestCase
 	{
 		return [
 			[
-				'2022-11-05', 5, 1, 6, 'saturday',
-				'2022-11-06', 6, 0, 7, 'sunday',
-				'2022-11-07', 0, 6, 1, 'monday',
-				'2022-11-08', 1, 5, 2, 'tuesday',
-				'2022-11-09', 2, 4, 3, 'wednesday',
-				'2022-11-10', 3, 3, 4, 'thursday',
-				'2022-11-11', 4, 2, 5, 'friday'
+				'2022-11-05', 5, 1, 6, 'saturday', TRUE,
+				'2022-11-06', 6, 0, 7, 'sunday', TRUE,
+				'2022-11-07', 0, 6, 1, 'monday', FALSE,
+				'2022-11-08', 1, 5, 2, 'tuesday', FALSE,
+				'2022-11-09', 2, 4, 3, 'wednesday', FALSE,
+				'2022-11-10', 3, 3, 4, 'thursday', FALSE,
+				'2022-11-11', 4, 2, 5, 'friday', FALSE
 			],
 		];
 	}

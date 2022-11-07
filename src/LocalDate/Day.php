@@ -17,6 +17,11 @@ class Day extends DatePart
 		return $this->dt->getDay();
 	}
 
+	public function isWeekend(): bool
+	{
+		return $this->getDayOfWeek() > 5;
+	}
+
 	public function getDayOfWeek(): int
 	{
 		return $this->dt->getDayOfWeek();
