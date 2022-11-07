@@ -10,8 +10,7 @@ abstract class DatePart
 
 	public function __construct(
 		\DateTimeInterface $dateTimeInterface
-	)
-	{
+	) {
 		$this->dt = DT::createFromInterface($dateTimeInterface);
 	}
 
@@ -39,5 +38,10 @@ abstract class DatePart
 	public function __toString(): string
 	{
 		return $this->getName();
+	}
+
+	public function getDT(): DT
+	{
+		return $this->dt;
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Noxem\DateTime\LocalDate;
 
+use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
 
 class Day extends DatePart
@@ -34,5 +35,26 @@ class Day extends DatePart
 	public function getFormat(): string
 	{
 		return Formatter::DAY_NAME;
+	}
+
+	/**
+	 * @params DT|null $dt
+	 * @return array<Day>
+	 */
+	public static function generate(DT $dt = NULL): array
+	{
+		$generator = array();
+		$dt ??= DT::create();
+		$maximum = $dt->getLocalDate()->getDay()->getMaximumNumber();
+
+		$first = $dt
+			->setDate($dt->getYear(), $dt->getMonth(), 1)
+			->setTime(0,0);
+
+		for ($i=0;$i<$maximum;$i++) {
+			$generator[] = $first->addDays($i)->getLocalDate()->getDay();
+		}
+
+		return $generator;
 	}
 }

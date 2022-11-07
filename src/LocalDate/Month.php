@@ -21,4 +21,25 @@ class Month extends DatePart
 	{
 		return Formatter::MONTH_NAME;
 	}
+
+	/**
+	 * @params DT|null $dt
+	 * @return array<Month>
+	 */
+	public static function generate(DT $dt = NULL): array
+	{
+		$generator = array();
+		$dt ??= DT::create();
+		$maximum = $dt->getLocalDate()->getMonth()->getMaximumNumber();
+
+		$first = $dt
+			->setDate($dt->getYear(), 1, 1)
+			->setTime(0,0);
+
+		for ($i=0;$i<$maximum;$i++) {
+			$generator[] = $first->addMonths($i)->getLocalDate()->getMonth();
+		}
+
+		return $generator;
+	}
 }

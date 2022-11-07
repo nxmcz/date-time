@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use Noxem\DateTime\DT;
 use Noxem\DateTime\LocalDate;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
@@ -26,6 +27,12 @@ class MonthTest extends AbstractTestCase
 		Assert::same($endOffset, $d->getEndingOffset());
 		Assert::same($number, $d->getNumber());
 		Assert::same($name, $d->getName());
+
+		$generator = $d::generate( DT::create("2022-11-07") );
+		Assert::type('array', $generator);
+		Assert::same(12, count($generator));
+		Assert::same('2022-01-01 00:00:00', (string)$generator[0]->getDT());
+		Assert::same('2022-12-01 00:00:00', (string)$generator[11]->getDT());
 	}
 
 	public function times(): array

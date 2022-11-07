@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use Noxem\DateTime\DT;
 use Noxem\DateTime\LocalDate;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
@@ -27,12 +28,13 @@ class DayTest extends AbstractTestCase
 		Assert::same($dayOfWeek, $d->getDayOfWeek());
 		Assert::same($dayName, $d->getName());
 		Assert::same(30, $d->getMaximumNumber());
+
+		$generator = $d::generate( DT::create("2022-11-07") );
+		Assert::type('array', $generator);
+		Assert::same(30, count($generator));
+		Assert::same('2022-11-01 00:00:00', (string)$generator[0]->getDT());
+		Assert::same('2022-11-30 00:00:00', (string)$generator[29]->getDT());
 	}
-
-
-
-
-
 
 
 
