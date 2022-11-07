@@ -28,4 +28,5 @@ class Formatter
 
 	public const DAY_NAME = 'l';
 	public const MONTH_NAME = 'F';
+	public const WEEK_NUM = 'W';
 }

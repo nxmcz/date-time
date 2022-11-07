@@ -7,6 +7,7 @@ use Noxem\DateTime\Attributes\Timezoned;
 use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\LocalDate\Day;
 use Noxem\DateTime\LocalDate\Month;
+use Noxem\DateTime\LocalDate\Week;
 
 class LocalDate
 {
@@ -103,6 +104,11 @@ class LocalDate
 	public function getMonth(): Month
 	{
 		return new Month($this->getDT());
+	}
+
+	public function getWeek(): Week
+	{
+		return new Week($this->getDT());
 	}
 
 	public function getDay(): Day
