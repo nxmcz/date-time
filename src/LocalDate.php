@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime;
 
@@ -13,30 +15,36 @@ class LocalDate
 {
 	use Timezoned;
 
-	public const DateSeparator = "-";
+	public const DateSeparator = '-';
+
 	private DT $dt;
 
 	public function __construct(
 		private int $year,
 		int $month,
 		int $day,
-		private ?DateTimeZone $dateTimeZone = NULL
+		private ?DateTimeZone $dateTimeZone = null
 	) {
 		$this->dt = DT::createFromParts($year, $month, $day)
 			->setTimezone($this->dateTimeZone)
-			->setTime(0,0);
+			->setTime(0, 0);
 	}
 
-	public static function create(string|int|\DateTimeInterface|LocalDate $suspect = 'now', string $timezone = NULL): self
+	public function __toString(): string
+	{
+		return $this->format('Y-m-d');
+	}
+
+	public static function create(string|int|\DateTimeInterface|LocalDate $suspect = 'now', string $timezone = null): self
 	{
 		try {
-			if($suspect instanceof self) {
+			if ($suspect instanceof self) {
 				$dt = $suspect;
 				$day = $dt->getDay()->getNumber();
 				$month = $dt->getMonth()->getNumber();
 			} else {
 				$dateTimeZone = new \DateTimeZone($timezone ?? date_default_timezone_get());
-				$dt = DT::getOrCreateInstance($suspect)->setTimezone($dateTimeZone)->setTime(0,0);
+				$dt = DT::getOrCreateInstance($suspect)->setTimezone($dateTimeZone)->setTime(0, 0);
 				$day = $dt->getDay();
 				$month = $dt->getMonth();
 			}
@@ -53,7 +61,7 @@ class LocalDate
 			);
 		} catch (\Exception) {
 			throw BadFormatException::create()
-				->withMessage("Error DT format.");
+				->withMessage('Error DT format.');
 		}
 	}
 
@@ -62,10 +70,9 @@ class LocalDate
 		int $month,
 		int $day = 1,
 	): self {
-
 		if (!checkdate($month, $day, $year)) {
 			throw BadFormatException::create()
-				->withMessage("Time parts are invalid");
+				->withMessage('Time parts are invalid');
 		}
 
 		return new self($year, $month, $day);
@@ -74,10 +81,10 @@ class LocalDate
 	public static function createFromString(string $value): self
 	{
 		$exp = explode(self::DateSeparator, $value);
-		if( count($exp) === 3) {
-			$year = (int)$exp[0];
-			$month = (int)$exp[1];
-			$day = (int)$exp[2];
+		if (count($exp) === 3) {
+			$year = (int) $exp[0];
+			$month = (int) $exp[1];
+			$day = (int) $exp[2];
 
 			return self::createFromParts($year, $month, $day);
 		}
@@ -123,7 +130,7 @@ class LocalDate
 
 	public function areEquals(LocalDate $equalsTo): bool
 	{
-		return (string)$this === (string)$equalsTo;
+		return (string) $this === (string) $equalsTo;
 	}
 
 	public function getDT(): DT
@@ -131,7 +138,8 @@ class LocalDate
 		return $this->dt;
 	}
 
-	public function __toString(): string {
-		return "{$this->getYear()}-{$this->getMonth()}-{$this->getDay()}";
+	public function format(string $slug): string
+	{
+		return $this->dt->format($slug);
 	}
 }
