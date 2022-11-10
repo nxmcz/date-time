@@ -2,6 +2,7 @@
 
 namespace Noxem\DateTime\LocalDate;
 
+use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
 
@@ -61,5 +62,10 @@ class Day extends DatePart
 		}
 
 		return $generator;
+	}
+
+	public function diff(): Difference
+	{
+		return new Difference($this->getDT(), $this->getDT()->addDays(1));
 	}
 }

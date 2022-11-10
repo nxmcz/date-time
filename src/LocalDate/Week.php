@@ -2,6 +2,7 @@
 
 namespace Noxem\DateTime\LocalDate;
 
+use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
 
@@ -20,5 +21,10 @@ class Week extends DatePart
 	public function getFormat(): string
 	{
 		return Formatter::WEEK_NUM;
+	}
+
+	public function diff(): Difference
+	{
+		return new Difference($this->getDT(), $this->getDT()->addDays(7));
 	}
 }

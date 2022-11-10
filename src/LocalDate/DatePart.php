@@ -2,6 +2,7 @@
 
 namespace Noxem\DateTime\LocalDate;
 
+use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 
 abstract class DatePart
@@ -19,6 +20,8 @@ abstract class DatePart
 	abstract public function getNumber(): int;
 
 	abstract public function getFormat(): string;
+
+	abstract public function diff(): Difference;
 
 	public function getStartingOffset(): int
 	{
