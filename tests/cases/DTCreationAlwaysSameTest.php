@@ -12,7 +12,6 @@ use Tests\Fixtures\TestCase\AbstractTestCase;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-
 /**
  * @testCase
  */
@@ -23,9 +22,8 @@ class DTCreationAlwaysSameTest extends AbstractTestCase
 	 */
 	public function testCreateWith($suspect): void
 	{
-
-		$dt = DT::create("2022-02-28 12:13:52");
-		Assert::true($dt->areEquals(DT::create($suspect)->setTimezone(new \DateTimeZone("Europe/Prague"))));
+		$dt = DT::create('2022-02-28 12:13:52');
+		Assert::true($dt->areEquals(DT::create($suspect)->setTimezone(new \DateTimeZone('Europe/Prague'))));
 	}
 
 	public function providerOfFormatsToCreatingObject(): array
@@ -36,11 +34,20 @@ class DTCreationAlwaysSameTest extends AbstractTestCase
 		];
 	}
 
-	public function testCreateFromUTC(): void
+	public function testFromUTC(): void
 	{
+		Assert::same(DT::fromUTC('2022-02-28T11:00:00Z')->toHumanString(), '2022-02-28 12:00:00');
+		Assert::same(DT::fromUTC('2022-02-28T11:00:00Z')->toHumanString(), '2022-02-28 12:00:00');
+		Assert::same(DT::fromUTC('2022-05-05T15:00:00Z')->toHumanString(), '2022-05-05 17:00:00');
+		//Assert::same(DT::fromUTC('2022-05-05T15:00:00')->toHumanString(), '2022-05-05 16:00:00');
+		Assert::same(DT::fromUTC('2022-05-05 15:00:00')->toHumanString(), '2022-05-05 17:00:00');
+	}
 
-		$dt = DT::createFromUTC("2022-02-28T11:13:52Z");
-		Assert::true($dt->areEquals(DT::create("2022-02-28 12:13:52")->assignTimezone("Europe/Prague")));
+	public function testDefaultWithUTC(): void
+	{
+		Assert::same(DT::create('2022-02-28T11:00:00Z')->toHumanString(), '2022-02-28 12:00:00'); // trying create with UTC zulu
+		Assert::same(DT::create('2022-02-28T11:00:00+01:00')->toHumanString(), '2022-02-28 11:00:00');
+		Assert::same(DT::create('2022-02-28T11:00:00+02:00')->toHumanString(), '2022-02-28 10:00:00');
 	}
 }
 

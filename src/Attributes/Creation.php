@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\Attributes;
 
@@ -6,14 +8,13 @@ use DateTimeInterface;
 use Nette\Utils\Validators;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
-use Noxem\DateTime\Utils\Formatter;
 
 /**
  * @internal
  */
 trait Creation
 {
-	public static function create(string|int $suspect = 'now', string $timezone = NULL): self
+	public static function create(string|int $suspect = 'now', string $timezone = null): self
 	{
 		if (Validators::isNumeric($suspect)) {
 			return (new self())->setTimestamp((int) $suspect);
@@ -24,14 +25,14 @@ trait Creation
 				->setTimezone(new \DateTimeZone($timezone ?? date_default_timezone_get()));
 		} catch (\Exception) {
 			throw BadFormatException::create()
-				->withMessage("Error DT format. Must be compatible with createFromFormat method.");
+				->withMessage('Error DT format. Must be compatible with createFromFormat method.');
 		}
 	}
 
-	public static function createFromUTC(string $suspect): self
+	public static function fromUTC(string $suspect): self
 	{
-		$dt = (new self($suspect));
-		return $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+		return (new self($suspect, new \DateTimeZone('UTC')))
+			->setTimezone(date_default_timezone_get());
 	}
 
 	public static function createFromParts(
@@ -72,13 +73,12 @@ trait Creation
 		return self::create($immutable->getTimestamp())->setTimezone($immutable->getTimezone());
 	}
 
-	public static function getOrCreateInstance(string|int|DateTimeInterface $suspect = NULL): self
+	public static function getOrCreateInstance(string|int|DateTimeInterface $suspect = null): self
 	{
-		return match (TRUE) {
+		return match (true) {
 			$suspect instanceof DT => $suspect->setTimezone(date_default_timezone_get()),
 			$suspect instanceof DateTimeInterface => self::createFromInterface($suspect),
 			default => self::create($suspect ?? 'now')
 		};
 	}
-
 }

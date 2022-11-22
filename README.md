@@ -21,65 +21,54 @@ Usage
 
 **Noxem\DateTime\DT**
 
-Basic initialization of 3 possible input ways:
+Basic initialization of DT object. DT object is child of native DateTimeImmutable object with handles for modify date/time parts.
 
 ```php
 use Noxem\DateTime\DT;
+use DateTime as NativeDateTime; 
 
-// NOW
+DT::create('now'); // 2022-08-07 12:00:00
+(new DT('now')); // 2022-08-07 12:00:00
+DT::create(1659866400); // 2022-08-07 12:00:00 initialize with timestamp
+
+DT::create('2022-08-07 12:00:00'); // 2022-08-07 12:00:00
+DT::createFromParts(2022, 8, 7, 12); // 2022-08-07 12:00:00
+DT::createFromFormat(); // PHP's native method
+DT::createFromInterface(new NativeDateTime()); 
+DT::fromUTC("2022-08-07T12:00:00Z"); // 2022-08-07 14:00:00 in Europe/Prague
+
+DT::getOrCreateInstance("2022-08-07 12:00:00"); // 2022-08-07 12:00:00
+DT::getOrCreateInstance(DT::create("2022-08-08 12:00:00")); // 2022-08-08 12:00:00
 
 $dt = DT::create('now'); // 2022-08-07 12:00:00
-echo $dt->modify('+5 seconds'); // 2022-08-07 12:00:05
-echo (new DT('now')); // 2022-08-07 12:00:00
-
-// TIMESTAMP
-
-$dt = DT::create(1659866400); // 2022-08-07 12:00:00 initialize with timestamp
-echo $dt->modify('+5 seconds'); // 2022-08-07 12:00:05
-
-// DateParts
-
-$dt = DT::create('2022-08-07 12:00:00'); // 2022-08-07 12:00:00
-$dt = DT::createFromParts(2022, 8, 7, 12); // 2022-08-07 12:00:00
+$dt->modify('+5 seconds'); // 2022-08-07 12:00:05
+$dt->addDays(1); // 2022-08-08 12:00:00
+$dt->subDays(1); // 2022-08-06 12:00:00
+$dt->modifyDays(1); // ekvivalent to addDays(1)
 ```
-Also creating `DT` object is possible with 2 more ways:
+Library supports casting object into HTML's native input types
+
 ```php
 use Noxem\DateTime\DT;
 
-$dt = DT::createFromParts(2022, 8); // 2022-08-01 00:00:00
-
-// OR
-
-$dt2 = DT::getOrCreateInstance($dt); // $dt2 become $dt
+$object = DT::create('2022-08-07 12:00:00');
+$object->toHtmlDate(); // 2022-08-07
+$object->toHtmlMonth(); // 2022-08
+$object->toHtmlWeek(); // 2022-W31
+$object->toHtmlYear(); // 2022
 ```
-Other usefull methods are:
 
-`seconds(): int` Returns same as `getTimestamp()` method on DateTimeInterface class
-
-`millis(): int` Milliseconds after time-dot 20:55:33.123 => 123000 msec
-
-`msec(): int` Time in milliseconds (seconds() multiple by 1000)  
-
-`week(): int` Number of week
-
-`hour(): int` Hour of `DT` object class
-
-`day(): int` Day of `DT` object class
-
-`month(): int` Month of `DT` object class
-
-`year(): int` Year of `DT` object class
-
-`castToMonthInput(): string` Prepare value for `type="month"` HTML native attribute ex: `2022-1`
-
-
-`areEquals(DT $suspect): bool`
+Comparation:
 ```php
 DT::create('2022-08-07 12:00:00')
     ->areEquals(
         DT::create('2022-08-07 12:00:00')
         ->setTimezone('America/New_York')
     ); // FALSE
+
+$ny = DT::create("2020-09-17 07:00:00")->assignTimezone("America/New_York");
+$tokyo = DT::create("2020-09-17 20:00:00")->assignTimezone("Asia/Tokyo");
+$ny->areEquals($tokyo); // TRUE
 ```
 `isFuture(): bool` We operating with future? 
 ```php
@@ -173,4 +162,3 @@ use Noxem\DateTime\Exception\BadFormatException;
 
 $dt = DT::create('foo'); // BadFormatException
 ```
-
