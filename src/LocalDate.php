@@ -138,6 +138,11 @@ class LocalDate
 		return $this->dt;
 	}
 
+	public function isWeekend(): bool
+	{
+		return $this->getDay()->getDayOfWeek() > 5;
+	}
+
 	public function format(string $slug): string
 	{
 		return $this->dt->format($slug);

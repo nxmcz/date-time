@@ -11,7 +11,6 @@ use Tests\Fixtures\TestCase\AbstractTestCase;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-
 /**
  * @testCase
  */
@@ -22,34 +21,35 @@ class DayTest extends AbstractTestCase
 	 */
 	public function testDays(string $date, int $startOffset, int $endOffset, int $dayOfWeek, string $dayName, bool $isWeekend): void
 	{
-		$d = LocalDate::createFromString($date)->getDay();
+		$date = LocalDate::createFromString($date);
+
+		$d = $date->getDay();
+
 		Assert::same($startOffset, $d->getStartingWeekOffset());
 		Assert::same($endOffset, $d->getEndingWeekOffset());
 		Assert::same($dayOfWeek, $d->getDayOfWeek());
 		Assert::same($dayName, $d->getName());
 		Assert::same(30, $d->getMaximumNumber());
-		Assert::same($isWeekend, $d->isWeekend());
+		Assert::same($isWeekend, $date->isWeekend());
 
-		$generator = $d::generate( DT::create("2022-11-07") );
+		$generator = $d::generate(DT::create('2022-11-07'));
 		Assert::type('array', $generator);
 		Assert::same(30, count($generator));
-		Assert::same('2022-11-01 00:00:00', (string)$generator[0]->getDT());
-		Assert::same('2022-11-30 00:00:00', (string)$generator[29]->getDT());
+		Assert::same('2022-11-01 00:00:00', (string) $generator[0]->getDT());
+		Assert::same('2022-11-30 00:00:00', (string) $generator[29]->getDT());
 	}
-
-
 
 	public function times(): array
 	{
 		return [
 			[
-				'2022-11-05', 5, 1, 6, 'saturday', TRUE,
-				'2022-11-06', 6, 0, 7, 'sunday', TRUE,
-				'2022-11-07', 0, 6, 1, 'monday', FALSE,
-				'2022-11-08', 1, 5, 2, 'tuesday', FALSE,
-				'2022-11-09', 2, 4, 3, 'wednesday', FALSE,
-				'2022-11-10', 3, 3, 4, 'thursday', FALSE,
-				'2022-11-11', 4, 2, 5, 'friday', FALSE
+				'2022-11-05', 5, 1, 6, 'saturday', true,
+				'2022-11-06', 6, 0, 7, 'sunday', true,
+				'2022-11-07', 0, 6, 1, 'monday', false,
+				'2022-11-08', 1, 5, 2, 'tuesday', false,
+				'2022-11-09', 2, 4, 3, 'wednesday', false,
+				'2022-11-10', 3, 3, 4, 'thursday', false,
+				'2022-11-11', 4, 2, 5, 'friday', false,
 			],
 		];
 	}

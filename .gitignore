@@ -10,3 +10,6 @@
 /tests/cases/output
 /coverage.xml
 /coverage.html
+
+# Files
+*.cache
