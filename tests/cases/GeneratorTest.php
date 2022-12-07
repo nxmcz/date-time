@@ -28,8 +28,8 @@ class GeneratorTest extends AbstractTestCase
 
 		$w = Generator::week();
 		Assert::same(7, count($w));
-		Assert::same('monday', (string)$w[0]);
-		Assert::same('sunday', (string)$w[6]);
+		Assert::same('monday', (string)$w[0]->getDay());
+		Assert::same('sunday', (string)$w[6]->getDay());
 	}
 }
 

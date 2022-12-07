@@ -17,7 +17,7 @@ class Generator
 		$dt ??= DT::create("last monday");
 
 		for ($i=0;$i<7;$i++) {
-			$generator[] = $dt->addDays($i)->getLocalDate()->getDay();
+			$generator[] = $dt->addDays($i)->getLocalDate();
 		}
 
 		return $generator;
