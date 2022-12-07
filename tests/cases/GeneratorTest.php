@@ -22,11 +22,15 @@ class GeneratorTest extends AbstractTestCase
 	{
 		$w = Generator::week( DT::create("2022-11-07") );
 
+		Assert::type(\Generator::class, $w);
+		$w = iterator_to_array($w);
 		Assert::same(7, count($w));
 		Assert::same('2022-11-07 00:00:00', (string)$w[0]->getDT());
 		Assert::same('2022-11-13 00:00:00', (string)$w[6]->getDT());
 
 		$w = Generator::week();
+		Assert::type(\Generator::class, $w);
+		$w = iterator_to_array($w);
 		Assert::same(7, count($w));
 		Assert::same('monday', (string)$w[0]->getDay());
 		Assert::same('sunday', (string)$w[6]->getDay());
