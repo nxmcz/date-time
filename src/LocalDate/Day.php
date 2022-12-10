@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
@@ -10,7 +12,7 @@ class Day extends DatePart
 {
 	public function getMaximumNumber(): int
 	{
-		return (int)$this->dt->format("t");
+		return (int) $this->dt->format('t');
 	}
 
 	public function getNumber(): int
@@ -42,25 +44,26 @@ class Day extends DatePart
 	 * @params DT|null $dt
 	 * @return array<Day>
 	 */
-	public static function generate(DT $dt = NULL): array
+	public static function generate(DT $dt = null): array
 	{
-		$generator = array();
+		$generator = [];
 		$dt ??= DT::create();
 		$maximum = $dt->getLocalDate()->getDay()->getMaximumNumber();
 
 		$first = $dt
 			->setDate($dt->getYear(), $dt->getMonth(), 1)
-			->setTime(0,0);
+			->setTime(0, 0);
 
-		for ($i=0;$i<$maximum;$i++) {
+		for ($i=0; $i<$maximum; $i++) {
 			$generator[] = $first->addDays($i)->getLocalDate()->getDay();
 		}
 
 		return $generator;
 	}
 
-	public function diff(): Difference
+	public function difference(): Difference
 	{
-		return new Difference($this->getDT(), $this->getDT()->addDays(1));
+		$start = $this->getDT()->setTime(0, 0);
+		return new Difference($start, $start->addDays(1));
 	}
 }

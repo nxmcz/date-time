@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime;
 
@@ -6,32 +8,33 @@ use DateInterval as NativeDateInterval;
 use DateTimeInterface as NativeDateTimeInterface;
 use Noxem\DateTime\Attributes;
 
-
 class Difference implements Attributes\Intervalic, \JsonSerializable
 {
 	use Attributes\TimeConversion;
 
 	public DT $start;
+
 	public DT $end;
-	private bool $absoluteCalculation = FALSE;
+
+	protected bool $absoluteCalculation = false;
 
 	public function __construct(
 		DT|int $start,
 		DT|int $end,
-		bool $throw = FALSE
+		bool $throw = false
 	) {
 		$this->start = DT::getOrCreateInstance($start);
 		$this->end = DT::getOrCreateInstance($end);
 
-		if ($throw === TRUE && $this->isValid() === FALSE) {
-			throw new \InvalidArgumentException("Start of the interval cannot be greater than end.");
+		if ($throw === true && $this->isValid() === false) {
+			throw new \InvalidArgumentException('Start of the interval cannot be greater than end.');
 		}
 	}
 
 	public function withAbsolute(): self
 	{
 		$difference = clone $this;
-		$difference->absoluteCalculation = TRUE;
+		$difference->absoluteCalculation = true;
 		return $difference;
 	}
 
@@ -66,30 +69,30 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 			&& time() < $this->getEndTimestamp();
 	}
 
-	public function intervalToNow(DT|int|null $now = NULL): int
+	public function intervalToNow(DT|int|null $now = null): int
 	{
 		return (DT::getOrCreateInstance($now ?? 'now')->getTimestamp()) - $this->getStartTimestamp();
 	}
 
-	public function intervalToEnd(DT|int|null $now = NULL): int
+	public function intervalToEnd(DT|int|null $now = null): int
 	{
 		return $this->getEndTimestamp() - (DT::getOrCreateInstance($now ?? 'now')->getTimestamp());
 	}
 
 	public function getSolidWeeks(): int
 	{
-		$start = $this->getStart()->setTime(0,0);
-		$end = $this->getEnd()->setTime(0,0);
+		$start = $this->getStart()->setTime(0, 0);
+		$end = $this->getEnd()->setTime(0, 0);
 		$multiplier = ($start->getTimestamp() > $end->getTimestamp()) ? -1 : 1;
 
 		$week1 = $start->getWeek();
 		$week2 = $end->getWeek();
 
-		if($start->getYear() === $end->getYear()) {
+		if ($start->getYear() === $end->getYear()) {
 			$res = abs($week2 - $week1)*$multiplier;
 		} else {
-			$diff = date_diff( $end->modify("monday this week"), $start->modify("monday this week"));
-			$res = (int)($diff->days / 7) * $multiplier;
+			$diff = date_diff($end->modify('monday this week'), $start->modify('monday this week'));
+			$res = (int) ($diff->days / 7) * $multiplier;
 		}
 
 		return $this->absoluteCalculation ? abs($res) : $res;
@@ -97,12 +100,12 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 
 	public function getWeeks(): float
 	{
-		return (float)($this->getSeconds()/604800);
+		return (float) ($this->getSeconds()/604800);
 	}
 
 	public function getDays(): int
 	{
-		$res = (int)$this->getInterval()->format("%r%a");
+		$res = (int) $this->getInterval()->format('%r%a');
 		return $this->absoluteCalculation ? abs($res) : $res;
 	}
 
@@ -112,10 +115,6 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 		return $clone->diff($this->getEnd());
 	}
 
-	private function intervalToSeconds(NativeDateInterval $interval): int {
-		return $interval->days * 86400 + $interval->h * 3600 + $interval->i * 60 + $interval->s;
-	}
-
 	public function createBaseForTimeConversion(): int
 	{
 		$res = $this->intervalToSeconds($this->getInterval());
@@ -123,7 +122,8 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 		return $this->absoluteCalculation ? $res : $res * ($sign ? 1 : (-1));
 	}
 
-	public function isDayFlip(): bool {
+	public function isDayFlip(): bool
+	{
 		return $this->getStart()->getAbsoluteDate() !== $this->getEnd()->getAbsoluteDate();
 	}
 
@@ -133,15 +133,20 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 	public function jsonSerialize(): array
 	{
 		return [
-			"start" => $this->getStart(),
-			"end" => $this->getEnd(),
-			"millis" => $this->getMillis(),
-			"seconds" => $this->getSeconds(),
-			"minutes" => $this->getMinutes(),
-			"hours" => $this->getHours(),
-			"days" => $this->getDays(),
-			"weeks" => $this->getWeeks(),
-			"solidWeeks" => $this->getSolidWeeks(),
+			'start' => $this->getStart(),
+			'end' => $this->getEnd(),
+			'millis' => $this->getMillis(),
+			'seconds' => $this->getSeconds(),
+			'minutes' => $this->getMinutes(),
+			'hours' => $this->getHours(),
+			'days' => $this->getDays(),
+			'weeks' => $this->getWeeks(),
+			'solidWeeks' => $this->getSolidWeeks(),
 		];
+	}
+
+	private function intervalToSeconds(NativeDateInterval $interval): int
+	{
+		return $interval->days * 86400 + $interval->h * 3600 + $interval->i * 60 + $interval->s;
 	}
 }

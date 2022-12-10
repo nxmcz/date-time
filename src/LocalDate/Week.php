@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
@@ -23,7 +25,7 @@ class Week extends DatePart
 		return Formatter::WEEK_NUM;
 	}
 
-	public function diff(): Difference
+	public function difference(): Difference
 	{
 		return new Difference($this->getDT(), $this->getDT()->addDays(7));
 	}

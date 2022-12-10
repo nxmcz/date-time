@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
@@ -15,13 +17,18 @@ abstract class DatePart
 		$this->dt = DT::createFromInterface($dateTimeInterface);
 	}
 
+	public function __toString(): string
+	{
+		return $this->getName();
+	}
+
 	abstract public function getMaximumNumber(): int;
 
 	abstract public function getNumber(): int;
 
 	abstract public function getFormat(): string;
 
-	abstract public function diff(): Difference;
+	abstract public function difference(): Difference;
 
 	public function getStartingOffset(): int
 	{
@@ -38,13 +45,8 @@ abstract class DatePart
 		return strtolower($this->dt->format($this->getFormat()));
 	}
 
-	public function __toString(): string
-	{
-		return $this->getName();
-	}
-
 	public function getDT(): DT
 	{
-		return $this->dt;
+		return $this->dt->setTime(0, 0);
 	}
 }

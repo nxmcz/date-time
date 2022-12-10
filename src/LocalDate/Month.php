@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
@@ -27,25 +29,42 @@ class Month extends DatePart
 	 * @params DT|null $dt
 	 * @return array<Month>
 	 */
-	public static function generate(DT $dt = NULL): array
+	public static function generate(DT $dt = null): array
 	{
-		$generator = array();
+		$generator = [];
 		$dt ??= DT::create();
 		$maximum = $dt->getLocalDate()->getMonth()->getMaximumNumber();
 
 		$first = $dt
 			->setDate($dt->getYear(), 1, 1)
-			->setTime(0,0);
+			->setTime(0, 0);
 
-		for ($i=0;$i<$maximum;$i++) {
+		for ($i=0; $i<$maximum; $i++) {
 			$generator[] = $first->addMonths($i)->getLocalDate()->getMonth();
 		}
 
 		return $generator;
 	}
 
-	public function diff(): Difference
+	public function getLastDay(): Day
 	{
-		return new Difference($this->getDT(), $this->getDT()->addMonths(1));
+		$dt = $this->getDT();
+		return new Day(
+			$this
+				->getDT()
+				->setDate(
+					$dt->getYear(),
+					$dt->getMonth(),
+					(int) $dt->format(Formatter::LAST_DAY_OF_MONTH)
+				)
+		);
+	}
+
+	public function difference(): Difference
+	{
+		return new Difference(
+			$this->getDT(),
+			$this->getLastDay()->getDT()
+		);
 	}
 }
