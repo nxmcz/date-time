@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
+use DateTimeInterface;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
@@ -31,7 +32,7 @@ class Week extends DatePart
 		return new Difference($this->getDT(), $this->getDT()->addDays(7));
 	}
 
-	public function createFromHtml($value): self
+	public function createFromHtml(string|null|DateTimeInterface $value): self
 	{
 		$parse = Parser::fromWeek($value);
 		return new self($parse);

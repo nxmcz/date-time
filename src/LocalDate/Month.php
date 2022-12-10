@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
+use DateTimeInterface;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
@@ -69,7 +70,7 @@ class Month extends DatePart
 		);
 	}
 
-	public function createFromHtml($value): self
+	public function createFromHtml(string|null|DateTimeInterface $value): self
 	{
 		$parse = Parser::fromMonth($value);
 		return new self($parse);

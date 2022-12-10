@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
+use DateTimeInterface;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 
@@ -12,9 +13,9 @@ abstract class DatePart
 	protected DT $dt;
 
 	public function __construct(
-		\DateTimeInterface $dateTimeInterface
+		?DT $dateTimeInterface
 	) {
-		$this->dt = DT::createFromInterface($dateTimeInterface);
+		$this->dt = $dateTimeInterface ?? DT::now();
 	}
 
 	public function __toString(): string
@@ -30,7 +31,7 @@ abstract class DatePart
 
 	abstract public function difference(): Difference;
 
-	abstract public function createFromHtml($value): self;
+	abstract public function createFromHtml(string|null|DateTimeInterface $value): self;
 
 	public function getStartingOffset(): int
 	{
