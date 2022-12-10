@@ -1,7 +1,7 @@
 # DateTime
 An immutable class to deal with DateTime object used in `Noxem` systems. Works perfectly with [nette/forms](https://github.com/nette/forms) as Date, DateTime form's field. 
 
-
+**PHP 8.2 ready!!**
 
 [![Testing](https://badgen.net/github/checks/nxmcz/date-time/main?cache=300)](https://github.com/nxmcz/date-time/actions)
 [![Coverage Status](https://coveralls.io/repos/github/nxmcz/date-time/badge.svg?branch=main)](https://coveralls.io/github/nxmcz/date-time?branch=main)
