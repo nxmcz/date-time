@@ -30,6 +30,8 @@ abstract class DatePart
 
 	abstract public function difference(): Difference;
 
+	abstract public function createFromHtml($value): self;
+
 	public function getStartingOffset(): int
 	{
 		return $this->getNumber() - 1;

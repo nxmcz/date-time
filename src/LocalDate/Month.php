@@ -7,6 +7,7 @@ namespace Noxem\DateTime\LocalDate;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
+use Noxem\DateTime\Utils\Parser;
 
 class Month extends DatePart
 {
@@ -66,5 +67,11 @@ class Month extends DatePart
 			$this->getDT(),
 			$this->getLastDay()->getDT()
 		);
+	}
+
+	public function createFromHtml($value): self
+	{
+		$parse = Parser::fromMonth($value);
+		return new self($parse);
 	}
 }

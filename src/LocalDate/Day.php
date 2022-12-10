@@ -7,6 +7,7 @@ namespace Noxem\DateTime\LocalDate;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Utils\Formatter;
+use Noxem\DateTime\Utils\Parser;
 
 class Day extends DatePart
 {
@@ -65,5 +66,11 @@ class Day extends DatePart
 	{
 		$start = $this->getDT()->setTime(0, 0);
 		return new Difference($start, $start->addDays(1));
+	}
+
+	public function createFromHtml($value): self
+	{
+		$parse = Parser::fromDay($value);
+		return new self($parse);
 	}
 }
