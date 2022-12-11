@@ -46,7 +46,7 @@ enum Period: string
 				self::MONTH => 'first day of next month',
 				self::HOUR => '1 hour',
 				self::WEEK => 'monday next week',
-				self::YEAR => 'first day of this year',
+				self::YEAR => 'first day of next year',
 			}
 		);
 	}

@@ -16,15 +16,34 @@ use Traversable;
  */
 class PeriodDifference extends Difference implements IteratorAggregate
 {
-	private ?Period $period;
+	public function __construct(DT $start, DT $end, private readonly Period $period)
+	{
+		$this->start = $start->setTime(0, 0);
+		$this->end = $end->setTime(0, 0)->add($period->getInterval());
 
-	public function __construct(
-		DT $start,
-		DT $end,
-		Period $period = null
-	) {
-		parent::__construct($start, $end);
-		$this->period = $period;
+		if ($period === Period::YEAR) {
+			$this->start = $this->start->setDate(
+				$this->start->getYear(),
+				1,
+				1
+			);
+		}
+
+		if ($period === Period::MONTH) {
+			$this->start = $this->start->setDate(
+				$this->start->getYear(),
+				$this->start->getMonth(),
+				1
+			);
+
+			$this->end = $this->end->modify('first day of this month');
+		}
+
+		if ($period === Period::WEEK) {
+			$this->start = $this->start->modify('monday this week');
+		}
+
+		parent::__construct($this->start, $this->end);
 	}
 
 	public static function createByDifference(Difference $d, Period $interval = null): self
@@ -37,57 +56,20 @@ class PeriodDifference extends Difference implements IteratorAggregate
 		return new Difference($this->getStart(), $this->getEnd()->add($this->getPeriod()->getInterval()));
 	}
 
-	public function withInterval(Period $interval): self
-	{
-		$clone = $this;
-		$clone->period = $interval;
-		return $clone;
-	}
-
 	public function getPeriod(): Period
 	{
-		return $this->period ?? Period::DAY;
-	}
-
-	public function withStandardizeTimes(): self
-	{
-		$clone = $this;
-		$period = $clone->period;
-		$clone->start = $clone->start->setTime(0, 0);
-		$clone->end = $clone->end->setTime(0, 0);
-
-		if ($period === Period::YEAR) {
-			$clone->start = $clone->start->setDate(
-				$clone->start->getYear(),
-				1,
-				1
-			);
-		}
-
-		if ($period === Period::MONTH) {
-			$clone->start = $clone->start->setDate(
-				$clone->start->getYear(),
-				$clone->start->getMonth(),
-				1
-			);
-		}
-
-		if ($period === Period::WEEK) {
-			$clone->start = $clone->start->modify('monday this week');
-		}
-
-		return $clone;
+		return $this->period;
 	}
 
 	public function getIterator(): Traversable
 	{
-		$collection = $this->withStandardizeTimes();
 		$interval = $this->getPeriod()->getInterval();
-		$new = $collection->start;
-		$cannotAcross = $collection->end;
+		$new = $this->start;
+		$cannotAcross = $this->end;
 
-		while ($cannotAcross->isGreaterThanOrEqualTo($new)) {
-			yield new static($new, $new = $new->add($interval));
+		while ($cannotAcross->isGreaterThan($new)) {
+			yield new static($new, $new, $this->getPeriod());
+			$new = $new->add($interval);
 		}
 	}
 }
