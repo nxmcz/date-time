@@ -1,6 +1,13 @@
 {
   "name": "nxmcz/date-time",
   "description": "An DateTime class to deal with timestamp/DateTimeInterface",
+  "keywords": [
+    "date-time",
+    "noxem",
+    "dt",
+    "date time",
+    "immutable"
+  ],
   "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
@@ -18,9 +25,9 @@
     "coverage": "tester -C --colors 1 ./tests/cases -p phpdbg --coverage coverage.html --coverage-src src"
   },
   "require": {
-    "php": ">=8.0",
-    "nette/tester": "^2.4.2",
-    "phpstan/phpstan": ">=1.8.2",
+    "php": ">=8.1",
+    "nette/tester": "^2.4.3",
+    "phpstan/phpstan": ">=1.9",
     "nette/utils": "^3.2",
     "ext-calendar": "*"
   }

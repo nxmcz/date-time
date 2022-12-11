@@ -8,17 +8,17 @@ use Noxem\DateTime\DT;
 use Noxem\DateTime\Interval;
 use Noxem\DateTime\LocalDate;
 
-class DayDifference extends PeriodDifference
+class WeekDifference extends PeriodDifference
 {
 	public function __construct(DT $start)
 	{
 		$dt = $start->setTime(0, 0);
-		parent::__construct($dt, $dt->modifyDays(1), Interval::DAY);
+		parent::__construct($dt, $dt->modifyDays(7), Interval::WEEK);
 	}
 
-	public function __invoke(): LocalDate\Day
+	public function __invoke(): LocalDate\Week
 	{
 		$dt = $this->getStart();
-		return new LocalDate\Day($dt->getYear(), $dt->getMonth(), $dt->getDay());
+		return new LocalDate\Week($dt->getYear(), $dt->getWeek());
 	}
 }

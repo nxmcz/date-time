@@ -12,7 +12,7 @@ use Noxem\DateTime\Utils\Parser;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 /**
  * @testCase
@@ -54,32 +54,6 @@ class LocalDateTest extends AbstractTestCase
 		$instanceModified = $instance->getDT()->modifyMonths(1);
 
 		Assert::notSame((string) $instance, (string) $instanceModified);
-	}
-
-	/**
-	 * @dataProvider dates
-	 */
-	public function testDays(string $name, int $dayOfWeek, string $date, string $toStringDate): void
-	{
-		$instance = LocalDate::createFromString($date);
-		Assert::same($name, $instance->getDay()->getName());
-		Assert::same($dayOfWeek, $instance->getDayOfWeek());
-		Assert::same($toStringDate, (string) $instance);
-
-		Assert::noError(fn () => LocalDate::createFromString($date));
-	}
-
-	public function dates(): array
-	{
-		return [
-			['wednesday', 3, '2022-11-2', '2022-11-02'],
-			['wednesday', 3, '2022-11-02', '2022-11-02'],
-			['monday', 1, '2022-07-04', '2022-07-04'],
-			['monday', 1, '2022-7-04', '2022-07-04'],
-			['monday', 1, '2022-7-4', '2022-07-04'],
-			['sunday', 7, '2022-08-21', '2022-08-21'],
-			['sunday', 7, '2022-8-21', '2022-08-21'],
-		];
 	}
 
 	public function testImmutable(): void

@@ -7,72 +7,70 @@ namespace Noxem\DateTime\LocalDate;
 use DateTimeInterface;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
+use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\Utils\Formatter;
 use Noxem\DateTime\Utils\Parser;
 
 class Month extends DatePart
 {
+	private int $month;
+
+	private int $year;
+
+	public function __construct(int $year, int $month)
+	{
+		$this->setDT(DT::createFromParts($year, $month));
+		$this->month = $this->getDT()->getMonth();
+		$this->year = $this->getDT()->getYear();
+	}
+
+	public function __toString(): string
+	{
+		return $this->getDT()->toHtmlMonth();
+	}
+
 	public function getMaximumNumber(): int
 	{
-		return 12;
+		return $this->getLastDayOfMonth()->getDay();
 	}
 
-	public function getNumber(): int
+	public function getName(): string
 	{
-		return $this->dt->getMonth();
+		return strtolower($this->getDT()->format(Formatter::MONTH_NAME));
 	}
 
-	public function getFormat(): string
+	public function getYear(): int
 	{
-		return Formatter::MONTH_NAME;
+		return $this->year;
 	}
 
-	/**
-	 * @params DT|null $dt
-	 * @return array<Month>
-	 */
-	public static function generate(DT $dt = null): array
+	public function getMonth(): int
 	{
-		$generator = [];
-		$dt ??= DT::create();
-		$maximum = $dt->getLocalDate()->getMonth()->getMaximumNumber();
-
-		$first = $dt
-			->setDate($dt->getYear(), 1, 1)
-			->setTime(0, 0);
-
-		for ($i=0; $i<$maximum; $i++) {
-			$generator[] = $first->addMonths($i)->getLocalDate()->getMonth();
-		}
-
-		return $generator;
+		return $this->month;
 	}
 
-	public function getLastDay(): Day
+	public function getLastDayOfMonth(): Day
 	{
 		$dt = $this->getDT();
-		return new Day(
-			$this
-				->getDT()
-				->setDate(
-					$dt->getYear(),
-					$dt->getMonth(),
-					(int) $dt->format(Formatter::LAST_DAY_OF_MONTH)
-				)
-		);
+		return new Day($dt->getYear(), $dt->getMonth(), (int) $dt->format(Formatter::LAST_DAY_OF_MONTH));
 	}
 
 	public function difference(): Difference
 	{
 		return new Difference(
 			$this->getDT(),
-			$this->getLastDay()->getDT()
+			$this->getLastDayOfMonth()->getDT()
 		);
 	}
 
-	public function createFromHtml(string|null|DateTimeInterface $value): self
+	public static function createFromHtml(string $html): self
 	{
-		$parse = Parser::fromMonth($value);
-		return new self($parse);
+		$parse = Parser::fromMonth($html);
+
+		if ($parse === null) {
+			throw BadFormatException::create();
+		}
+
+		return new self($parse->getYear(), $parse->getMonth());
 	}
 }

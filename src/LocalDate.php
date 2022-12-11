@@ -40,8 +40,8 @@ class LocalDate
 		try {
 			if ($suspect instanceof self) {
 				$dt = $suspect;
-				$day = $dt->getDay()->getNumber();
-				$month = $dt->getMonth()->getNumber();
+				$day = $dt->getDay()->getDay();
+				$month = $dt->getMonth()->getMonth();
 			} else {
 				$dateTimeZone = new \DateTimeZone($timezone ?? date_default_timezone_get());
 				$dt = DT::getOrCreateInstance($suspect)->setTimezone($dateTimeZone)->setTime(0, 0);
@@ -49,16 +49,9 @@ class LocalDate
 				$month = $dt->getMonth();
 			}
 
-			$year = $dt->getYear();
-
 			$timezone = $dt->getTimezone();
 
-			return new self(
-				$year,
-				$month,
-				$day,
-				$timezone
-			);
+			return new self($dt->getYear(), $month, $day, $timezone);
 		} catch (\Exception) {
 			throw BadFormatException::create()
 				->withMessage('Error DT format.');
@@ -110,17 +103,17 @@ class LocalDate
 
 	public function getMonth(): Month
 	{
-		return new Month($this->getDT());
+		return Month::createFromHtml($this->getDT()->toHtmlMonth());
 	}
 
 	public function getWeek(): Week
 	{
-		return new Week($this->getDT());
+		return Week::createFromHtml($this->getDT()->toHtmlWeek());
 	}
 
 	public function getDay(): Day
 	{
-		return new Day($this->getDT());
+		return Day::createFromHtml($this->getDT()->toHtmlDate());
 	}
 
 	public function getDayOfWeek(): int
