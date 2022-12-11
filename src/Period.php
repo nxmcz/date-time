@@ -6,7 +6,7 @@ namespace Noxem\DateTime;
 
 use DateInterval;
 
-enum Interval: string
+enum Period: string
 {
 	case HOUR = 'hour';
 	case DAY = 'day';

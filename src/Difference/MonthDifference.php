@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Noxem\DateTime\Difference;
 
 use Noxem\DateTime\DT;
-use Noxem\DateTime\Interval;
+use Noxem\DateTime\Period;
 use Noxem\DateTime\LocalDate;
 
 class MonthDifference extends PeriodDifference
@@ -13,7 +13,7 @@ class MonthDifference extends PeriodDifference
 	public function __construct(DT $start)
 	{
 		$dt = $start->setTime(0, 0);
-		parent::__construct($dt, $dt->modifyMonths(1), Interval::MONTH);
+		parent::__construct($dt, $dt->modifyMonths(1), Period::MONTH);
 	}
 
 	public function __invoke(): LocalDate\Month
