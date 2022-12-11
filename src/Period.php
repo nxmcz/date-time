@@ -12,6 +12,7 @@ enum Period: string
 	case DAY = 'day';
 	case WEEK = 'week';
 	case MONTH = 'month';
+	case YEAR = 'year';
 	case SHIFT = 'shift';
 
 	/**
@@ -45,6 +46,7 @@ enum Period: string
 				self::MONTH => 'first day of next month',
 				self::HOUR => '1 hour',
 				self::WEEK => 'monday next week',
+				self::YEAR => 'first day of this year',
 			}
 		);
 	}
@@ -55,7 +57,8 @@ enum Period: string
 			self::DAY, self::SHIFT => 'd. m. Y',
 			self::MONTH => 'Y-m',
 			self::HOUR => 'd. m. Y H:i',
-			self::WEEK => "Y-\WW"
+			self::WEEK => "Y-\WW",
+			self::YEAR => 'Y',
 		};
 	}
 

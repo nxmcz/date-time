@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\Difference;
 
+use IteratorAggregate;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Period;
+use Traversable;
 
-class PeriodDifference extends Difference
+/**
+ * @implements IteratorAggregate<PeriodDifference>
+ */
+class PeriodDifference extends Difference implements IteratorAggregate
 {
 	private ?Period $period;
 
@@ -43,7 +48,15 @@ class PeriodDifference extends Difference
 		$clone = $this;
 		$period = $clone->period;
 		$clone->start = $clone->start->setTime(0, 0);
-		$clone->end = $clone->end->add($period->getInterval())->setTime(0, 0);
+		$clone->end = $clone->end->setTime(0, 0);
+
+		if ($period === Period::YEAR) {
+			$clone->start = $clone->start->setDate(
+				$clone->start->getYear(),
+				1,
+				1
+			);
+		}
 
 		if ($period === Period::MONTH) {
 			$clone->start = $clone->start->setDate(
@@ -58,5 +71,17 @@ class PeriodDifference extends Difference
 		}
 
 		return $clone;
+	}
+
+	public function getIterator(): Traversable
+	{
+		$collection = $this->withStandardizeTimes();
+		$interval = $this->getPeriod()->getInterval();
+		$new = $collection->start;
+		$cannotAcross = $collection->end;
+
+		while ($cannotAcross->isGreaterThanOrEqualTo($new)) {
+			yield new self($new, $new = $new->add($interval));
+		}
 	}
 }
