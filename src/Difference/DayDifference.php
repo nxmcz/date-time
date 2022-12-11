@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Noxem\DateTime\Difference;
 
 use Noxem\DateTime\DT;
-use Noxem\DateTime\Period;
 use Noxem\DateTime\LocalDate;
+use Noxem\DateTime\Period;
 
 class DayDifference extends PeriodDifference
 {
-	public function __construct(DT $start)
+	public function __construct(DT $start, DT $end = null)
 	{
-		$dt = $start->setTime(0, 0);
-		parent::__construct($dt, $dt->modifyDays(1), Period::DAY);
+		parent::__construct($start, $end ?? $start->modifyDays(1), Period::DAY);
 	}
 
 	public function __invoke(): LocalDate\Day
