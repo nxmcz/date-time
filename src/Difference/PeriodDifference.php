@@ -32,6 +32,11 @@ class PeriodDifference extends Difference implements IteratorAggregate
 		return new self($d->getStart(), $d->getEnd(), $interval);
 	}
 
+	public function getAccumulationDifference(): Difference
+	{
+		return new Difference($this->getStart(), $this->getEnd()->add($this->getPeriod()->getInterval()));
+	}
+
 	public function withInterval(Period $interval): self
 	{
 		$clone = $this;
