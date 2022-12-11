@@ -12,6 +12,7 @@ use Traversable;
 
 /**
  * @implements IteratorAggregate<PeriodDifference>
+ * @phpstan-consistent-constructor
  */
 class PeriodDifference extends Difference implements IteratorAggregate
 {
@@ -81,7 +82,7 @@ class PeriodDifference extends Difference implements IteratorAggregate
 		$cannotAcross = $collection->end;
 
 		while ($cannotAcross->isGreaterThanOrEqualTo($new)) {
-			yield new self($new, $new = $new->add($interval));
+			yield new static($new, $new = $new->add($interval));
 		}
 	}
 }
