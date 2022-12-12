@@ -55,12 +55,9 @@ class Month extends DatePart
 		return new Day($dt->getYear(), $dt->getMonth(), (int) $dt->format(Formatter::LAST_DAY_OF_MONTH));
 	}
 
-	public function difference(): Difference
+	public function difference(): Difference\MonthDifference
 	{
-		return new Difference(
-			$this->getDT(),
-			$this->getLastDayOfMonth()->getDT()
-		);
+		return new Difference\MonthDifference($this->getDT());
 	}
 
 	public static function createFromHtml(string $html): self
@@ -72,5 +69,15 @@ class Month extends DatePart
 		}
 
 		return new self($parse->getYear(), $parse->getMonth());
+	}
+
+	public function getNumber(): int
+	{
+		return $this->getMonth();
+	}
+
+	public static function createFromDT(DT $dt): self
+	{
+		return self::createFromHtml($dt->toHtmlMonth());
 	}
 }

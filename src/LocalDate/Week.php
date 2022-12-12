@@ -7,18 +7,18 @@ namespace Noxem\DateTime\LocalDate;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
-use Noxem\DateTime\Utils\Formatter;
 use Noxem\DateTime\Utils\Parser;
 
 class Week extends DatePart
 {
-	private int $week;
-
-	private int $year;
-
-	public function __construct(int $year, int $week)
+	public static function createFromDT(DT $dt): self
 	{
-		$dt = Parser::fromWeek(sprintf('%s-W%s', $year, $week));
+		return self::createFromHtml($dt->toHtmlWeek());
+	}
+
+	public function __construct(private int $year, private int $week)
+	{
+		$dt = Parser::fromWeek(sprintf('%04d-W%02d', $year, $week));
 
 		if ($dt === null) {
 			throw BadFormatException::create();
@@ -27,6 +27,11 @@ class Week extends DatePart
 		$this->setDT($dt);
 		$this->week = $this->getDT()->getWeek();
 		$this->year = $this->getDT()->getYear();
+	}
+
+	public static function now(): self {
+		$dt = DT::now();
+		return new self($dt->getYear(), $dt->getWeek());
 	}
 
 	public function __toString(): string
@@ -51,7 +56,7 @@ class Week extends DatePart
 
 	public function difference(): Difference
 	{
-		return new Difference($this->getDT(), $this->getDT()->addDays(6));
+		return new Difference\WeekDifference($this->getDT());
 	}
 
 	public static function createFromHtml(string $html): self
@@ -63,5 +68,10 @@ class Week extends DatePart
 		}
 
 		return new self($parse->getYear(), $parse->getWeek());
+	}
+
+	public function getName(): string
+	{
+		return 'W';
 	}
 }

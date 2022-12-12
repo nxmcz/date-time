@@ -12,10 +12,10 @@ class DayDifference extends PeriodDifference
 {
 	public function __construct(DT $start, DT $end = null)
 	{
-		parent::__construct($start, $end ?? $start->modifyDays(1), Period::DAY);
+		parent::__construct($start, $end ?? $start, Period::DAY);
 	}
 
-	public function __invoke(): LocalDate\Day
+	public function toLocal(): LocalDate\Day
 	{
 		$dt = $this->getStart();
 		return new LocalDate\Day($dt->getYear(), $dt->getMonth(), $dt->getDay());

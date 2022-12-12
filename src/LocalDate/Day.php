@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Noxem\DateTime\LocalDate;
 
 use Noxem\DateTime\Difference;
+use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\Utils\Formatter;
 use Noxem\DateTime\Utils\Parser;
@@ -77,8 +78,8 @@ class Day extends DatePart
 
 	public function difference(): Difference
 	{
-		$start = $this->getDT()->setTime(0, 0);
-		return new Difference($start, $start->addDays(1));
+		$start = $this->getDT();
+		return new Difference\DayDifference($start);
 	}
 
 	public static function createFromHtml(string $html): self
@@ -90,5 +91,15 @@ class Day extends DatePart
 		}
 
 		return new self($parse->getYear(), $parse->getMonth(), $parse->getDay());
+	}
+
+	public function getNumber(): int
+	{
+		return $this->getDay();
+	}
+
+	public static function createFromDT(DT $dt): self
+	{
+		return self::createFromHtml($dt->toHtmlDate());
 	}
 }

@@ -12,11 +12,10 @@ class WeekDifference extends PeriodDifference
 {
 	public function __construct(DT $start)
 	{
-		$dt = $start->setTime(0, 0);
-		parent::__construct($dt, $dt->modifyDays(7), Period::WEEK);
+		parent::__construct($start, $start, Period::WEEK);
 	}
 
-	public function __invoke(): LocalDate\Week
+	public function toLocal(): LocalDate\Week
 	{
 		$dt = $this->getStart();
 		return new LocalDate\Week($dt->getYear(), $dt->getWeek());

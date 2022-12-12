@@ -44,6 +44,23 @@ class DayTest extends AbstractTestCase
 		yield['2022-11-10', 2022, 11, 10, 3, 3, 4, 'thursday', false];
 		yield['2022-11-11', 2022, 11, 11, 4, 2, 5, 'friday', false];
 	}
+
+	/**
+	 * @dataProvider provideDuration
+	 */
+	public function testDuration(int $year, int $month, int $day, string $from, string $to): void
+	{
+		$case = new LocalDate\Day($year, $month, $day);
+
+		Assert::same($case->difference()->getStart()->toHumanString(), $from);
+		Assert::same($case->difference()->getEnd()->toHumanString(), $to);
+	}
+
+	public function provideDuration(): \Generator
+	{
+		yield [2022, 11, 5, '2022-11-05 00:00:00', '2022-11-06 00:00:00'];
+		yield [2022, 12, 31, '2022-12-31 00:00:00', '2023-01-01 00:00:00'];
+	}
 }
 
 $test = new DayTest();

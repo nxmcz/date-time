@@ -11,6 +11,12 @@ abstract class DatePart
 {
 	protected DT $dt;
 
+	abstract public static function createFromDT(DT $dt): self;
+
+	abstract public function getName(): string;
+
+	abstract public function getNumber(): int;
+
 	abstract public function __toString(): string;
 
 	abstract public static function createFromHtml(string $html): self;

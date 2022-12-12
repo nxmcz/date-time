@@ -37,6 +37,23 @@ class MonthTest extends AbstractTestCase
 		yield ['2020-02', 2020, 2, 29, '2020-02-29', 'february'];
 		yield ['2021-02', 2021, 2, 28, '2021-02-28', 'february'];
 	}
+
+	/**
+	 * @dataProvider provideDuration
+	 */
+	public function testDuration(int $year, int $month, string $from, string $to): void
+	{
+		$case = new LocalDate\Month($year, $month);
+
+		Assert::same($case->difference()->getStart()->toHumanString(), $from);
+		Assert::same($case->difference()->getEnd()->toHumanString(), $to);
+	}
+
+	public function provideDuration(): \Generator
+	{
+		yield [2022, 11, '2022-11-01 00:00:00', '2022-12-01 00:00:00'];
+		yield [2022, 12, '2022-12-01 00:00:00', '2023-01-01 00:00:00'];
+	}
 }
 
 $test = new MonthTest();
