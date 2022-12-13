@@ -69,14 +69,14 @@ class Inventor implements IteratorAggregate, Countable
 		return count($this->items);
 	}
 
-	public function first(): ?DatePart
+	public function first(): ?DT
 	{
-		return $this->items[0] ?? null;
+		return $this->items[0]->difference()->getStart() ?? null;
 	}
 
-	public function last(): ?DatePart
+	public function last(): ?DT
 	{
-		return $this->items[$this->count()-1] ?? null;
+		return $this->items[$this->count()-1]->difference()->getStart() ?? null;
 	}
 
 	public function getIterator(): Traversable
