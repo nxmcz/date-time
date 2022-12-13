@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\Utils;
 
@@ -24,39 +26,40 @@ class Inventor implements IteratorAggregate, Countable
 	private array $items = [];
 
 	public function __construct(
-		private readonly ?DatePart $from,
-		private readonly ?DatePart $to,
+		private readonly DatePart $from,
+		private readonly DatePart $to,
 		private readonly Period $period
-	)
-	{
-		if( $this->getFrom()->isGreaterThan($this->getTo()) ) {
-			throw BadFormatException::create()->withMessage("To parameter cannot be greater than from.");
+	) {
+		if ($this->getFrom()->isGreaterThan($this->getTo())) {
+			throw BadFormatException::create()->withMessage('To parameter cannot be greater than from.');
 		}
 
 		$this->make();
 	}
 
-	public static function day(Day $from = null, Day $to = null): self
+	public static function day(DatePart $from = null, DatePart $to = null): self
 	{
 		return new self($from, $to, Period::DAY);
 	}
 
-	public static function week(Week $from = null, Week $to = null): self
+	public static function week(DatePart $from = null, DatePart $to = null): self
 	{
 		return new self($from, $to, Period::WEEK);
 	}
 
-	public static function month(Month $from = null, Month $to = null): self
+	public static function month(DatePart $from = null, DatePart $to = null): self
 	{
 		return new self($from, $to, Period::MONTH);
 	}
 
-	public function getFrom(): DT {
-		return $this->from?->getDT() ?? DT::now();
+	public function getFrom(): DT
+	{
+		return $this->from->getDT();
 	}
 
-	public function getTo(): DT {
-		return $this->to?->getDT() ?? DT::now();
+	public function getTo(): DT
+	{
+		return $this->to->getDT();
 	}
 
 	public function difference(): PeriodDifference
@@ -84,15 +87,16 @@ class Inventor implements IteratorAggregate, Countable
 		return new ArrayIterator($this->items);
 	}
 
-	private function make(): void {
+	private function make(): void
+	{
 		$interval = $this->period->getInterval();
 		$new = $this->getFrom();
-		$cannotAcross = $this->getTo();
+		$cannotAcross = $this->to->difference()->getEnd(); // exception state
 
 		/** @var DatePart $class */
 		$class = $this->period->getClassInstance();
 
-		while ($cannotAcross->isGreaterThanOrEqualTo($new)) {
+		while ($cannotAcross->isGreaterThan($new)) {
 			$this->items[] = $class::createFromDT($new);
 			$new = $new->add($interval);
 		}
