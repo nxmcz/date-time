@@ -46,7 +46,7 @@ class PeriodDifference extends Difference implements IteratorAggregate
 		parent::__construct($this->start, $this->end);
 	}
 
-	public static function createByDifference(Difference $d, Period $interval = null): self
+	public static function createByDifference(Difference $d, Period $interval): self
 	{
 		return new self($d->getStart(), $d->getEnd(), $interval);
 	}

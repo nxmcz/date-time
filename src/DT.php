@@ -60,16 +60,6 @@ class DT extends \DateTimeImmutable
 		return new self($capture, $tz);
 	}
 
-	public function getLocalTime(): LocalTime
-	{
-		return LocalTime::create($this);
-	}
-
-	public function getLocalDate(): LocalDate
-	{
-		return LocalDate::create($this);
-	}
-
 	public function __toString(): string
 	{
 		return $this->toLocalHumanString();

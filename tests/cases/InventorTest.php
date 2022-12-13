@@ -7,6 +7,7 @@ namespace Tests\Unit;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\DT as DateTime;
 use Noxem\DateTime\Difference;
+use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\LocalDate\DatePart;
 use Noxem\DateTime\LocalDate\Day;
 use Noxem\DateTime\LocalDate\Week;
@@ -39,16 +40,12 @@ class InventorTest extends AbstractTestCase
 	): void
 	{
 		$generator = new Inventor($from, $to, $period);
-		$generatorArray = iterator_to_array($generator);
-		$quantityInGenerator = count($generatorArray);
 
-		Assert::equal($expectedQuantityInGenerator, $quantityInGenerator);
-		Assert::same((string)$generatorArray[0]->difference()->getStart(), $firstStart);
-		Assert::same((string)$generatorArray[0]->difference()->getEnd(), $firstEnd);
-
-		Assert::same((string)$generatorArray[$quantityInGenerator-1]->difference()->getStart(), $lastStart);
-		Assert::same((string)$generatorArray[$quantityInGenerator-1]->difference()->getEnd(), $lastEnd);
-
+		Assert::equal($expectedQuantityInGenerator, $generator->count());
+		Assert::same((string)$generator->first()->difference()->getStart(), $firstStart);
+		Assert::same((string)$generator->first()->difference()->getEnd(), $firstEnd);
+		Assert::same((string)$generator->last()->difference()->getStart(), $lastStart);
+		Assert::same((string)$generator->last()->difference()->getEnd(), $lastEnd);
 		Assert::same($differenceInSeconds, $generator->difference()->getSeconds());
 	}
 
@@ -113,6 +110,14 @@ class InventorTest extends AbstractTestCase
 			'2022-12-26 00:00:00',
 			14*86400
 		];
+	}
+
+	public function testThrowsWhenToParameterGreater(): void
+	{
+		Assert::throws(
+			fn() => Inventor::day(new Day(2022, 8, 3), new Day(2022, 8, 2)),
+			BadFormatException::class
+		);
 	}
 }
 
