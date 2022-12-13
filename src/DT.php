@@ -65,6 +65,10 @@ class DT extends \DateTimeImmutable
 		return new LocalDate($this);
 	}
 
+	public function toLocalTime(): LocalTime
+	{
+		return LocalTime::create($this);
+	}
 	public function __toString(): string
 	{
 		return $this->toLocalHumanString();
