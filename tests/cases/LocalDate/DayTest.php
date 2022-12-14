@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use Noxem\DateTime\DT;
 use Noxem\DateTime\LocalDate;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
@@ -60,6 +61,18 @@ class DayTest extends AbstractTestCase
 	{
 		yield [2022, 11, 5, '2022-11-05 00:00:00', '2022-11-06 00:00:00'];
 		yield [2022, 12, 31, '2022-12-31 00:00:00', '2023-01-01 00:00:00'];
+	}
+
+	public function testIsCurrent(): void
+	{
+		$now = DT::now();
+		$previous = $now->modifyDays(-1);
+
+		$caseNow = new LocalDate\Day($now->getYear(), $now->getMonth(), $now->getDay());
+		$casePrevious = new LocalDate\Day($previous->getYear(), $previous->getMonth(), $previous->getDay());
+
+		Assert::true($caseNow->isCurrent());
+		Assert::false($casePrevious->isCurrent());
 	}
 }
 

@@ -32,6 +32,18 @@ class WeekTest extends AbstractTestCase
 		yield [2022, 50, '2022-12-12 00:00:00', '2022-12-19 00:00:00'];
 		yield [2022, 49, '2022-12-05 00:00:00', '2022-12-12 00:00:00'];
 	}
+
+	public function testIsCurrent(): void
+	{
+		$now = DT::now();
+		$previous = $now->modifyDays(-100);
+
+		$caseNow = new LocalDate\Week($now->getYear(), $now->getWeek(),);
+		$casePrevious = new LocalDate\Week($previous->getYear(), $previous->getWeek());
+
+		Assert::true($caseNow->isCurrent());
+		Assert::false($casePrevious->isCurrent());
+	}
 }
 
 $test = new WeekTest();

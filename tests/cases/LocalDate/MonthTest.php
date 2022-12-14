@@ -54,6 +54,18 @@ class MonthTest extends AbstractTestCase
 		yield [2022, 11, '2022-11-01 00:00:00', '2022-12-01 00:00:00'];
 		yield [2022, 12, '2022-12-01 00:00:00', '2023-01-01 00:00:00'];
 	}
+
+	public function testIsCurrent(): void
+	{
+		$now = DT::now();
+		$previous = $now->modifyDays(-100);
+
+		$caseNow = new LocalDate\Month($now->getYear(), $now->getMonth());
+		$casePrevious = new LocalDate\Month($previous->getYear(), $previous->getMonth());
+
+		Assert::true($caseNow->isCurrent());
+		Assert::false($casePrevious->isCurrent());
+	}
 }
 
 $test = new MonthTest();

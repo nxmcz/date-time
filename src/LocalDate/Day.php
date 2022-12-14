@@ -102,4 +102,13 @@ class Day extends DatePart
 	{
 		return self::createFromHtml($dt->toHtmlDate());
 	}
+
+	public function isCurrent(): bool
+	{
+		$dt = $this->getDT();
+		$now = DT::now();
+		return $dt->getDay() === $now->getDay()
+			&& $dt->getMonth() === $now->getMonth()
+			&& $dt->getYear() === $now->getYear();
+	}
 }

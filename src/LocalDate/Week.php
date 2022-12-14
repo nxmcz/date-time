@@ -74,4 +74,12 @@ class Week extends DatePart
 	{
 		return 'W';
 	}
+
+	public function isCurrent(): bool
+	{
+		$dt = $this->getDT();
+		$now = DT::now();
+		return $dt->getWeek() === $now->getWeek()
+			&& $dt->getYear() === $now->getYear();
+	}
 }

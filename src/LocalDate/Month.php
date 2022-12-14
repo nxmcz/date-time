@@ -80,4 +80,12 @@ class Month extends DatePart
 	{
 		return self::createFromHtml($dt->toHtmlMonth());
 	}
+
+	public function isCurrent(): bool
+	{
+		$dt = $this->getDT();
+		$now = DT::now();
+		return $dt->getMonth() === $now->getMonth()
+			&& $dt->getYear() === $now->getYear();
+	}
 }

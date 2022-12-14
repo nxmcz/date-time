@@ -23,6 +23,8 @@ abstract class DatePart
 
 	abstract public function difference(): Difference;
 
+	abstract public function isCurrent(): bool;
+
 	public function getDT(): DT
 	{
 		return $this->dt;
@@ -33,4 +35,5 @@ abstract class DatePart
 		$this->dt = $dt->setTime(0, 0);
 		return $this;
 	}
+
 }
