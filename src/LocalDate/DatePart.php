@@ -30,9 +30,9 @@ abstract class DatePart
 		return $this->dt;
 	}
 
-	public function setDT(DT $dt): self
+	public function setDT(DT $dt, bool $resetTimePart = true): self
 	{
-		$this->dt = $dt->setTime(0, 0);
+		$this->dt = $resetTimePart ? $dt->setTime(0, 0) : $dt;
 		return $this;
 	}
 
