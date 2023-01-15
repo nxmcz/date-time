@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Noxem\DateTime;
 
 use DateInterval as NativeDateInterval;
-use DateTimeInterface as NativeDateTimeInterface;
 use Noxem\DateTime\Attributes;
 
 class Difference implements Attributes\Intervalic, \JsonSerializable
@@ -19,8 +18,8 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 	protected bool $absoluteCalculation = false;
 
 	public function __construct(
-		DT|int $start,
-		DT|int $end,
+		DT|string|int $start,
+		DT|string|int $end,
 		bool $throw = false
 	) {
 		$this->start = DT::getOrCreateInstance($start);

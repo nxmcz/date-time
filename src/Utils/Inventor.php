@@ -37,17 +37,17 @@ class Inventor implements IteratorAggregate, Countable
 		$this->make();
 	}
 
-	public static function day(DatePart $from = null, DatePart $to = null): self
+	public static function day(DatePart $from, DatePart $to): self
 	{
 		return new self($from, $to, Period::DAY);
 	}
 
-	public static function week(DatePart $from = null, DatePart $to = null): self
+	public static function week(DatePart $from, DatePart $to): self
 	{
 		return new self($from, $to, Period::WEEK);
 	}
 
-	public static function month(DatePart $from = null, DatePart $to = null): self
+	public static function month(DatePart $from, DatePart $to): self
 	{
 		return new self($from, $to, Period::MONTH);
 	}
@@ -74,12 +74,21 @@ class Inventor implements IteratorAggregate, Countable
 
 	public function first(): ?DT
 	{
-		return $this->items[0]->difference()->getStart() ?? null;
+		if (!isset($this->items[0])) {
+			return null;
+		}
+
+		return $this->items[0]->difference()->getStart();
 	}
 
 	public function last(): ?DT
 	{
-		return $this->items[$this->count()-1]->difference()->getStart() ?? null;
+		$iteration = $this->count()-1;
+		if (!isset($this->items[$iteration])) {
+			return null;
+		}
+
+		return $this->items[$iteration]->difference()->getStart();
 	}
 
 	public function getIterator(): Traversable
