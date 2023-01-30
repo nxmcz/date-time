@@ -7,13 +7,11 @@ namespace Noxem\DateTime\Utils;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Noxem\DateTime\Difference;
 use Noxem\DateTime\Difference\PeriodDifference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
 use Noxem\DateTime\LocalDate\DatePart;
-use Noxem\DateTime\LocalDate\Day;
-use Noxem\DateTime\LocalDate\Month;
-use Noxem\DateTime\LocalDate\Week;
 use Noxem\DateTime\Period;
 use Traversable;
 
@@ -62,10 +60,12 @@ class Inventor implements IteratorAggregate, Countable
 		return $this->to->getDT();
 	}
 
-	public function difference(): PeriodDifference
-	{
-		return new PeriodDifference($this->getFrom(), $this->getTo(), $this->period);
-	}
+    public function difference(): Difference
+    {
+        return $this->period === Period::HOUR
+            ? new Difference($this->getFrom(), $this->getTo())
+            : new PeriodDifference($this->getFrom(), $this->getTo(), $this->period);
+    }
 
 	public function count(): int
 	{
