@@ -9,7 +9,7 @@ use Noxem\DateTime\DT;
 
 class CustomHour extends DatePart
 {
-	private int $customHours;
+	private int $customHours = 1;
 
 	public static function createFromDT(DT $dt): self
 	{

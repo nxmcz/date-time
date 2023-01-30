@@ -11,6 +11,8 @@ class Formatter
 {
 	public const DATE = 'Y-m-d';
 
+    public const DATETIME = 'Y-m-d\TH:i';
+
 	public const DATE_ABSOLUTE = 'Ymd';
 
 	public const TIME = 'H:i';

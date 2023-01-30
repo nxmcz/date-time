@@ -8,6 +8,7 @@ use DateInterval;
 use Noxem\DateTime\LocalDate\Day;
 use Noxem\DateTime\LocalDate\Month;
 use Noxem\DateTime\LocalDate\Week;
+use Noxem\DateTime\Utils\Formatter;
 
 enum Period: string
 {
@@ -34,7 +35,7 @@ enum Period: string
 	{
 		$a = [];
 
-		foreach ([self::DAY, self::WEEK, self::MONTH] as $case) {
+		foreach ([self::HOUR, self::DAY, self::WEEK, self::MONTH] as $case) {
 			$a[$case->value] = $case->value;
 		}
 
@@ -67,9 +68,9 @@ enum Period: string
 	public function getFormat(): string
 	{
 		return match ($this) {
-			self::DAY, self::SHIFT => 'd. m. Y',
+			self::DAY, self::SHIFT => Formatter::DATE,
 			self::MONTH => 'Y-m',
-			self::HOUR => 'd. m. Y H:i',
+			self::HOUR => Formatter::DATETIME,
 			self::WEEK => "Y-\WW",
 			self::YEAR => 'Y',
 		};
