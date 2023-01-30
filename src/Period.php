@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Noxem\DateTime;
 
 use DateInterval;
+use Noxem\DateTime\LocalDate\CustomHour;
 use Noxem\DateTime\LocalDate\Day;
 use Noxem\DateTime\LocalDate\Month;
 use Noxem\DateTime\LocalDate\Week;
@@ -48,6 +49,7 @@ enum Period: string
 			self::DAY, self::SHIFT => Day::class,
 			self::MONTH => Month::class,
 			self::WEEK => Week::class,
+            self::HOUR => CustomHour::class,
 			default => throw new \InvalidArgumentException("Unsupported case for generator")
 		};
 	}
