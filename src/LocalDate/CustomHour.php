@@ -11,6 +11,17 @@ class CustomHour extends DatePart
 {
 	private int $customHours = 1;
 
+	public function __construct(protected string $html)
+	{
+		$dt = DT::create($html);
+		$this->setDT($dt, false);
+	}
+
+	public function __toString(): string
+	{
+		return $this->getDT()->toHumanString();
+	}
+
 	public static function createFromDT(DT $dt): self
 	{
 		return new self($dt->toHumanString());
@@ -19,27 +30,6 @@ class CustomHour extends DatePart
 	public static function createFromHtml(string $html): self
 	{
 		return new self($html);
-	}
-
-	public function __construct(protected string $html)
-	{
-		$dt = DT::create($html);
-		$this->setDT($dt, false);
-	}
-
-	public function setCustomHours(int $hours): self {
-		$this->customHours = $hours;
-		return $this;
-	}
-
-	public function __toString(): string
-	{
-		return $this->getDT()->toHumanString();
-	}
-
-	public function getMaximumNumber(): int
-	{
-		return $this->getDT()->getWeeksOfYear();
 	}
 
 	public function getNumber(): int
