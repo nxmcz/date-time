@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\Utils;
 
@@ -6,13 +8,13 @@ use Noxem\DateTime\DT;
 
 class Helpers
 {
-	public static function clamp(\DateTimeInterface $value, \DateTimeInterface $min, \DateTimeInterface $max): DT
+	public static function clamp(DT|string $value, DT|string $min, DT|string $max): DT
 	{
 		return DT::create()
 			->setTimestamp(
 				max(
-					$min->getTimestamp(),
-					min($max->getTimestamp(), $value->getTimestamp())
+					DT::getOrCreateInstance($min)->getTimestamp(),
+					min(DT::getOrCreateInstance($max)->getTimestamp(), DT::getOrCreateInstance($value)->getTimestamp())
 				)
 			);
 	}

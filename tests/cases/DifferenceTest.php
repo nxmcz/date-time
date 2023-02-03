@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use Generator;
+use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\DT as DateTime;
-use Noxem\DateTime\Difference;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
 
 require_once __DIR__ . '/../bootstrap.php';
-
 
 /**
  * @testCase
@@ -41,8 +41,8 @@ class DifferenceTest extends AbstractTestCase
 		Assert::false($difference->isActive());
 
 		$live = new Difference(
-			DateTime::create('now')->modify("-9 minutes"),
-			DateTime::create()->modify("+10 minutes")
+			DateTime::create('now')->modify('-9 minutes'),
+			DateTime::create()->modify('+10 minutes')
 		);
 
 		Assert::true($live->isActive());
@@ -53,10 +53,10 @@ class DifferenceTest extends AbstractTestCase
 	public function testInvalid()
 	{
 		Assert::exception(
-			fn() => new Difference(
+			fn () => new Difference(
 				DateTime::create('2019-08-01 20:55:59'),
-				DateTime::create('2019-08-01 20:55:59')->modify("-1 seconds"),
-				TRUE
+				DateTime::create('2019-08-01 20:55:59')->modify('-1 seconds'),
+				true
 			),
 			\InvalidArgumentException::class
 		);
@@ -64,8 +64,8 @@ class DifferenceTest extends AbstractTestCase
 
 	public function testDifferenceInLeapYear()
 	{
-		$beforeHourShift = DT::createFromParts(2022,10,29, 15);
-		$afterHourShift = DT::createFromParts(2022,10,30, 15);
+		$beforeHourShift = DT::createFromParts(2022, 10, 29, 15);
+		$afterHourShift = DT::createFromParts(2022, 10, 30, 15);
 		$difference = $beforeHourShift->difference($afterHourShift);
 
 		Assert::same(1, $difference->getDays());
@@ -222,13 +222,12 @@ class DifferenceTest extends AbstractTestCase
 	public function test_get_by_instance(): void
 	{
 		$first = DT::create('2022-05-20 11:45:00');
-		$last = DT::getOrCreateInstance( new \DateTimeImmutable('2022-05-13 11:45:00') );
+		$last = DT::getOrCreateInstance(new \DateTimeImmutable('2022-05-13 11:45:00'));
 
 		$dt = $first->difference($last)->withAbsolute();
 
 		Assert::same(168.0, $dt->getHours());
 	}
-
 
 	public function testToJson(): void
 	{
@@ -237,26 +236,28 @@ class DifferenceTest extends AbstractTestCase
 
 		$dt = $first->difference($last);
 		$serialize = $dt->jsonSerialize();
-		Assert::true($dt->getStart()->areEquals($serialize["start"]));
-		Assert::true($dt->getEnd()->areEquals($serialize["end"]));
+		Assert::true($dt->getStart()->areEquals($serialize['start']));
+		Assert::true($dt->getEnd()->areEquals($serialize['end']));
 
-		Assert::same($serialize["millis"], $dt->getMillis());
-		Assert::same($serialize["seconds"], $dt->getSeconds());
-		Assert::same($serialize["minutes"], $dt->getMinutes());
-		Assert::same($serialize["hours"], $dt->getHours());
-		Assert::same($serialize["days"], $dt->getDays());
-		Assert::same($serialize["weeks"], $dt->getWeeks());
+		Assert::same($serialize['millis'], $dt->getMillis());
+		Assert::same($serialize['seconds'], $dt->getSeconds());
+		Assert::same($serialize['minutes'], $dt->getMinutes());
+		Assert::same($serialize['hours'], $dt->getHours());
+		Assert::same($serialize['days'], $dt->getDays());
+		Assert::same($serialize['weeks'], $dt->getWeeks());
 	}
 
 	public function testTwoObjects()
 	{
-		Assert::same(59,
+		Assert::same(
+			59,
 			DT::create('2022-07-20 15:44:30')
 				->difference(DT::create('2022-07-20 15:45:29'))
 				->getSeconds()
 		);
 
-		Assert::same(3.0,
+		Assert::same(
+			3.0,
 			DT::create('2022-07-20 15:44:30')
 				->difference(DT::create('2022-07-20 15:47:30'))
 				->getMinutes()
@@ -268,32 +269,91 @@ class DifferenceTest extends AbstractTestCase
 				->isValid()
 		);
 
-		Assert::exception(fn() => DT::create('2022-07-20 15:44:30')
-			->difference(DT::create('2022-07-20 15:44:30'), TRUE)
-			->isValid()
-			, \InvalidArgumentException::class
+		Assert::exception(
+			fn () => DT::create('2022-07-20 15:44:30')
+			->difference(DT::create('2022-07-20 15:44:30'), true)
+			->isValid(),
+			\InvalidArgumentException::class
 		);
 
-		Assert::exception(fn() => DT::create('2022-07-20 15:44:30')
-			->difference(DT::create('2022-07-20 15:44:29'), TRUE)
-			->isValid()
-			, \InvalidArgumentException::class
+		Assert::exception(
+			fn () => DT::create('2022-07-20 15:44:30')
+			->difference(DT::create('2022-07-20 15:44:29'), true)
+			->isValid(),
+			\InvalidArgumentException::class
 		);
 	}
 
 	public function testIsDayFlip(): void
 	{
-		Assert::same( 20220501, DT::create("2022-05-01")->getAbsoluteDate() );
-		Assert::same( 20220501, DT::create("2022-5-1")->getAbsoluteDate() );
-		Assert::same( 20220501, DT::create("2022-05-01 12:34:56")->getAbsoluteDate() );
+		Assert::same(20220501, DT::create('2022-05-01')->getAbsoluteDate());
+		Assert::same(20220501, DT::create('2022-5-1')->getAbsoluteDate());
+		Assert::same(20220501, DT::create('2022-05-01 12:34:56')->getAbsoluteDate());
 
-		Assert::false( DT::create("2022-05-01 00:00:00")->difference( DT::create("2022-05-01 23:59:59"))->isDayFlip() );
-		Assert::false( DT::create("2022-05-01 12:00:00")->difference( DT::create("2022-05-01 14:00:00"))->isDayFlip() );
-		Assert::true( DT::create("2022-05-01 00:00:00")->difference( DT::create("2022-05-02 00:00:00"))->isDayFlip() );
-		Assert::true( DT::create("2022-05-01 12:00:00")->difference( DT::create("2022-05-02 14:00:00"))->isDayFlip() );
+		Assert::false(DT::create('2022-05-01 00:00:00')->difference(DT::create('2022-05-01 23:59:59'))->isDayFlip());
+		Assert::false(DT::create('2022-05-01 12:00:00')->difference(DT::create('2022-05-01 14:00:00'))->isDayFlip());
+		Assert::true(DT::create('2022-05-01 00:00:00')->difference(DT::create('2022-05-02 00:00:00'))->isDayFlip());
+		Assert::true(DT::create('2022-05-01 12:00:00')->difference(DT::create('2022-05-02 14:00:00'))->isDayFlip());
 
-		Assert::true( DT::create("2022-05-01 12:00:00")->difference( DT::create("2023-05-01 13:00:00"))->isDayFlip() );
-		Assert::true( DT::create("2022-05-01 22:00:00")->difference( DT::create("2023-05-02 06:00:00"))->isDayFlip() );
+		Assert::true(DT::create('2022-05-01 12:00:00')->difference(DT::create('2023-05-01 13:00:00'))->isDayFlip());
+		Assert::true(DT::create('2022-05-01 22:00:00')->difference(DT::create('2023-05-02 06:00:00'))->isDayFlip());
+	}
+
+	/**
+	 * @dataProvider provideClamps
+	 */
+	public function testClamp(array $borders, array $suspect, array $expected): void
+	{
+		$difference = new Difference(...$suspect);
+		$clamp = $difference->clamp(new Difference(...$borders));
+
+		Assert::same($expected[0], (string) $clamp->getStart());
+		Assert::same($expected[1], (string) $clamp->getEnd());
+	}
+
+	public function provideClamps(): Generator
+	{
+		yield [
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+		];
+
+		yield [
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:00', '2023-01-01 11:00:01'],
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+		];
+
+		yield [
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 09:59:59', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+		];
+
+		yield [
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 09:59:59', '2023-01-01 11:00:01'],
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+		];
+
+		yield [
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:01', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:01', '2023-01-01 11:00:00'],
+		];
+
+		yield [
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:00', '2023-01-01 10:59:59'],
+			['2023-01-01 10:00:00', '2023-01-01 10:59:59'],
+		];
+
+		yield [
+			['2023-01-01 10:00:00', '2023-01-01 11:00:00'],
+			['2023-01-01 10:00:01', '2023-01-01 10:59:59'],
+			['2023-01-01 10:00:01', '2023-01-01 10:59:59'],
+		];
 	}
 }
 

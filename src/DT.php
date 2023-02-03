@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime;
 
@@ -14,17 +16,22 @@ class DT extends \DateTimeImmutable
 	use Attributes\Comparation;
 	use Attributes\Casting;
 
+	public function __toString(): string
+	{
+		return $this->toLocalHumanString();
+	}
+
 	public function isFuture(): bool
 	{
 		return $this->getTimestamp() > time();
 	}
 
-	public function difference(DT $suspect, bool $throw = FALSE): Difference
+	public function difference(DT $suspect, bool $throw = false): Difference
 	{
 		return new Difference($this, $suspect, $throw);
 	}
 
-	public function clamp(\DateTimeInterface $min, \DateTimeInterface $max): self
+	public function clamp(DT|string $min, DT|string $max): self
 	{
 		return Utils\Helpers::clamp($this, $min, $max);
 	}
@@ -42,9 +49,9 @@ class DT extends \DateTimeImmutable
 		return $datetime->setTimezone($zone);
 	}
 
-	public function setTimezone(DateTimeZone|string|null $timezone = NULL): self
+	public function setTimezone(DateTimeZone|string|null $timezone = null): self
 	{
-		if ($timezone === NULL) {
+		if ($timezone === null) {
 			$timezone = date_default_timezone_get();
 		}
 
@@ -68,9 +75,5 @@ class DT extends \DateTimeImmutable
 	public function toLocalTime(): LocalTime
 	{
 		return LocalTime::create($this);
-	}
-	public function __toString(): string
-	{
-		return $this->toLocalHumanString();
 	}
 }

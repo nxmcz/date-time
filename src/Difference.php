@@ -144,6 +144,14 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 		];
 	}
 
+	public function clamp(Difference $borders): self
+	{
+		return new self(
+			$this->getStart()->clamp($borders->getStart(), $borders->getEnd()),
+			$this->getEnd()->clamp($borders->getStart(), $borders->getEnd()),
+		);
+	}
+
 	private function intervalToSeconds(NativeDateInterval $interval): int
 	{
 		return $interval->days * 86400 + $interval->h * 3600 + $interval->i * 60 + $interval->s;

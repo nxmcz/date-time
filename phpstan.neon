@@ -4,4 +4,4 @@ parameters:
 	scanDirectories:
 		- src
 
-	level: max
+	level: 8
