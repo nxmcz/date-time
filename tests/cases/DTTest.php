@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use DateTime;
+use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
+use Noxem\DateTime\Exception\InvalidArgumentException;
 use Noxem\DateTime\Utils\Formatter;
 use Tester\Assert;
 use Tests\Fixtures\TestCase\AbstractTestCase;
@@ -538,6 +540,10 @@ class DTTest extends AbstractTestCase
 		);
 	}
 
+    public function testClampMaxArgumentWithoutDifference(): void {
+        Assert::exception(fn() =>  DT::create('now')->clamp(DT::now()->modifySeconds(-1)), InvalidArgumentException::class);
+    }
+
 	/**
 	 * @dataProvider dataForClamp
 	 */
@@ -549,6 +555,12 @@ class DTTest extends AbstractTestCase
 					DT::create('2022-07-20 12:00:00')
 				)->format(Formatter::TIMESTAMPS)
 		);
+
+        Assert::same($expectedDatetime,
+            DT::create($suspectedDatetime)
+                ->clamp(new Difference('2022-07-20 11:00:01', '2022-07-20 12:00:00'))
+                ->format(Formatter::TIMESTAMPS)
+        );
 	}
 
 	public function dataForClamp(): array {
