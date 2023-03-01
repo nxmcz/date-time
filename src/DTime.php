@@ -25,4 +25,8 @@ class DTime
 	{
 		return $this->seconds;
 	}
+
+    public function isValid(): bool {
+        return $this->seconds > 0;
+    }
 }
