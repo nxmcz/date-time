@@ -49,6 +49,12 @@ class Month extends DatePart
 		return $this->month;
 	}
 
+    public function getFirstDayOfMonth(): Day
+    {
+        $dt = $this->getDT();
+        return new Day($dt->getYear(), $dt->getMonth(), 1);
+    }
+
 	public function getLastDayOfMonth(): Day
 	{
 		$dt = $this->getDT();
