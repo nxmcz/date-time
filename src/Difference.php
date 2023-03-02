@@ -30,6 +30,11 @@ class Difference implements Attributes\Intervalic, \JsonSerializable
 		}
 	}
 
+    public function areEquals(Difference $difference): bool {
+        return $this->getStart()->areEquals($difference->getStart())
+            && $this->getEnd()->areEquals($difference->getEnd());
+    }
+
 	public function withAbsolute(): self
 	{
 		$difference = clone $this;

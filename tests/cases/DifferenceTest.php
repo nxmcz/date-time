@@ -62,6 +62,24 @@ class DifferenceTest extends AbstractTestCase
 		);
 	}
 
+    public function testAreEquals(): void
+    {
+        $difference = new Difference('2023-01-01 00:00:00', '2023-01-01 01:00:00');
+
+        $differenceSecond = $difference;
+        Assert::same(true, $difference->areEquals($differenceSecond) );
+
+        $differenceSecond = new Difference('2023-01-01 00:00:00', '2023-01-01 01:00:01');
+        Assert::same(false, $difference->areEquals($differenceSecond) );
+
+        $differenceSecond = new Difference('2023-01-01 00:00:01', '2023-01-01 01:00:01');
+        Assert::same(false, $difference->areEquals($differenceSecond) );
+
+        $differenceSecond = new Difference('2023-01-01 00:00:01', '2023-01-01 01:00:00');
+        Assert::same(false, $difference->areEquals($differenceSecond) );
+    }
+
+
 	public function testDifferenceInLeapYear()
 	{
 		$beforeHourShift = DT::createFromParts(2022, 10, 29, 15);
