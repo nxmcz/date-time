@@ -8,8 +8,10 @@ use DateTimeInterface;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
+use Noxem\DateTime\LocalDate;
 use Noxem\DateTime\Utils\Formatter;
 use Noxem\DateTime\Utils\Parser;
+use Traversable;
 
 class Month extends DatePart
 {
@@ -94,4 +96,14 @@ class Month extends DatePart
 		return $dt->getMonth() === $now->getMonth()
 			&& $dt->getYear() === $now->getYear();
 	}
+
+    /**
+     * @return Traversable<LocalDate>
+     */
+    public function generate(): Traversable {
+        $iterations = $this->getLastDayOfMonth()->getNumber();
+        for ($i = 0; $i < $iterations; $i++) {
+            yield $this->getDT()->addDays($i)->toLocalDate();
+        }
+    }
 }
