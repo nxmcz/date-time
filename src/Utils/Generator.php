@@ -20,4 +20,18 @@ class Generator
 			yield $dt->addDays($i)->toLocalDate();
 		}
 	}
+
+    /**
+     * @param int $monthNumber
+     * @param int $yearNumber
+     * @return Traversable<LocalDate>
+     */
+    public static function month(int $monthNumber, int $yearNumber): Traversable
+    {
+        $firstDay = DT::createFromParts($yearNumber, $monthNumber);
+        $iterations = $firstDay->toLocalDate()->getMonth()->getLastDayOfMonth()->getNumber();
+        for ($i = 0; $i < $iterations; $i++) {
+            yield $firstDay->addDays($i)->toLocalDate();
+        }
+    }
 }
