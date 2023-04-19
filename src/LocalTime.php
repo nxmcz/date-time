@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime;
 
 use DateTimeZone;
+use Exception;
 use Noxem\DateTime\Attributes\Timezoned;
 use Noxem\DateTime\Exception\BadFormatException;
 
@@ -10,22 +13,33 @@ class LocalTime
 {
 	use Timezoned;
 
-	public const TimeSeparator = ":";
-	private bool $hideSeconds = FALSE;
+	public const TimeSeparator = ':';
+
+	private bool $hideSeconds = false;
 
 	public function __construct(
 		private int $hours,
 		private int $minutes = 0,
 		private int $seconds = 0,
 		private int $millis = 0,
-		private ?DateTimeZone $dateTimeZone = NULL
+		private ?DateTimeZone $dateTimeZone = null
 	) {
 	}
 
-	public static function create(string|int|\DateTimeInterface|LocalTime $suspect = 'now', string $timezone = NULL): self
+	public function __toString(): string
+	{
+		$time = sprintf('%02d:%02d', $this->getHour(), $this->getMinute());
+		if (! $this->hideSeconds) {
+			$time .= sprintf(':%02d', $this->getSecond());
+		}
+
+		return $time;
+	}
+
+	public static function create(string|int|\DateTimeInterface|LocalTime $suspect = 'now', string $timezone = null): self
 	{
 		try {
-			if($suspect instanceof self) {
+			if ($suspect instanceof self) {
 				$dt = $suspect;
 				$millis = $dt->getMillis();
 			} else {
@@ -41,9 +55,9 @@ class LocalTime
 				$millis,
 				$dt->getTimezone()
 			);
-		} catch (\Exception) {
+		} catch (Exception) {
 			throw BadFormatException::create()
-				->withMessage("Error DT format.");
+				->withMessage('Error DT format.');
 		}
 	}
 
@@ -53,7 +67,7 @@ class LocalTime
 		int $second = 0,
 		int $millis = 0
 	): self {
-		$stringTime = sprintf("%02d:%02d:%02d.%d", $hour, $minute, $second, $millis);
+		$stringTime = sprintf('%02d:%02d:%02d.%d', $hour, $minute, $second, $millis);
 		if (
 			$hour < 0
 			|| $hour > 23
@@ -73,33 +87,32 @@ class LocalTime
 	public static function createFromString(string $value): self
 	{
 		$exp = explode(self::TimeSeparator, $value);
-		if( count($exp) === 2 || count($exp) === 3) {
-
-			$hour = (int)$exp[0];
-			$minute = (int)$exp[1];
+		if (count($exp) === 2 || count($exp) === 3) {
+			$hour = (int) $exp[0];
+			$minute = (int) $exp[1];
 			$second = $exp[2] ??= 0;
 			$millis = $exp[3] ??= 0;
 
-			return new self($hour, $minute, (int)$second, (int)$millis);
+			return new self($hour, $minute, (int) $second, (int) $millis);
 		}
 
 		throw BadFormatException::create()
 			->withMessage("Time parts are invalid: $value");
 	}
 
-	public function getHour(): int
+	public function getHour(bool $landingZero = false): int|string
 	{
-		return $this->hours;
+		return $landingZero ? sprintf('%02d', $this->hours) : $this->hours;
 	}
 
-	public function getMinute(): int
+	public function getMinute(bool $landingZero = false): int|string
 	{
-		return $this->minutes;
+		return $landingZero ? sprintf('%02d', $this->minutes) : $this->minutes;
 	}
 
-	public function getSecond(): int
+	public function getSecond(bool $landingZero = false): int|string
 	{
-		return $this->seconds;
+		return $landingZero ? sprintf('%02d', $this->seconds) : $this->seconds;
 	}
 
 	public function getMillis(): int
@@ -107,16 +120,8 @@ class LocalTime
 		return $this->millis;
 	}
 
-	public function __toString(): string {
-		$time = sprintf("%02d:%02d", $this->getHour(), $this->getMinute());
-		if( ! $this->hideSeconds) {
-			$time .= sprintf(":%02d", $this->getSecond());
-		}
-
-		return $time;
-	}
-
-	public function hideSeconds(bool $hide = TRUE): self {
+	public function hideSeconds(bool $hide = true): self
+	{
 		$clone = clone $this;
 		$clone->hideSeconds = $hide;
 		return $clone;
