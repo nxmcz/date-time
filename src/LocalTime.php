@@ -100,19 +100,19 @@ class LocalTime
 			->withMessage("Time parts are invalid: $value");
 	}
 
-	public function getHour(bool $landingZero = false): int|string
+	public function getHour(): int
 	{
-		return $landingZero ? sprintf('%02d', $this->hours) : $this->hours;
+		return $this->hours;
 	}
 
-	public function getMinute(bool $landingZero = false): int|string
+	public function getMinute(): int
 	{
-		return $landingZero ? sprintf('%02d', $this->minutes) : $this->minutes;
+		return $this->minutes;
 	}
 
-	public function getSecond(bool $landingZero = false): int|string
+	public function getSecond(): int
 	{
-		return $landingZero ? sprintf('%02d', $this->seconds) : $this->seconds;
+		return $this->seconds;
 	}
 
 	public function getMillis(): int

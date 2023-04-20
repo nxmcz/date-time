@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
-use DateTimeInterface;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
@@ -51,11 +50,11 @@ class Month extends DatePart
 		return $this->month;
 	}
 
-    public function getFirstDayOfMonth(): Day
-    {
-        $dt = $this->getDT();
-        return new Day($dt->getYear(), $dt->getMonth(), 1);
-    }
+	public function getFirstDayOfMonth(): Day
+	{
+		$dt = $this->getDT();
+		return new Day($dt->getYear(), $dt->getMonth(), 1);
+	}
 
 	public function getLastDayOfMonth(): Day
 	{
@@ -97,13 +96,14 @@ class Month extends DatePart
 			&& $dt->getYear() === $now->getYear();
 	}
 
-    /**
-     * @return Traversable<LocalDate>
-     */
-    public function generate(): Traversable {
-        $iterations = $this->getLastDayOfMonth()->getNumber();
-        for ($i = 0; $i < $iterations; $i++) {
-            yield $this->getDT()->addDays($i)->toLocalDate();
-        }
-    }
+	/**
+	 * @return Traversable<LocalDate>
+	 */
+	public function createDayParts(): Traversable
+	{
+		$iterations = $this->getLastDayOfMonth()->getNumber();
+		for ($i = 0; $i < $iterations; $i++) {
+			yield $this->getDT()->addDays($i)->toLocalDate();
+		}
+	}
 }
