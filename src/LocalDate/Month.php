@@ -100,7 +100,7 @@ class Month extends DatePart
     /**
      * @return Traversable<LocalDate>
      */
-    public function createDayParts(): Traversable {
+    public function generate(): Traversable {
         $iterations = $this->getLastDayOfMonth()->getNumber();
         for ($i = 0; $i < $iterations; $i++) {
             yield $this->getDT()->addDays($i)->toLocalDate();
