@@ -1,7 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Noxem\DateTime\Attributes;
-
 
 trait TimeConversion
 {
@@ -25,5 +26,10 @@ trait TimeConversion
 	public function getHours(): float
 	{
 		return $this->getSeconds() / 3600;
+	}
+
+	public function isValid(): bool
+	{
+		return $this->getSeconds() > 0;
 	}
 }
