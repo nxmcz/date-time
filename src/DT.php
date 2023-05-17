@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Noxem\DateTime;
 
 use DateTimeZone;
-use Noxem\DateTime\Attributes;
 use Noxem\DateTime\Exception\InvalidArgumentException;
-use Noxem\DateTime\Utils;
 
 class DT extends \DateTimeImmutable
 {
@@ -16,6 +14,7 @@ class DT extends \DateTimeImmutable
 	use Attributes\Addition;
 	use Attributes\Comparation;
 	use Attributes\Casting;
+	use Attributes\StatisticsCalculations;
 
 	public function __toString(): string
 	{
@@ -32,18 +31,17 @@ class DT extends \DateTimeImmutable
 		return new Difference($this, $suspect, $throw);
 	}
 
-
 	public function clamp(DT|string|Difference $min, DT|string $max = null): self
 	{
-        if($min instanceof Difference) {
-            $max = $min->getEnd();
-            $min = $min->getStart();
-        } else {
-            if($max === null) {
-                throw InvalidArgumentException::create()
-                    ->withMessage('Max parameter is required if min is not Difference::class instance');
-            }
-        }
+		if ($min instanceof Difference) {
+			$max = $min->getEnd();
+			$min = $min->getStart();
+		} else {
+			if ($max === null) {
+				throw InvalidArgumentException::create()
+					->withMessage('Max parameter is required if min is not Difference::class instance');
+			}
+		}
 
 		return Utils\Helpers::clamp($this, $min, $max);
 	}
