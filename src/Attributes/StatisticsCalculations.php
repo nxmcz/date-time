@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\Attributes;
 
+use Noxem\DateTime\DT;
+
 /**
  * @internal
  */
 trait StatisticsCalculations
 {
+    /**
+     * @param array<DT> $arrayOfDt
+     */
 	public static function min(array $arrayOfDt): ?self
 	{
 		$min = null;
@@ -24,6 +29,9 @@ trait StatisticsCalculations
 		return $min;
 	}
 
+    /**
+     * @param array<DT> $arrayOfDt
+     */
 	public static function max(array $arrayOfDt): ?self
 	{
 		$min = null;
