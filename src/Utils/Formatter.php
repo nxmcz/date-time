@@ -37,7 +37,7 @@ class Formatter
 
 	public const MILLIS = 'u';
 
-	public const C = 'c';
+    public const ISO8601 = 'c';
 
 	public const ATOM = 'Y-m-d\TH:i:sP';
 

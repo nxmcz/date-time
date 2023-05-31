@@ -136,7 +136,7 @@ class DTTest extends AbstractTestCase
 	public function testInitByConstructor()
 	{
 		$dt = new DT('2022-07-20 19:00:00');
-		Assert::same('{"date":"2022-07-20 19:00:00.000000","timezone_type":3,"timezone":"Europe\/Prague"}', json_encode($dt));
+		Assert::same('"2022-07-20T19:00:00+02:00"', json_encode($dt));
 	}
 
 	public function testToString()
@@ -496,17 +496,17 @@ class DTTest extends AbstractTestCase
 	{
 		Assert::same(
 			json_encode(DT::create('2022-05-20 11:45:00')),
-			'{"date":"2022-05-20 11:45:00.000000","timezone_type":3,"timezone":"Europe\/Prague"}'
+			'"2022-05-20T11:45:00+02:00"'
 		);
 
 		Assert::same(
 			json_encode(DT::create('2022-05-20 11:45:00.1234')),
-			'{"date":"2022-05-20 11:45:00.123400","timezone_type":3,"timezone":"Europe\/Prague"}'
+			'"2022-05-20T11:45:00+02:00"'
 		);
 
 		Assert::same(
 			json_encode(DT::create('2022-05-20 11:45:00.1234')->setTimezone(new \DateTimeZone("Asia/Tokyo"))),
-			'{"date":"2022-05-20 18:45:00.123400","timezone_type":3,"timezone":"Asia\/Tokyo"}'
+			'"2022-05-20T18:45:00+09:00"'
 		);
 	}
 

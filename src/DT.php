@@ -7,7 +7,7 @@ namespace Noxem\DateTime;
 use DateTimeZone;
 use Noxem\DateTime\Exception\InvalidArgumentException;
 
-class DT extends \DateTimeImmutable
+class DT extends \DateTimeImmutable implements \JsonSerializable
 {
 	use Attributes\Creation;
 	use Attributes\DateConversion;
@@ -86,4 +86,9 @@ class DT extends \DateTimeImmutable
 	{
 		return LocalTime::create($this);
 	}
+
+    public function jsonSerialize(): string
+    {
+        return $this->toJS();
+    }
 }

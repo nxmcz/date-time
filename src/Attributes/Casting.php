@@ -26,6 +26,10 @@ trait Casting
 		return $this->setTimezone(new \DateTimeZone("UTC"))->format(Utils\Formatter::UTC);
 	}
 
+    public function toJS(): string {
+        return $this->format(Utils\Formatter::ISO8601);
+    }
+
 	public function toLocalDateTimeString(): string {
 		return $this->getLocal()->format(Utils\Formatter::LOCAL);
 	}
