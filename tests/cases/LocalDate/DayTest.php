@@ -27,8 +27,6 @@ class DayTest extends AbstractTestCase
 		Assert::same($day, $case->getDay());
 
 		Assert::same($dayOfWeek, $case->getDayOfWeek());
-		Assert::same($startOffset, $case->getStartingWeekOffset());
-		Assert::same($endOffset, $case->getEndingWeekOffset());
 
 		Assert::same($dayName, $case->getName());
 		Assert::same($isWeekend, $case->isWeekend());
@@ -73,6 +71,29 @@ class DayTest extends AbstractTestCase
 
 		Assert::true($caseNow->isCurrent());
 		Assert::false($casePrevious->isCurrent());
+	}
+
+	public function testOffsets(): void
+	{
+		$case = LocalDate\Day::createFromHtml('2023-07-01');
+
+		Assert::same([
+			'2023-06-30',
+			'2023-06-29',
+			'2023-06-28',
+			'2023-06-27',
+			'2023-06-26',
+		], array_map(fn (DT $v) => $v->toHtmlDate(), iterator_to_array($case->getStartingWeekOffset())));
+
+		$case = LocalDate\Day::createFromHtml('2023-07-31');
+		Assert::same([
+			'2023-08-01',
+			'2023-08-02',
+			'2023-08-03',
+			'2023-08-04',
+			'2023-08-05',
+			'2023-08-06',
+		], array_map(fn (DT $v) => $v->toHtmlDate(), iterator_to_array($case->getEndingWeekOffset())));
 	}
 }
 

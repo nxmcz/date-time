@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\LocalDate;
 
+use Generator;
 use Noxem\DateTime\Difference;
 use Noxem\DateTime\DT;
 use Noxem\DateTime\Exception\BadFormatException;
@@ -66,14 +67,18 @@ class Day extends DatePart
 		return $this->getDT()->getDayOfWeek();
 	}
 
-	public function getStartingWeekOffset(): int
+	public function getStartingWeekOffset(): Generator
 	{
-		return $this->getDT()->getDayOfWeek() - 1;
+		for($i = 1; $i <= $this->getDT()->getDayOfWeek() - 1; $i++) {
+			yield $this->getDT()->modifyDays(-$i);
+		}
 	}
 
-	public function getEndingWeekOffset(): int
+	public function getEndingWeekOffset(): Generator
 	{
-		return 7 - $this->getDT()->getDayOfWeek();
+		for($i = 1; $i <= 7 - $this->getDT()->getDayOfWeek(); $i++) {
+			yield $this->getDT()->modifyDays(+$i);
+		}
 	}
 
 	public function difference(): Difference
