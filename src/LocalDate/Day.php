@@ -69,7 +69,7 @@ class Day extends DatePart
 
 	public function getStartingWeekOffset(): Generator
 	{
-		for($i = 1; $i <= $this->getDT()->getDayOfWeek() - 1; $i++) {
+		for($i = $this->getDT()->getDayOfWeek() - 1; $i > 0; $i--) {
 			yield $this->getDT()->modifyDays(-$i);
 		}
 	}

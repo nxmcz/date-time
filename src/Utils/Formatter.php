@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Noxem\DateTime\Utils;
 
-use Nette\Utils\Reflection;
-use ReflectionClassConstant;
-
 class Formatter
 {
 	public const DATE = 'Y-m-d';
 
-    public const DATETIME = 'Y-m-d\TH:i';
+	public const DATETIME = 'Y-m-d\TH:i';
 
 	public const DATE_ABSOLUTE = 'Ymd';
 
@@ -25,8 +22,6 @@ class Formatter
 
 	public const SLASHES_TIMES = 'Y/m/d H:i:s';
 
-	public const CZECH = 'd.m.Y H:i:s';
-
 	public const TIMESTAMP = 'Y-m-d H:i';
 
 	public const TIMESTAMPS = 'Y-m-d H:i:s';
@@ -37,7 +32,7 @@ class Formatter
 
 	public const MILLIS = 'u';
 
-    public const ISO8601 = 'c';
+	public const ISO8601 = 'c';
 
 	public const ATOM = 'Y-m-d\TH:i:sP';
 
@@ -52,4 +47,10 @@ class Formatter
 	public const MONTH_NAME = 'F';
 
 	public const WEEK_NUM = 'W';
+
+	public const EuropeDM = 'd. m.';
+
+	public const EuropeDate = 'd. m. Y';
+
+	public const EuropeTimestamp = 'd. m. Y H:i:s';
 }

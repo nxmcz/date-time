@@ -78,11 +78,12 @@ class DayTest extends AbstractTestCase
 		$case = LocalDate\Day::createFromHtml('2023-07-01');
 
 		Assert::same([
-			'2023-06-30',
-			'2023-06-29',
-			'2023-06-28',
-			'2023-06-27',
 			'2023-06-26',
+			'2023-06-27',
+			'2023-06-28',
+			'2023-06-29',
+			'2023-06-30',
+
 		], array_map(fn (DT $v) => $v->toHtmlDate(), iterator_to_array($case->getStartingWeekOffset())));
 
 		$case = LocalDate\Day::createFromHtml('2023-07-31');
