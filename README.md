@@ -14,7 +14,7 @@ An immutable class to deal with DateTime object used in `Noxem` systems. Works p
 
 Requirements
 ------------
-This library requires PHP 8.0 or later.
+This library requires PHP 8.1 or later.
 
 Usage
 -----
