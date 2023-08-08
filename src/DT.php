@@ -31,6 +31,11 @@ class DT extends \DateTimeImmutable implements \JsonSerializable
 		return new Difference($this, $suspect, $throw);
 	}
 
+	public function resetTime(): self
+	{
+		return $this->setTime(0, 0);
+	}
+
 	public function clamp(DT|string|Difference $min, DT|string $max = null): self
 	{
 		if ($min instanceof Difference) {
@@ -87,8 +92,8 @@ class DT extends \DateTimeImmutable implements \JsonSerializable
 		return LocalTime::create($this);
 	}
 
-    public function jsonSerialize(): string
-    {
-        return $this->toJS();
-    }
+	public function jsonSerialize(): string
+	{
+		return $this->toJS();
+	}
 }

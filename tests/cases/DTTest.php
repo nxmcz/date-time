@@ -15,7 +15,6 @@ use Tests\Fixtures\TestCase\AbstractTestCase;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-
 /**
  * @testCase
  */
@@ -36,10 +35,10 @@ class DTTest extends AbstractTestCase
 		Assert::same(time(), DT::create()->getTimestamp());
 
 		Assert::type(DT::class, DT::create());
-		Assert::exception(fn() => DT::create('foo foo Baz'), BadFormatException::class);
+		Assert::exception(fn () => DT::create('foo foo Baz'), BadFormatException::class);
 
 		Assert::true(
-			DT::create("20.7.1993 00:30:00")
+			DT::create('20.7.1993 00:30:00')
 				->areEquals(DT::create(743121000))
 		);
 
@@ -74,7 +73,7 @@ class DTTest extends AbstractTestCase
 		Assert::same(time(), DT::getOrCreateInstance()->getTimestamp());
 
 		Assert::type(DT::class, DT::getOrCreateInstance());
-		Assert::exception(fn() => DT::getOrCreateInstance('foo foo Baz'), BadFormatException::class);
+		Assert::exception(fn () => DT::getOrCreateInstance('foo foo Baz'), BadFormatException::class);
 
 		Assert::true(DT::create()->areEquals(DT::getOrCreateInstance(new \DateTimeImmutable())));
 		Assert::true(DT::create()->areEquals(DT::getOrCreateInstance(new DateTime())));
@@ -97,7 +96,8 @@ class DTTest extends AbstractTestCase
 		Assert::true(
 			DT::create('2022-07-20 01:00:00')
 				->setTimezone(new \DateTimeZone('Europe/Prague'))
-				->areEquals(DT::create('2022-07-20 01:00:00')
+				->areEquals(
+					DT::create('2022-07-20 01:00:00')
 					->setTimezone(new \DateTimeZone('America/New_York'))
 				)
 		);
@@ -141,13 +141,13 @@ class DTTest extends AbstractTestCase
 
 	public function testToString()
 	{
-		Assert::same('2022-07-20 19:00:00', (string)DT::create('2022-07-20 19:00:00'));
+		Assert::same('2022-07-20 19:00:00', (string) DT::create('2022-07-20 19:00:00'));
 	}
 
 	/**
 	 * @dataProvider providerOfDatesForDayOfWeek
 	 */
-	public function testGetDayOfWeek($date, $numberOfDay, $iso = TRUE): void
+	public function testGetDayOfWeek($date, $numberOfDay, $iso = true): void
 	{
 		Assert::same($numberOfDay, DT::create($date)->getDayOfWeek($iso));
 	}
@@ -163,13 +163,13 @@ class DTTest extends AbstractTestCase
 			['2022-08-20', 6],
 			['2023-01-01', 7],
 
-			['2022-08-29', 2, FALSE],
-			['2022-11-01', 3, FALSE],
-			['2022-09-14', 4, FALSE],
-			['2022-09-15', 5, FALSE],
-			['2022-12-23', 6, FALSE],
-			['2022-08-20', 7, FALSE],
-			['2023-01-01', 1, FALSE]
+			['2022-08-29', 2, false],
+			['2022-11-01', 3, false],
+			['2022-09-14', 4, false],
+			['2022-09-15', 5, false],
+			['2022-12-23', 6, false],
+			['2022-08-20', 7, false],
+			['2023-01-01', 1, false],
 		];
 	}
 
@@ -197,78 +197,78 @@ class DTTest extends AbstractTestCase
 	public function providerIsLeap(): array
 	{
 		return [
-			[1595, FALSE],
-			[1596, TRUE],
-			[1597, FALSE],
-			[1598, FALSE],
-			[1599, FALSE],
-			[1600, TRUE],
-			[1601, FALSE],
-			[1602, FALSE],
-			[1603, FALSE],
-			[1604, TRUE],
-			[1605, FALSE],
-			[1695, FALSE],
-			[1696, TRUE],
-			[1697, FALSE],
-			[1698, FALSE],
-			[1699, FALSE],
-			[1700, FALSE],
-			[1701, FALSE],
-			[1702, FALSE],
-			[1703, FALSE],
-			[1704, TRUE],
-			[1705, FALSE],
-			[1795, FALSE],
-			[1796, TRUE],
-			[1797, FALSE],
-			[1798, FALSE],
-			[1799, FALSE],
-			[1800, FALSE],
-			[1801, FALSE],
-			[1802, FALSE],
-			[1803, FALSE],
-			[1804, TRUE],
-			[1805, FALSE],
-			[1895, FALSE],
-			[1896, TRUE],
-			[1897, FALSE],
-			[1898, FALSE],
-			[1899, FALSE],
-			[1900, FALSE],
-			[1901, FALSE],
-			[1902, FALSE],
-			[1903, FALSE],
-			[1904, TRUE],
-			[1905, FALSE],
-			[1995, FALSE],
-			[1996, TRUE],
-			[1997, FALSE],
-			[1998, FALSE],
-			[1999, FALSE],
-			[2000, TRUE],
-			[2001, FALSE],
-			[2002, FALSE],
-			[2003, FALSE],
-			[2004, TRUE],
-			[2005, FALSE],
-			[2006, FALSE],
-			[2007, FALSE],
-			[2008, TRUE],
-			[2009, FALSE],
-			[2010, FALSE],
-			[2011, FALSE],
-			[2012, TRUE],
-			[2013, FALSE],
-			[2014, FALSE],
-			[2015, FALSE],
-			[2016, TRUE],
-			[2017, FALSE],
-			[2018, FALSE],
-			[2019, FALSE],
-			[2020, TRUE],
-			[2021, FALSE],
-			[2022, FALSE],
+			[1595, false],
+			[1596, true],
+			[1597, false],
+			[1598, false],
+			[1599, false],
+			[1600, true],
+			[1601, false],
+			[1602, false],
+			[1603, false],
+			[1604, true],
+			[1605, false],
+			[1695, false],
+			[1696, true],
+			[1697, false],
+			[1698, false],
+			[1699, false],
+			[1700, false],
+			[1701, false],
+			[1702, false],
+			[1703, false],
+			[1704, true],
+			[1705, false],
+			[1795, false],
+			[1796, true],
+			[1797, false],
+			[1798, false],
+			[1799, false],
+			[1800, false],
+			[1801, false],
+			[1802, false],
+			[1803, false],
+			[1804, true],
+			[1805, false],
+			[1895, false],
+			[1896, true],
+			[1897, false],
+			[1898, false],
+			[1899, false],
+			[1900, false],
+			[1901, false],
+			[1902, false],
+			[1903, false],
+			[1904, true],
+			[1905, false],
+			[1995, false],
+			[1996, true],
+			[1997, false],
+			[1998, false],
+			[1999, false],
+			[2000, true],
+			[2001, false],
+			[2002, false],
+			[2003, false],
+			[2004, true],
+			[2005, false],
+			[2006, false],
+			[2007, false],
+			[2008, true],
+			[2009, false],
+			[2010, false],
+			[2011, false],
+			[2012, true],
+			[2013, false],
+			[2014, false],
+			[2015, false],
+			[2016, true],
+			[2017, false],
+			[2018, false],
+			[2019, false],
+			[2020, true],
+			[2021, false],
+			[2022, false],
 		];
 	}
 
@@ -483,13 +483,13 @@ class DTTest extends AbstractTestCase
 			[2097, 52],
 			[2098, 52],
 			[2099, 53],
-			[2100, 52]
+			[2100, 52],
 		];
 	}
 
 	public function testCreateBadParts(): void
 	{
-		Assert::exception(fn() => DT::createFromParts(2022, second: 60), BadFormatException::class);
+		Assert::exception(fn () => DT::createFromParts(2022, second: 60), BadFormatException::class);
 	}
 
 	public function testToJson(): void
@@ -505,7 +505,7 @@ class DTTest extends AbstractTestCase
 		);
 
 		Assert::same(
-			json_encode(DT::create('2022-05-20 11:45:00.1234')->setTimezone(new \DateTimeZone("Asia/Tokyo"))),
+			json_encode(DT::create('2022-05-20 11:45:00.1234')->setTimezone(new \DateTimeZone('Asia/Tokyo'))),
 			'"2022-05-20T18:45:00+09:00"'
 		);
 	}
@@ -513,16 +513,16 @@ class DTTest extends AbstractTestCase
 	public function test_set_timezone(): void
 	{
 		Assert::true(
-			DT::create('2022-05-20 11:45:00.1234')->setTimezone("Asia/Tokyo")
+			DT::create('2022-05-20 11:45:00.1234')->setTimezone('Asia/Tokyo')
 				->areEquals(
-					DT::create('2022-05-20 11:45:00.1234')->setTimezone(new \DateTimeZone("Asia/Tokyo"))
+					DT::create('2022-05-20 11:45:00.1234')->setTimezone(new \DateTimeZone('Asia/Tokyo'))
 				)
 		);
 
 		Assert::false(
-			DT::create('2022-05-20 11:45:00.1234')->setTimezone("America/New_York")
+			DT::create('2022-05-20 11:45:00.1234')->setTimezone('America/New_York')
 				->areEquals(
-					DT::create('2022-05-20 11:45:00.1234')->assignTimezone("Asia/Tokyo")
+					DT::create('2022-05-20 11:45:00.1234')->assignTimezone('Asia/Tokyo')
 				)
 		);
 	}
@@ -530,25 +530,33 @@ class DTTest extends AbstractTestCase
 	public function testSetTimeByInterface(): void
 	{
 		Assert::same(
-			"2022-07-20 00:30:00",
-			(string)DT::create("2022-07-20 12:00:00")->setTimeByInterface(new DateTime("1993-07-20 00:30:00"))
+			'2022-07-20 00:30:00',
+			(string) DT::create('2022-07-20 12:00:00')->setTimeByInterface(new DateTime('1993-07-20 00:30:00'))
 		);
 
 		Assert::same(
-			"2022-07-20 00:30:00",
-			(string)DT::create("2022-07-20 12:00:00")->setTimeByInterface(new DateTime("1993-07-20 00:30:00.555"))
+			'2022-07-20 00:30:00',
+			(string) DT::create('2022-07-20 12:00:00')->setTimeByInterface(new DateTime('1993-07-20 00:30:00.555'))
 		);
 	}
 
-    public function testClampMaxArgumentWithoutDifference(): void {
-        Assert::exception(fn() =>  DT::create('now')->clamp(DT::now()->modifySeconds(-1)), InvalidArgumentException::class);
-    }
+	public function testClampMaxArgumentWithoutDifference(): void
+	{
+		Assert::exception(fn () =>  DT::create('now')->clamp(DT::now()->modifySeconds(-1)), InvalidArgumentException::class);
+	}
+
+	public function testResetTime(): void
+	{
+		Assert::same('00:00:00', DT::create('2023-08-08 12:12:12')->resetTime()->format(Formatter::TIMES));
+	}
 
 	/**
 	 * @dataProvider dataForClamp
 	 */
-	public function testClamp(string $expectedDatetime, string $suspectedDatetime): void {
-		Assert::same($expectedDatetime,
+	public function testClamp(string $expectedDatetime, string $suspectedDatetime): void
+	{
+		Assert::same(
+			$expectedDatetime,
 			DT::create($suspectedDatetime)
 				->clamp(
 					DT::create('2022-07-20 11:00:01'),
@@ -556,34 +564,36 @@ class DTTest extends AbstractTestCase
 				)->format(Formatter::TIMESTAMPS)
 		);
 
-        Assert::same($expectedDatetime,
-            DT::create($suspectedDatetime)
-                ->clamp(new Difference('2022-07-20 11:00:01', '2022-07-20 12:00:00'))
-                ->format(Formatter::TIMESTAMPS)
-        );
+		Assert::same(
+			$expectedDatetime,
+			DT::create($suspectedDatetime)
+				->clamp(new Difference('2022-07-20 11:00:01', '2022-07-20 12:00:00'))
+				->format(Formatter::TIMESTAMPS)
+		);
 	}
 
-	public function dataForClamp(): array {
+	public function dataForClamp(): array
+	{
 		return [
 			[
 				'expectedDatetime' => '2022-07-20 11:00:01',
-				'suspectedDatetime' => '2022-07-20 11:00:00'
+				'suspectedDatetime' => '2022-07-20 11:00:00',
 			], [
 				'expectedDatetime' => '2022-07-20 11:00:01',
-				'suspectedDatetime' => '2022-07-20 11:00:01'
+				'suspectedDatetime' => '2022-07-20 11:00:01',
 			], [
 				'expectedDatetime' => '2022-07-20 11:59:59',
-				'suspectedDatetime' => '2022-07-20 11:59:59'
+				'suspectedDatetime' => '2022-07-20 11:59:59',
 			], [
 				'expectedDatetime' => '2022-07-20 12:00:00',
-				'suspectedDatetime' => '2022-07-20 12:00:00'
+				'suspectedDatetime' => '2022-07-20 12:00:00',
 			], [
 				'expectedDatetime' => '2022-07-20 12:00:00',
-				'suspectedDatetime' => '2022-07-20 12:00:01'
+				'suspectedDatetime' => '2022-07-20 12:00:01',
 			], [
 				'expectedDatetime' => '2022-07-20 11:33:22',
-				'suspectedDatetime' => '2022-07-20 11:33:22'
-			]
+				'suspectedDatetime' => '2022-07-20 11:33:22',
+			],
 		];
 	}
 }
