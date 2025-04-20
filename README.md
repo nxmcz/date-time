@@ -1,8 +1,6 @@
 # DateTime
 An immutable class to deal with DateTime object used in `Noxem` systems. Works perfectly with [nette/forms](https://github.com/nette/forms) as Date, DateTime form's field. 
 
-**PHP 8.2 ready!!**
-
 [![Testing](https://badgen.net/github/checks/nxmcz/date-time/main?cache=300)](https://github.com/nxmcz/date-time/actions)
 [![Coverage Status](https://coveralls.io/repos/github/nxmcz/date-time/badge.svg?branch=main)](https://coveralls.io/github/nxmcz/date-time?branch=main)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fnxmcz%2Fdate-time%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/nxmcz/date-time/main)
@@ -13,7 +11,7 @@ An immutable class to deal with DateTime object used in `Noxem` systems. Works p
 
 Requirements
 ------------
-This library requires PHP 8.1 or later.
+This library requires PHP 8.4 or later.
 
 Usage
 -----

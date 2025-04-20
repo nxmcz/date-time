@@ -10,7 +10,7 @@ use Noxem\DateTime\Period;
 
 class DayDifference extends PeriodDifference
 {
-	public function __construct(DT $start, DT $end = null)
+	public function __construct(DT $start, ?DT $end = null)
 	{
 		parent::__construct($start, $end ?? $start, Period::DAY);
 	}

@@ -14,7 +14,7 @@ if (@!include __DIR__ . '/fixtures/AbstractTestCase.php') {
 }
 
 if (!function_exists('before')) {
-	function before(Closure $function = NULL)
+	function before(?Closure $function = NULL)
 	{
 		static $val;
 

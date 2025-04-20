@@ -36,7 +36,7 @@ class DT extends \DateTimeImmutable implements \JsonSerializable
 		return $this->setTime(0, 0);
 	}
 
-	public function clamp(DT|string|Difference $min, DT|string $max = null): self
+	public function clamp(DT|string|Difference $min, null|DT|string $max = null): self
 	{
 		if ($min instanceof Difference) {
 			$max = $min->getEnd();

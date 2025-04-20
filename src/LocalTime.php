@@ -36,7 +36,7 @@ class LocalTime
 		return $time;
 	}
 
-	public static function create(string|int|\DateTimeInterface|LocalTime $suspect = 'now', string $timezone = null): self
+	public static function create(string|int|\DateTimeInterface|LocalTime $suspect = 'now', ?string $timezone = null): self
 	{
 		try {
 			if ($suspect instanceof self) {

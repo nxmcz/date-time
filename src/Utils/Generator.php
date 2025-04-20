@@ -12,7 +12,7 @@ class Generator
 	 * @param DT|null $dt
 	 * @return Traversable<LocalDate>
 	 */
-	public static function week(DT $dt = NULL): Traversable
+	public static function week(?DT $dt = NULL): Traversable
 	{
 		$dt ??= DT::create("last monday");
 

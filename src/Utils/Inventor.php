@@ -101,8 +101,6 @@ class Inventor implements IteratorAggregate, Countable
 		$interval = $this->period->getInterval();
 		$new = $this->getFrom();
 		$cannotAcross = $this->to->difference()->getEnd(); // exception state
-
-		/** @var DatePart $class */
 		$class = $this->period->getClassInstance();
 
 		while ($cannotAcross->isGreaterThan($new)) {

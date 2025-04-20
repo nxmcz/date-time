@@ -14,7 +14,7 @@ use Noxem\DateTime\Exception\BadFormatException;
  */
 trait Creation
 {
-	public static function create(string|int $suspect = 'now', string $timezone = null): self
+	public static function create(string|int $suspect = 'now', ?string $timezone = null): self
 	{
 		if (Validators::isNumeric($suspect)) {
 			return (new self())->setTimestamp((int) $suspect);
@@ -73,7 +73,7 @@ trait Creation
 		return self::create($immutable->getTimestamp())->setTimezone($immutable->getTimezone());
 	}
 
-	public static function getOrCreateInstance(string|int|DateTimeInterface $suspect = null): self
+	public static function getOrCreateInstance(null|string|int|DateTimeInterface $suspect = null): self
 	{
 		return match (true) {
 			$suspect instanceof DT => $suspect->setTimezone(date_default_timezone_get()),
